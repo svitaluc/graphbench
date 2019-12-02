@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.profinit.manta</groupId>
+    <artifactId>graphbench</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>graphbench-core</module>
+        <module>graphbench-titan</module>
+        <module>graphbench-janusgraph</module>
+        <module>graphbench-tinkerpop2</module>
+        <module>graphbench-tinkerpop3</module>
+        <module>graphbench-run</module>
+    </modules>
+    <name>Parent POM</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <graphbench.core.version>1.0-SNAPSHOT</graphbench.core.version>
+        <graphbench.janusgraph.version>1.0-SNAPSHOT</graphbench.janusgraph.version>
+        <graphbench.tinkerpop2.version>1.0-SNAPSHOT</graphbench.tinkerpop2.version>
+        <graphbench.tinkerpop3.version>1.0-SNAPSHOT</graphbench.tinkerpop3.version>
+        <graphbench.titan.version>1.0-SNAPSHOT</graphbench.titan.version>
+
+        <commons.lang3.version>3.9</commons.lang3.version>
+        <log4j.version>1.2.17</log4j.version>
+        <jackson.databind.version>2.10.0</jackson.databind.version>
+        <jackson.dataformat.yaml.version>2.10.0</jackson.dataformat.yaml.version>
+        <slf4j.version>1.7.25</slf4j.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-core</artifactId>
+                <version>${graphbench.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-janusgraph</artifactId>
+                <version>${graphbench.janusgraph.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-titan</artifactId>
+                <version>${graphbench.titan.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-tinkerpop3</artifactId>
+                <version>${graphbench.tinkerpop3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-tinkerpop2</artifactId>
+                <version>${graphbench.tinkerpop2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.dataformat.yaml.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.databind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
