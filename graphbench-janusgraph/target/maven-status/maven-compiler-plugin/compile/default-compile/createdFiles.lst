@@ -1,0 +1,5 @@
+eu\profinit\manta\graphbench\janusgraph\JanusGraphDB$JanusDbIterator.class
+eu\profinit\manta\graphbench\janusgraph\JanusGraphDB$JanusDbEdgeIterator.class
+eu\profinit\manta\graphbench\janusgraph\JanusGraphDB.class
+eu\profinit\manta\graphbench\janusgraph\JanusGraphDB$JanusDbVertexIterator.class
+eu\profinit\manta\graphbench\janusgraph\config\model\Cassandra.class

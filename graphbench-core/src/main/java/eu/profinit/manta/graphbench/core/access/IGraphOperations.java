@@ -1,0 +1,67 @@
+package eu.profinit.manta.graphbench.core.access;
+
+import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
+import org.apache.log4j.Logger;
+import eu.profinit.manta.graphbench.core.access.direction.Direction;
+
+import java.util.List;
+
+
+/**
+ * Interface for all the graph operations in the database.
+ * @param <V> vertex extending the {@link IVertex} interface
+ */
+public abstract class IGraphOperations<V extends IVertex> {
+
+    /** Database representation. */
+    protected IGraphDBConnector db;
+
+    public IGraphOperations(IGraphDBConnector db) {
+        this.db = db;
+    }
+
+    final static Logger LOG = Logger.getLogger(IGraphOperations.class);
+
+    /**
+     * Returns a list of children of the provided vertex.
+     * @param node the starting vertex
+     * @return a list of children of the provided vertex
+     */
+    public abstract List<V> getChildren(V node);
+
+    /**
+     * Returns a list of children with a specified name.
+     * @param node the vertex which children will be acquired
+     * @param name value of the property specifying a child name
+     * @return list of children with specified name
+     */
+    public abstract List<V> getChildrenByName(V node, String name);
+
+    /**
+     * Returns a parent of the provided vertex.
+     * @param node the starting vertex
+     * @return a parent of the provided vertex
+     */
+    public abstract V getParent(V node);
+
+    /**
+     * Returns a list of vertices connected with the provided vertex by edges of the provided type and direction.
+     * @param node the starting vertex
+     * @param edgeType only edges with this type will be traversed
+     * @param dir only edges of this direction will be traversed
+     * @return a list of vertices connected with the provided vertex by edges of the provided type and direction
+     */
+    public abstract List<V> getVerticesByEdgeType(V node, String edgeType, Direction dir);
+
+    /**
+     * Starting from the provided node, it pursues the DFS search of the graph in the specified direction
+     * and on the specified edge types.
+     * No depth limits are set, so in the case of a connected graph, the whole graph can be traversed.
+     * The visited nodes are remembered not to be traversed more times.
+     * @param node the starting node
+     * @param edgeType only edges with this type will be traversed
+     * @param dir only edges of this direction will be traversed
+     * @return a list of traversed vertices
+     */
+    public abstract List<V> simpleFlow(V node, String edgeType, Direction dir);
+}
