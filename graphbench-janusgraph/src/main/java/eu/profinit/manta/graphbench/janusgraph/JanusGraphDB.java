@@ -9,6 +9,7 @@ import eu.profinit.manta.graphbench.core.db.structure.EdgeProperty;
 import eu.profinit.manta.graphbench.core.db.structure.NodeProperty;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -23,6 +24,8 @@ import eu.profinit.manta.graphbench.tinkerpop3.TP3Edge;
 import eu.profinit.manta.graphbench.tinkerpop3.TP3Vertex;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -44,7 +47,19 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	public JanusGraphDB() {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 		try {
-			cassandraYamlFile = mapper.readValue(new File("./graphbench-janusgraph/src/main/resources/cassandra/cassandra.yaml"), Cassandra.class);
+			/*
+			 * Loads the yaml file from resources. Since the file is loaded from jar file and the mapper reads the file
+			 * with the FileInputStream, there must be a temp file created. https://stackoverflow.com/questions/19177882/load-a-file-in-resources-with-fileinputstream
+			 */
+			InputStream yamlResource = this.getClass().getClassLoader().getResourceAsStream("cassandra" + File.separator + "cassandra.yaml");
+			File tmpFile = File.createTempFile("file", "temp");
+			assert yamlResource != null;
+			FileUtils.copyInputStreamToFile(yamlResource, tmpFile);
+			try {
+				cassandraYamlFile = mapper.readValue(tmpFile, Cassandra.class);
+			} finally {
+				tmpFile.delete();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
