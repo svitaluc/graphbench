@@ -47,19 +47,10 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	public JanusGraphDB() {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 		try {
-			/*
-			 * Loads the yaml file from resources. Since the file is loaded from jar file and the mapper reads the file
-			 * with the FileInputStream, there must be a temp file created. https://stackoverflow.com/questions/19177882/load-a-file-in-resources-with-fileinputstream
-			 */
-			InputStream yamlResource = this.getClass().getClassLoader().getResourceAsStream("cassandra" + File.separator + "cassandra.yaml");
-			File tmpFile = File.createTempFile("file", "temp");
-			assert yamlResource != null;
-			FileUtils.copyInputStreamToFile(yamlResource, tmpFile);
-			try {
-				cassandraYamlFile = mapper.readValue(tmpFile, Cassandra.class);
-			} finally {
-				tmpFile.delete();
-			}
+			String jarPath = Util.getJarPath();
+			File yamlFile = new File(jarPath + File.separator
+					+ "conf" + File.separator + "cassandra" + File.separator + "cassandra.yaml");
+			cassandraYamlFile = mapper.readValue(yamlFile, Cassandra.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,4 +1,4 @@
-package eu.profinit.manta.graphbench.run;
+package eu.profinit.manta.graphbench.all;
 
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import eu.profinit.manta.graphbench.core.db.product.GraphDBType;

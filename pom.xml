@@ -13,6 +13,7 @@
         <module>graphbench-janusgraph</module>
         <module>graphbench-tinkerpop2</module>
         <module>graphbench-tinkerpop3</module>
+        <module>graphbench-all</module>
         <module>graphbench-run</module>
     </modules>
     <name>Parent POM</name>
@@ -24,6 +25,7 @@
         <graphbench.tinkerpop2.version>1.0-SNAPSHOT</graphbench.tinkerpop2.version>
         <graphbench.tinkerpop3.version>1.0-SNAPSHOT</graphbench.tinkerpop3.version>
         <graphbench.titan.version>1.0-SNAPSHOT</graphbench.titan.version>
+        <graphbench.all.version>1.0-SNAPSHOT</graphbench.all.version>
 
         <commons.lang3.version>3.9</commons.lang3.version>
         <log4j.version>1.2.17</log4j.version>
@@ -58,6 +60,11 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>graphbench-tinkerpop2</artifactId>
                 <version>${graphbench.tinkerpop2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-all</artifactId>
+                <version>${graphbench.all.version}</version>
             </dependency>
 
             <dependency>

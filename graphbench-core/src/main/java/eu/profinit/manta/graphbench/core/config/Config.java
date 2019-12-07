@@ -1,5 +1,6 @@
 package eu.profinit.manta.graphbench.core.config;
 
+import eu.profinit.manta.graphbench.core.util.Util;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -18,7 +19,9 @@ public class Config {
     private Config() {
         Configurations configs = new Configurations();
         try {
-            config = configs.properties(Config.class.getClassLoader().getResource("config.properties"));
+            String jarPath = Util.getJarPath();
+            config = configs.properties(new File(jarPath + File.separator + "conf" + File.separator + "config.properties"));
+            LOG.info("CONFIG: " + config.toString());
         } catch (ConfigurationException e) {
             LOG.error("Properties file cannot be opened.", e);
         }
