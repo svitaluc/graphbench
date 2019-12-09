@@ -21,7 +21,6 @@ public class Config {
         try {
             String jarPath = Util.getJarPath();
             config = configs.properties(new File(jarPath + File.separator + "conf" + File.separator + "config.properties"));
-            LOG.info("CONFIG: " + config.toString());
         } catch (ConfigurationException e) {
             LOG.error("Properties file cannot be opened.", e);
         }
