@@ -1,12 +1,14 @@
 package eu.profinit.manta.graphbench.janusgraph;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.javaprop.JavaPropsFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import eu.profinit.manta.graphbench.core.config.Property;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import eu.profinit.manta.graphbench.core.db.Translator;
 import eu.profinit.manta.graphbench.core.db.structure.EdgeProperty;
 import eu.profinit.manta.graphbench.core.db.structure.NodeProperty;
+import eu.profinit.manta.graphbench.janusgraph.config.model.JanusGraphPropertyFile;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
@@ -42,18 +44,38 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	private Configuration configuration = new BaseConfiguration();
 	private JanusGraph internalGraph;
 	private Cassandra cassandraYamlFile;
+	private JanusGraphPropertyFile janusGraphPropertyFile;
 	final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
 	public JanusGraphDB() {
+		cassandraYamlFile = readCassandraYamlFile();
+		janusGraphPropertyFile = readJanusGraphPropertyFile();
+	}
+
+	private Cassandra readCassandraYamlFile() {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+		String jarPath = Util.getJarPath();
+		File yamlFile = new File(jarPath + File.separator
+				+ "conf" + File.separator + "cassandra" + File.separator + "cassandra.yaml");
 		try {
-			String jarPath = Util.getJarPath();
-			File yamlFile = new File(jarPath + File.separator
-					+ "conf" + File.separator + "cassandra" + File.separator + "cassandra.yaml");
-			cassandraYamlFile = mapper.readValue(yamlFile, Cassandra.class);
+			return mapper.readValue(yamlFile, Cassandra.class);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Couldn't read a cassandra yaml file. ", e);
 		}
+		return null;
+	}
+
+	private JanusGraphPropertyFile readJanusGraphPropertyFile() {
+		ObjectMapper mapper = new ObjectMapper(new JavaPropsFactory());
+		String jarPath = Util.getJarPath();
+		File propertyFile = new File(jarPath + File.separator
+				+ "conf" + File.separator + "janusgraph" + File.separator + "janusgraph.properties");
+		try {
+			return mapper.readValue(propertyFile, JanusGraphPropertyFile.class);
+		} catch(Exception e) {
+			LOG.error("Couldn't read a janusgraph property file. ", e);
+		}
+		return null;
 	}
 
 	private void setCassandraPaths(String dbPath) {
@@ -72,14 +94,10 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	}
 
 	private void setConfiguration(String dbPath) {
+		JanusGraphPropertyFile.setConfiguration(configuration, dbPath);
 		configuration.setProperty("storage.directory", dbPath);
-//		configuration.setProperty("storage.backend", "berkeleyje");
 		configuration.setProperty("storage.backend", "embeddedcassandra");
-//		configuration.setProperty("storage.backend", "cql");
 		configuration.setProperty("storage.hostname", "127.0.0.1");
-
-//		configuration.setProperty("storage.conf-file", "file:\\\\\\C:\\...");
-//		configuration.setProperty("cassandra.config", "file:\\\\\\C:\\...");
 
 		configuration.setProperty("storage.batch-loading", "true");
 		configuration.setProperty("query.fast-property", "true");
