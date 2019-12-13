@@ -1,4 +1,4 @@
-package eu.profinit.manta.graphbench.run;
+package eu.profinit.manta.graphbench.all;
 
 import eu.profinit.manta.graphbench.core.config.Config;
 import eu.profinit.manta.graphbench.core.db.product.GraphDBType;
@@ -11,6 +11,8 @@ import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import org.apache.log4j.Logger;
 import eu.profinit.manta.graphbench.core.test.ITest;
 import eu.profinit.manta.graphbench.core.test.TestFactory;
+
+import java.io.IOException;
 
 public class App {
 
@@ -70,7 +72,14 @@ public class App {
 	 * Connects a database set in the config file.
 	 */
 	private void connectDB() {
-		String databasePath = config.getStringProperty(Property.DATABASE_DIR);
+		String databasePath;
+		try {
+			databasePath = config.getPathProperty(Property.DATABASE_DIR);
+		} catch (IOException e) {
+			LOG.error("Database directory " + config.getStringProperty(Property.DATABASE_DIR)
+					+ "can't be converted to absolute path", e);
+			return;
+		}
 
 		GraphDBType databaseType = config.getGraphDBTypeProperty(Property.DATABASE_TYPE);
 		db = new GraphDBCommonImpl(GraphDBFactory.getGraphDB(databaseType));
@@ -83,7 +92,15 @@ public class App {
 	 * @param connector a custom database connector
 	 */
 	private void connectDB(IGraphDBConnector connector) {
-		String databasePath = config.getStringProperty(Property.DATABASE_DIR);
+		String databasePath;
+		try {
+			databasePath = config.getPathProperty(Property.DATABASE_DIR);
+		} catch (IOException e) {
+			LOG.error("Database directory " + config.getStringProperty(Property.DATABASE_DIR)
+					+ "can't be converted to absolute path", e);
+			return;
+		}
+
 		db = connector;
 		db.connect(databasePath, null, null);
 	}

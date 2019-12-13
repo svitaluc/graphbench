@@ -16,4 +16,9 @@ public class Util {
             LOG.error(e.getStackTrace());
         }
     }
+
+    public static String getJarPath() {
+        File tmp = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        return tmp.getParentFile().getAbsolutePath();
+    }
 }
