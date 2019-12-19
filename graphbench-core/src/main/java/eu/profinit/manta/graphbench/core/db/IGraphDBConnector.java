@@ -1,8 +1,11 @@
 package eu.profinit.manta.graphbench.core.db;
 
-import eu.profinit.manta.graphbench.core.config.Config;
 import eu.profinit.manta.graphbench.core.access.IEdge;
 import eu.profinit.manta.graphbench.core.access.IVertex;
+import eu.profinit.manta.graphbench.core.config.Config;
+import eu.profinit.manta.graphbench.core.test.ITest;
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
 
 import java.util.Iterator;
 import java.util.List;
@@ -75,6 +78,14 @@ public interface IGraphDBConnector<V extends IVertex, E extends IEdge> {
 	 * @return vertex with the given id
 	 */
 	public V getVertex(Object id);
+
+
+	/**
+	 * returns database configuration
+	 * @return database configuration
+	 */
+	public org.apache.commons.configuration.Configuration getConfiguration();
+
 
 	/**
 	 * Adds an edge with given out and in vertex, and a label.

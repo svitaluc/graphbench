@@ -5,7 +5,7 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) {
-        String outputPath = "C:\\Users\\lsvitakova\\tmp\\data-generator\\output";
+        String outputPath = "/media/veracrypt54/data/2019-12-02-materialy/data";
         final Long nodesAmount = 50000L;
         final Long edgesAmount = 200000L;
 

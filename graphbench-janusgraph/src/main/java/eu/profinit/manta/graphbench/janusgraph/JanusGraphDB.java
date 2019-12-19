@@ -221,6 +221,11 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	}
 
 	@Override
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	@Override
 	public TP3Edge addEdge(TP3Vertex outVertex, TP3Vertex inVertex, String label) {
 		return outVertex.addEdge(label, inVertex);
 	}

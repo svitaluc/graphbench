@@ -169,6 +169,11 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
     }
 
     @Override
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    @Override
     public TP2Edge addEdge(TP2Vertex outVertex, TP2Vertex inVertex, String label) {
         Edge edge = internalGraph.addEdge(null, outVertex.getVertex(), inVertex.getVertex(), label);
         return new TP2Edge(edge);

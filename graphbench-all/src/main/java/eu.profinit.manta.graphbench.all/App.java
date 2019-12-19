@@ -1,6 +1,7 @@
 package eu.profinit.manta.graphbench.all;
 
 import eu.profinit.manta.graphbench.core.config.Config;
+import eu.profinit.manta.graphbench.core.csv.CSVOutput;
 import eu.profinit.manta.graphbench.core.db.product.GraphDBType;
 import eu.profinit.manta.graphbench.core.config.Property;
 import eu.profinit.manta.graphbench.core.csv.CSVType;
@@ -35,6 +36,7 @@ public class App {
 	 * Start method with all configurations set in config file.
 	 */
 	public void start() {
+
 		connectDB();
 		startBody();
 	}
@@ -57,6 +59,14 @@ public class App {
 			ITest test = TestFactory.getTest(config.getTestTypeProperty(Property.TEST_TYPE), dataset);
 
 			runBenchmarkTest(dataset, test, db);
+
+			CSVOutput csvOut = new CSVOutput("/media/veracrypt54/data/2019-12-02-materialy/data/out.csv");
+			try {
+				csvOut.writeTestToCSV(test);
+			}
+			catch (IOException e) {
+
+			}
 
 			finishDB();
 
