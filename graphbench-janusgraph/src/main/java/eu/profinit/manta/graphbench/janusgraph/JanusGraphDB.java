@@ -11,7 +11,6 @@ import eu.profinit.manta.graphbench.core.db.structure.NodeProperty;
 import eu.profinit.manta.graphbench.janusgraph.config.model.JanusGraphPropertyFile;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -26,8 +25,6 @@ import eu.profinit.manta.graphbench.tinkerpop3.TP3Edge;
 import eu.profinit.manta.graphbench.tinkerpop3.TP3Vertex;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -48,7 +45,9 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
 	public JanusGraphDB() {
-		cassandraYamlFile = readCassandraYamlFile();
+		String cassandraYamlPath = "conf" + File.separator + "cassandra" + File.separator + "cassandra.yaml";
+
+		cassandraYamlFile = Util.getConfigFile(Cassandra.class, cassandraYamlPath, LOG);
 		janusGraphPropertyFile = readJanusGraphPropertyFile();
 	}
 
@@ -94,28 +93,7 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	}
 
 	private void setConfiguration(String dbPath) {
-		JanusGraphPropertyFile.setConfiguration(configuration, dbPath);
-		configuration.setProperty("storage.directory", dbPath);
-		configuration.setProperty("storage.backend", "embeddedcassandra");
-		configuration.setProperty("storage.hostname", "127.0.0.1");
-
-		configuration.setProperty("storage.batch-loading", "true");
-		configuration.setProperty("query.fast-property", "true");
-		configuration.setProperty("query.batch", "true");
-
-//		configuration.setProperty("schema.default", "none");
-//		configuration.setProperty("ids.block-size", "6600000");
-//		configuration.setProperty("storage.buffer-size", "2048");
-
-
-		configuration.setProperty("storage.parallel-backend-ops", "false");
-		//configuration.setProperty("storage.cassandra.compaction-strategy-class", "LeveledCompactionStrategy");
-		configuration.setProperty("storage.cassandra.write-consistency-level", "ONE");
-		configuration.setProperty("storage.cassandra.compression", "false");
-		configuration.setProperty("storage.cql.compression", "false");
-		configuration.setProperty("storage.cassandra.replication-factor", "1");
-		configuration.setProperty("storage.cassandra.read-consistency-level", "ONE");
-//		configuration.setProperty("storage.conf-file", "file:\\\\\\C:\\manta\\DB\\Janus\\cassandra-3.11.0.yaml");
+		janusGraphPropertyFile.setConfiguration(configuration, dbPath);
 
 		URL cassandraYamlUrl = getClass().getResource("/cassandra/cassandra.yaml");
 		configuration.setProperty("storage.conf-file", cassandraYamlUrl.toString());
@@ -123,21 +101,7 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 
 		String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
 		configuration.setProperty("storage.cassandra.storagedir", storageDir);
-//		configuration.setProperty("storage.cassandra.storagedir", "/var/lib/cassandra");
 
-
-		//configuration.setProperty("storage.backend", "inmemory");
-		//configuration.setProperty("storage.buffercount", "5000");
-		configuration.setProperty("cache.db-cache", "false");
-//	    configuration.setProperty("cache.db-cache-size",   "0");
-//		configuration.setProperty("cache.db-cache-size", "0");
-//		configuration.setProperty("cache.db-cache-time", "100000");
-		configuration.setProperty("cache.tx-cache-size", "0");
-//		configuration.setProperty("cache.tx-dirty-size", "100000");
-		configuration.setProperty("storage.berkeleyje.cache-percentage", "30");
-		configuration.setProperty("cache.db-cache-clean-wait", "0");
-		// Doplneni indexovaciho enginu
-		configuration.setProperty("index.search.backend", "lucene");
 		configuration.setProperty("index.search.directory", dbPath + "/searchindex");
 	}
 
