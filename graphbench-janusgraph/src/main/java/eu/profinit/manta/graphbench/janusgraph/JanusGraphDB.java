@@ -93,11 +93,10 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	}
 
 	private void setConfiguration(String dbPath) {
-		janusGraphPropertyFile.setConfiguration(configuration, dbPath);
+		Util.setConfiguration(configuration, dbPath, janusGraphPropertyFile);
 
 		URL cassandraYamlUrl = getClass().getResource("/cassandra/cassandra.yaml");
 		configuration.setProperty("storage.conf-file", cassandraYamlUrl.toString());
-		configuration.setProperty("storage.cassandra.logger.level", "ERROR");
 
 		String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
 		configuration.setProperty("storage.cassandra.storagedir", storageDir);

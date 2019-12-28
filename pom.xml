@@ -33,6 +33,7 @@
         <jackson.dataformat.properties.version>2.10.0</jackson.dataformat.properties.version>
         <jackson.dataformat.yaml.version>2.10.0</jackson.dataformat.yaml.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <commons-configuration>1.10</commons-configuration>
     </properties>
 
     <dependencyManagement>
@@ -103,6 +104,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

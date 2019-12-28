@@ -1,20 +1,7 @@
 package eu.profinit.manta.graphbench.janusgraph.config.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.javafx.fxml.PropertyNotFoundException;
-import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
-
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.hibernate.validator.internal.util.ReflectionHelper.getPropertyName;
 
 public class JanusGraphPropertyFile {
     final static Logger LOG = Logger.getLogger(JanusGraphPropertyFile.class);
@@ -72,89 +59,6 @@ public class JanusGraphPropertyFile {
 
     public void setIndex(Index index) {
         this.index = index;
-    }
-
-    public void setConfiguration(Configuration configuration, String dbPath) {
-        List<Method> getters = getGetterMethods(this.getClass());
-        Map<String, Object> configurationMap = new HashMap<>();
-
-        getters.forEach(getter -> {
-            Object value = null;
-            try {
-                value = getter.invoke(this);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            if(value != null) {
-                getEndProperty(getPropertyName(getter), value, configurationMap);
-            }
-        });
-
-        configurationMap.keySet().forEach(k -> {
-            configuration.setProperty(k, configurationMap.get(k));
-        });
-    }
-
-    private Map<String, Object> getEndProperty(String name, Object value, Map<String, Object> configurationMap) {
-        if (isEndProperty(value)) {
-            Map<String, Object> propertyMap = new HashMap<>();
-            propertyMap.put(name, value);
-            return propertyMap;
-        }
-        List<Method> getters = getGetterMethods(value.getClass());
-        getters.forEach(getter -> {
-            Object getterValue = null;
-            try {
-                getterValue = getter.invoke(value);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            if(getterValue != null) {
-                Map<String, Object> endProperty = getEndProperty(name + "." + getPropertyName(getter), getterValue, configurationMap);
-                if (endProperty != null) {
-                    endProperty.forEach(configurationMap::putIfAbsent);
-                }
-            }
-        });
-        return null;
-    }
-
-    private boolean isEndProperty(Object value) {
-        Class clazz = value.getClass();
-        return clazz.getName().contains("java.lang");
-    }
-
-    private static List<Method> getGetterMethods(Class clazz) {
-        Method[] methods = clazz.getMethods();
-        List<Method> getters = new ArrayList<>();
-
-        for(Method method : methods){
-            if(isProprietaryGetter(method)) {
-                getters.add(method);
-            }
-        }
-        return getters;
-    }
-
-    /**
-     * A method is considered to be a getter if it
-     *  - starts with "get"
-     *  - has no parameter
-     *  - returns void type
-     *  - Object method getClass is not a proprietary getter
-     * @param method
-     * @return
-     */
-    private static boolean isProprietaryGetter(Method method){
-        if(!method.getName().startsWith("get")) return false;
-        if(method.getParameterTypes().length != 0) return false;
-        if(void.class.equals(method.getReturnType())) return false;
-        if(method.getName().startsWith("getClass")) return false;
-        return true;
     }
 
     public class Query {

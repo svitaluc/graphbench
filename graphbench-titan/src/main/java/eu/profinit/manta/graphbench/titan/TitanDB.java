@@ -1,5 +1,7 @@
 package eu.profinit.manta.graphbench.titan;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.javaprop.JavaPropsFactory;
 import com.thinkaurelius.titan.core.TitanIndexQuery.Result;
 import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.core.Parameter;
@@ -8,6 +10,7 @@ import com.thinkaurelius.titan.core.TitanFactory;
 import com.thinkaurelius.titan.core.TitanKey;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
+import eu.profinit.manta.graphbench.titan.config.model.TitanPropertyFile;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
@@ -20,6 +23,7 @@ import eu.profinit.manta.graphbench.core.util.Util;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Edge;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Vertex;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -33,54 +37,37 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
     private Configuration configuration = new BaseConfiguration();
     private TitanGraph internalGraph;
     final static Logger LOG = Logger.getLogger(TitanDB.class);
+    private TitanPropertyFile titanPropertyFile;
+
+    public TitanDB() {
+        titanPropertyFile = readTitanPropertyFile();
+    }
 
     private void setConfiguration(String dbPath) {
+        Util.setConfiguration(configuration, dbPath, titanPropertyFile);
+
         configuration.setProperty("storage.directory", dbPath);
-        configuration.setProperty("storage.backend", "cassandra");
-//		configuration.setProperty("storage.backend", "embeddedcassandra");
-//        configuration.setProperty("storage.backend", "persistit");
-        //configuration.setProperty("storage.backend", "berkeleyje");
-        configuration.setProperty("storage.buffercount", "7");
-        configuration.setProperty("cache.db-cache", "false");
-        configuration.setProperty("cache.db-cache-size", "0");
-        configuration.setProperty("cache.tx-cache-size", "0");
-        configuration.setProperty("cache.db-cache-clean-wait", "0");
-//		configuration.setProperty("cache.db-cache-size", "0.6");
-//        configuration.setProperty("cache.db-cache-time", "0");
-        configuration.setProperty("storage.hostname", "127.0.0.1");
-
-        configuration.setProperty("storage.batch-loading", "true");
-        configuration.setProperty("query.fast-property", "true");
-        configuration.setProperty("query.batch", "true");
-
-        configuration.setProperty("storage.parallel-backend-ops", "false");
-        //configuration.setProperty("storage.cassandra.compaction-strategy-class", "LeveledCompactionStrategy");
-        configuration.setProperty("storage.cassandra.write-consistency-level", "ONE");
-        configuration.setProperty("storage.cassandra.compression", "false");
-        configuration.setProperty("storage.cql.compression", "false");
-        configuration.setProperty("storage.cassandra.replication-factor", "1");
-        configuration.setProperty("storage.cassandra.read-consistency-level", "ONE");
-//		configuration.setProperty("storage.conf-file", "file:\\\\\\C:\\manta\\DB\\Janus\\cassandra-3.11.0.yaml");
-
         URL cassandraYamlUrl = getClass().getResource("/cassandra/cassandra-1.2.2.yaml");
-//        String confFilePath = cassandraYamlUrl.toString().replace("jar:file:/", "file:\\\\\\\\\\\\").replace("/", "\\\\");
         configuration.setProperty("storage.cassandra-config-dir", cassandraYamlUrl.toString());
-        configuration.setProperty("storage.cassandra.logger.level", "ERROR");
 
         String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
         configuration.setProperty("storage.cassandra.storagedir", storageDir);
 
-        //TODO enable config for cassandra
-//        configuration.setProperty("storage.cassandra-config-dir", //TODO file path);
-//        configuration.setProperty("storage.cassandra.write-consistency-level", "ONE");
-//        configuration.setProperty("storage.cassandra.compression", "true");
-//        configuration.setProperty("storage.cassandra.replication-factor", "1");
-//        configuration.setProperty("storage.cassandra.read-consistency-level", "ONE");
-//        configuration.setProperty("storage.cassandra.logger.level", "ERROR");
-
-        // Index engine
-        configuration.setProperty("storage.index.search.backend", "lucene");
         configuration.setProperty("storage.index.search.directory", dbPath + "/searchindex");
+    }
+
+
+    private TitanPropertyFile readTitanPropertyFile() {
+        ObjectMapper mapper = new ObjectMapper(new JavaPropsFactory());
+        String jarPath = Util.getJarPath();
+        File propertyFile = new File(jarPath + File.separator
+                + "conf" + File.separator + "titan" + File.separator + "titan.properties");
+        try {
+            return mapper.readValue(propertyFile, TitanPropertyFile.class);
+        } catch(Exception e) {
+            LOG.error("Couldn't read a titan property file. ", e);
+        }
+        return null;
     }
 
     private void setSchema() {

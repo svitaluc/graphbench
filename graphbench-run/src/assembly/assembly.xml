@@ -15,6 +15,10 @@
             <directory>${project.basedir}/../graphbench-janusgraph/src/main/resources</directory>
             <outputDirectory>./conf</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/../graphbench-titan/src/main/resources</directory>
+            <outputDirectory>./conf</outputDirectory>
+        </fileSet>
     </fileSets>
     <files>
         <file>
