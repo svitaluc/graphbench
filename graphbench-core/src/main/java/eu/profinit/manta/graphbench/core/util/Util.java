@@ -1,6 +1,7 @@
 package eu.profinit.manta.graphbench.core.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.javaprop.JavaPropsFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
@@ -27,26 +28,50 @@ public class Util {
         }
     }
 
+    /**
+     * Gets path of the directory from which the jar file was executed.
+     * @return
+     */
     public static String getJarPath() {
         File tmp = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         return tmp.getParentFile().getAbsolutePath();
     }
 
     /**
-     *
-     * @param configPath relative path of the config file within the resources directory
-     * @return
+     * Loads a configuration file into an object of the specified class.
+     * @param configRepresentation class representing all properties of the configuration
+     * @param configPath relative path of the configuration file within the target directory
+     * @param LOG logger for event logging
+     * @return object representing all properties of the configuration file with those properties loaded
      */
-    public static <T> T getConfigFile(Class<T> configRepresentation, String configPath, Logger LOG) {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    public static <T> T getConfigurationObject(Class<T> configRepresentation, String configPath, Logger LOG) {
+        ObjectMapper mapper = createObjectMapper(configPath);
         String jarPath = Util.getJarPath();
-        File yamlFile = new File(jarPath + File.separator + configPath);
+        File configFile = new File(jarPath + File.separator + configPath);
         try {
-            return mapper.readValue(yamlFile, configRepresentation);
+            return mapper.readValue(configFile, configRepresentation);
         } catch (Exception e) {
-            LOG.error("Couldn't read a config yaml file at '" + configPath + "'.", e);
+            LOG.error("Couldn't read a configuration file at '" + configPath + "'.", e);
         }
         return null;
+    }
+
+    /**
+     * Creates a general object mapper corresponding to a type of the file.
+     * @param path file name or file path
+     * @return object mapper for a file type specified by the path.
+     */
+    private static ObjectMapper createObjectMapper(String path) {
+        String[] splitPath = path.split("\\.");
+        if (splitPath.length < 1) {
+            throw new IllegalArgumentException("The path '" + path + "' does not contain a file with a specified file type.");
+        }
+        String fileType = splitPath[1].toLowerCase();
+        switch (fileType) {
+            case "yaml": return new ObjectMapper(new YAMLFactory());
+            case "properties": return new ObjectMapper(new JavaPropsFactory());
+            default: throw new UnsupportedOperationException("The file type " + fileType + " is not yet supported for object mapper.");
+        }
     }
 
     public static void setConfiguration(Configuration configuration, String dbPath, Object clazz) {

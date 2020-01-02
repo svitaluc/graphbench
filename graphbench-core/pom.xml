@@ -13,6 +13,15 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <commons-configuration2.version>2.5</commons-configuration2.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-beanutils-core.version>1.8.0</commons-beanutils-core.version>
+        <commons.io.version>2.4</commons.io.version>
+        <opencsv.version>2.3</opencsv.version>
+        <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -30,30 +39,28 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-configuration2</artifactId>
-            <version>2.5</version>
+            <version>${commons-configuration2.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
-<!--            <optional>true</optional>-->
+            <version>${commons-beanutils.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils-core</artifactId>
-            <version>1.8.0</version>
-<!--            <optional>true</optional>-->
+            <version>${commons-beanutils-core.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.directory.studio</groupId>
             <artifactId>org.apache.commons.io</artifactId>
-            <version>2.4</version>
+            <version>${commons.io.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>2.3</version>
+            <version>${opencsv.version}</version>
         </dependency>
 
         <dependency>
@@ -63,7 +70,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.3.0.Final</version>
+            <version>${hibernate-validator.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -85,46 +92,5 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
-
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-assembly-plugin</artifactId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>single</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <appendAssemblyId>false</appendAssemblyId>-->
-<!--                            <descriptors>-->
-<!--                                <descriptor>src/assembly/assembly.xml</descriptor>-->
-<!--                            </descriptors>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-shade-plugin</artifactId>-->
-<!--                <version>3.2.1</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>shade</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
 
 </project>

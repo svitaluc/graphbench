@@ -1,8 +1,5 @@
 package eu.profinit.manta.graphbench.janusgraph;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.javaprop.JavaPropsFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import eu.profinit.manta.graphbench.core.config.Property;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import eu.profinit.manta.graphbench.core.db.Translator;
@@ -42,39 +39,14 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	private JanusGraph internalGraph;
 	private Cassandra cassandraYamlFile;
 	private JanusGraphPropertyFile janusGraphPropertyFile;
-	final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
+	private final Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
 	public JanusGraphDB() {
 		String cassandraYamlPath = "conf" + File.separator + "cassandra" + File.separator + "cassandra.yaml";
+		String janusgraphPropertiesPath = "conf" + File.separator + "janusgraph" + File.separator + "janusgraph.properties";
 
-		cassandraYamlFile = Util.getConfigFile(Cassandra.class, cassandraYamlPath, LOG);
-		janusGraphPropertyFile = readJanusGraphPropertyFile();
-	}
-
-	private Cassandra readCassandraYamlFile() {
-		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-		String jarPath = Util.getJarPath();
-		File yamlFile = new File(jarPath + File.separator
-				+ "conf" + File.separator + "cassandra" + File.separator + "cassandra.yaml");
-		try {
-			return mapper.readValue(yamlFile, Cassandra.class);
-		} catch (Exception e) {
-			LOG.error("Couldn't read a cassandra yaml file. ", e);
-		}
-		return null;
-	}
-
-	private JanusGraphPropertyFile readJanusGraphPropertyFile() {
-		ObjectMapper mapper = new ObjectMapper(new JavaPropsFactory());
-		String jarPath = Util.getJarPath();
-		File propertyFile = new File(jarPath + File.separator
-				+ "conf" + File.separator + "janusgraph" + File.separator + "janusgraph.properties");
-		try {
-			return mapper.readValue(propertyFile, JanusGraphPropertyFile.class);
-		} catch(Exception e) {
-			LOG.error("Couldn't read a janusgraph property file. ", e);
-		}
-		return null;
+		cassandraYamlFile = Util.getConfigurationObject(Cassandra.class, cassandraYamlPath, LOG);
+		janusGraphPropertyFile = Util.getConfigurationObject(JanusGraphPropertyFile.class, janusgraphPropertiesPath, LOG);
 	}
 
 	private void setCassandraPaths(String dbPath) {
