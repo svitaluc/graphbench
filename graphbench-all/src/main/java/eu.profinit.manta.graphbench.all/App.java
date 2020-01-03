@@ -1,8 +1,8 @@
 package eu.profinit.manta.graphbench.all;
 
-import eu.profinit.manta.graphbench.core.config.Config;
+import eu.profinit.manta.graphbench.core.config.ConfigProperties;
 import eu.profinit.manta.graphbench.core.db.product.GraphDBType;
-import eu.profinit.manta.graphbench.core.config.Property;
+import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.csv.CSVType;
 import eu.profinit.manta.graphbench.core.csv.ProcessCSV;
 import eu.profinit.manta.graphbench.core.dataset.Dataset;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class App {
 
 	private final static Logger LOG = Logger.getLogger(App.class);
-	private Config config = Config.getInstance();
+	private ConfigProperties config = ConfigProperties.getInstance();
 	private IGraphDBConnector db;
 
 	/**
@@ -53,8 +53,8 @@ public class App {
 	 */
 	private void startBody() {
 		try{
-			Dataset dataset = new Dataset(config.getStringProperty(Property.DATASET_DIR));
-			ITest test = TestFactory.getTest(config.getTestTypeProperty(Property.TEST_TYPE), dataset);
+			Dataset dataset = new Dataset(config.getStringProperty(ConfigProperty.DATASET_DIR));
+			ITest test = TestFactory.getTest(config.getTestTypeProperty(ConfigProperty.TEST_TYPE), dataset);
 
 			runBenchmarkTest(dataset, test, db);
 
@@ -74,14 +74,14 @@ public class App {
 	private void connectDB() {
 		String databasePath;
 		try {
-			databasePath = config.getPathProperty(Property.DATABASE_DIR);
+			databasePath = config.getPathProperty(ConfigProperty.DATABASE_DIR);
 		} catch (IOException e) {
-			LOG.error("Database directory " + config.getStringProperty(Property.DATABASE_DIR)
+			LOG.error("Database directory " + config.getStringProperty(ConfigProperty.DATABASE_DIR)
 					+ "can't be converted to absolute path", e);
 			return;
 		}
 
-		GraphDBType databaseType = config.getGraphDBTypeProperty(Property.DATABASE_TYPE);
+		GraphDBType databaseType = config.getGraphDBTypeProperty(ConfigProperty.DATABASE_TYPE);
 		db = new GraphDBCommonImpl(GraphDBFactory.getGraphDB(databaseType));
 
 		db.connect(databasePath, null, null);
@@ -94,9 +94,9 @@ public class App {
 	private void connectDB(IGraphDBConnector connector) {
 		String databasePath;
 		try {
-			databasePath = config.getPathProperty(Property.DATABASE_DIR);
+			databasePath = config.getPathProperty(ConfigProperty.DATABASE_DIR);
 		} catch (IOException e) {
-			LOG.error("Database directory " + config.getStringProperty(Property.DATABASE_DIR)
+			LOG.error("Database directory " + config.getStringProperty(ConfigProperty.DATABASE_DIR)
 					+ "can't be converted to absolute path", e);
 			return;
 		}
@@ -126,7 +126,7 @@ public class App {
 	 */
 	private void runBenchmarkTest(Dataset dataset, ITest test, IGraphDBConnector db) {
 
-		if(Config.getInstance().getBooleanProperty(Property.WITH_IMPORT)) {
+		if(ConfigProperties.getInstance().getBooleanProperty(ConfigProperty.WITH_IMPORT)) {
 			ProcessCSV csv = loadCSV(dataset.getDatasetDir(), db);
 			test.test(csv, db);
 		} else {

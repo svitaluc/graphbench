@@ -1,8 +1,9 @@
 package eu.profinit.manta.graphbench.core.db;
 
-import eu.profinit.manta.graphbench.core.config.Config;
+import eu.profinit.manta.graphbench.core.config.Configuration;
 import eu.profinit.manta.graphbench.core.access.IEdge;
 import eu.profinit.manta.graphbench.core.access.IVertex;
+import eu.profinit.manta.graphbench.core.config.ConfigProperties;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface IGraphDBConnector<V extends IVertex, E extends IEdge> {
 
 	/** Instance for reading properties from a config file. */
-	public Config config = Config.getInstance();
+	public Configuration config = ConfigProperties.getInstance();
 
 	/**
 	 * Creates connection with the database.

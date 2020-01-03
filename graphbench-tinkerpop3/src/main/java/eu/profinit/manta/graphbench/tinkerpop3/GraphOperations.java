@@ -1,7 +1,8 @@
 package eu.profinit.manta.graphbench.tinkerpop3;
 
-import eu.profinit.manta.graphbench.core.config.Config;
-import eu.profinit.manta.graphbench.core.config.Property;
+import eu.profinit.manta.graphbench.core.config.Configuration;
+import eu.profinit.manta.graphbench.core.config.ConfigProperties;
+import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -17,7 +18,7 @@ import java.util.*;
 public class GraphOperations extends IGraphOperations<TP3Vertex> {
     final static Logger LOG = Logger.getLogger(GraphOperations.class);
     private GraphTraversalSource traversal;
-    private Config config = Config.getInstance();
+    private Configuration config = ConfigProperties.getInstance();
 
     public GraphOperations(IGraphDBConnector<TP3Vertex, TP3Edge> db) {
         super(db);
@@ -28,7 +29,7 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
     public List<TP3Vertex> getChildren(TP3Vertex node) {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
-        Iterator<Vertex> children = traversal.V(node.id()).in(config.getStringProperty(Property.EDGE_PARENT_LABEL));
+        Iterator<Vertex> children = traversal.V(node.id()).in(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         while(children.hasNext()) {
             Vertex v = children.next();
             childList.add(new TP3Vertex(v));
@@ -45,8 +46,8 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
         Iterator<Vertex> children = traversal.V(node.id())
-                .inE(config.getStringProperty(Property.EDGE_PARENT_LABEL))
-                .has(config.getStringProperty(Property.EDGE_CHILD_NAME), name)
+                .inE(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
                 .outV();
 
         long endTime = System.nanoTime();
@@ -64,7 +65,7 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
     @Override
     public TP3Vertex getParent(TP3Vertex node) {
         long startTime = System.nanoTime();
-        Iterator<Vertex> parentIt = traversal.V(node.id()).out(config.getStringProperty(Property.EDGE_PARENT_LABEL));
+        Iterator<Vertex> parentIt = traversal.V(node.id()).out(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
 
         Vertex parent = parentIt.next();
 
@@ -73,7 +74,7 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
         }
         long endTime = System.nanoTime();
         System.out.println("getParent Total time = " + (endTime - startTime));
-        System.out.println(parent.property(config.getStringProperty(Property.NODE_NAME)).toString());
+        System.out.println(parent.property(config.getStringProperty(ConfigProperty.NODE_NAME)).toString());
         System.out.println("--------------------------------------\n");
 
         return new TP3Vertex(parent);

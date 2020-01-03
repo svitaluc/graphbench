@@ -3,7 +3,7 @@ package eu.profinit.manta.graphbench.core.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.javaprop.JavaPropsFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.commons.configuration.Configuration;
+import eu.profinit.manta.graphbench.core.config.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -74,24 +74,8 @@ public class Util {
         }
     }
 
-    public static void setConfiguration(Configuration configuration, String dbPath, Object clazz) {
-        List<Method> getters = getGetterMethods(clazz.getClass());
-        Map<String, Object> configurationMap = new HashMap<>();
-
-        getters.forEach(getter -> {
-            Object value = null;
-            try {
-                value = getter.invoke(clazz);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            if(value != null) {
-                getEndProperty(getPropertyName(getter), value, configurationMap);
-            }
-        });
-
+    public static void setConfiguration(org.apache.commons.configuration.Configuration configuration, Configuration loaded) {
+        Map<String, Object> configurationMap = loaded.getAllProperties();
         configurationMap.keySet().forEach(k -> {
             configuration.setProperty(k, configurationMap.get(k));
         });

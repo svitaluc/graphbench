@@ -1,9 +1,11 @@
-package eu.profinit.manta.graphbench.core.config;
+package eu.profinit.manta.graphbench.core.config.model;
+
+import eu.profinit.manta.graphbench.core.config.IConfigurationProperty;
 
 /**
- * All properties of the configuration file.
+ * All properties of the configuration file config.properties.
  */
-public enum Property {
+public enum ConfigProperty implements IConfigurationProperty {
     /**  */
     EDGE_PARENT_LABEL("EDGE_PARENT_LABEL", String.class),
     EDGE_CHILD_NAME("EDGE_CHILD_NAME", String.class),
@@ -50,15 +52,17 @@ public enum Property {
     private final String property;
     private final Class clazz;
 
-    Property(String property, Class clazz) {
+    ConfigProperty(String property, Class clazz) {
         this.property = property;
         this.clazz = clazz;
     }
 
+    @Override
     public String getName() {
         return property;
     }
 
+    @Override
     public Class getClazz() {
         return clazz;
     }

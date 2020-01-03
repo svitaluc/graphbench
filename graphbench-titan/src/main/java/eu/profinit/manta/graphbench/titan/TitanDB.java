@@ -1,7 +1,5 @@
 package eu.profinit.manta.graphbench.titan;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.javaprop.JavaPropsFactory;
 import com.thinkaurelius.titan.core.TitanIndexQuery.Result;
 import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.core.Parameter;
@@ -10,11 +8,12 @@ import com.thinkaurelius.titan.core.TitanFactory;
 import com.thinkaurelius.titan.core.TitanKey;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import eu.profinit.manta.graphbench.titan.config.model.TitanPropertyFile;
+import eu.profinit.manta.graphbench.titan.config.TitanProperties;
+import eu.profinit.manta.graphbench.titan.config.model.TitanProperty;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
-import eu.profinit.manta.graphbench.core.config.Property;
+import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import eu.profinit.manta.graphbench.core.db.Translator;
 import eu.profinit.manta.graphbench.core.db.structure.EdgeProperty;
@@ -23,7 +22,6 @@ import eu.profinit.manta.graphbench.core.util.Util;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Edge;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Vertex;
 
-import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -37,37 +35,23 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
     private Configuration configuration = new BaseConfiguration();
     private TitanGraph internalGraph;
     final static Logger LOG = Logger.getLogger(TitanDB.class);
-    private TitanPropertyFile titanPropertyFile;
+    private TitanProperties titanProperties;
 
     public TitanDB() {
-        titanPropertyFile = readTitanPropertyFile();
+        titanProperties = TitanProperties.getInstance();
     }
 
     private void setConfiguration(String dbPath) {
-        Util.setConfiguration(configuration, dbPath, titanPropertyFile);
+        Util.setConfiguration(configuration, titanProperties);
 
-        configuration.setProperty("storage.directory", dbPath);
-        URL cassandraYamlUrl = getClass().getResource("/cassandra/cassandra-1.2.2.yaml");
-        configuration.setProperty("storage.cassandra-config-dir", cassandraYamlUrl.toString());
+        configuration.setProperty(TitanProperty.STORAGE_DIRECTORY.getName(), dbPath);
+        URL cassandraYamlUrl = getClass().getResource("/cassandra/cassandra-1.2.2.yaml"); //TODO
+        configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlUrl.toString());
 
         String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
-        configuration.setProperty("storage.cassandra.storagedir", storageDir);
+        configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_STORAGEDIR.getName(), storageDir);
 
-        configuration.setProperty("storage.index.search.directory", dbPath + "/searchindex");
-    }
-
-
-    private TitanPropertyFile readTitanPropertyFile() {
-        ObjectMapper mapper = new ObjectMapper(new JavaPropsFactory());
-        String jarPath = Util.getJarPath();
-        File propertyFile = new File(jarPath + File.separator
-                + "conf" + File.separator + "titan" + File.separator + "titan.properties");
-        try {
-            return mapper.readValue(propertyFile, TitanPropertyFile.class);
-        } catch(Exception e) {
-            LOG.error("Couldn't read a titan property file. ", e);
-        }
-        return null;
+        configuration.setProperty(TitanProperty.STORAGE_INDEX_SEARCH_DIRECTORY.getName(), dbPath + "/" + TitanProperty.INDEX_SEARCH_DIRECTORY_NAME);
     }
 
     private void setSchema() {
@@ -198,17 +182,17 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
     public void addVertexNode(String[] parts, Translator trans) {
         TP2Vertex node = new TP2Vertex(addVertex().getVertex());
 
-        trans.putTemp(parts[config.getIntegerProperty(Property.NODE_I_ID)], node);
+        trans.putTemp(parts[config.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
 
-        node.property(NodeProperty.NODE_NAME.t(), parts[config.getIntegerProperty(Property.NODE_I_NAME)]);
-        node.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(Property.VERTEX_NODE_TYPE));
+        node.property(NodeProperty.NODE_NAME.t(), parts[config.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
+        node.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
 
 
         //Parent edge
-        if (parts[config.getIntegerProperty(Property.NODE_I_PARENT)].length() > 0) {
-            String parentString = trans.get(parts[config.getIntegerProperty(Property.NODE_I_PARENT)]);
+        if (parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
+            String parentString = trans.get(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
-            TP2Vertex parentNode = (TP2Vertex) trans.getTemp(parts[config.getIntegerProperty(Property.NODE_I_PARENT)]);
+            TP2Vertex parentNode = (TP2Vertex) trans.getTemp(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
             if(parentNode == null || parentNode.isVertexNull()) {
                 parentNode = getVertex(parentString);
             }
@@ -218,7 +202,7 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
             } else {
                 LOG.warn(MessageFormat.format(
                         "Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-                        parts[config.getIntegerProperty(Property.NODE_I_PARENT)], node.id().toString()));
+                        parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.id().toString()));
             }
         }
     }

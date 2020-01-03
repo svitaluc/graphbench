@@ -1,8 +1,9 @@
 package eu.profinit.manta.graphbench.core.csv;
 
 import au.com.bytecode.opencsv.CSVReader;
-import eu.profinit.manta.graphbench.core.config.Config;
-import eu.profinit.manta.graphbench.core.config.Property;
+import eu.profinit.manta.graphbench.core.config.Configuration;
+import eu.profinit.manta.graphbench.core.config.ConfigProperties;
+import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import eu.profinit.manta.graphbench.core.db.Translator;
 import eu.profinit.manta.graphbench.core.db.structure.EdgeLabel;
@@ -20,13 +21,13 @@ public class ProcessCSV {
     private final Logger LOG = Logger.getLogger(ProcessCSV.class);
     private Translator trans = new Translator();
     private IGraphDBConnector db;
-    private Config config = Config.getInstance();
+    private Configuration config = ConfigProperties.getInstance();
 
-    private int commitEveryCount = config.getIntegerProperty(Property.COMMIT_EVERY_COUNT);
+    private int commitEveryCount = config.getIntegerProperty(ConfigProperty.COMMIT_EVERY_COUNT);
 
     private BufferedReader getInput(String csvDir, String fileName) throws UnsupportedEncodingException, FileNotFoundException {
         return new BufferedReader(new InputStreamReader(new FileInputStream(new File(csvDir, fileName)),
-                config.getStringProperty(Property.CSV_ENCODING)));
+                config.getStringProperty(ConfigProperty.CSV_ENCODING)));
     }
 
     public ProcessCSV(IGraphDBConnector database) {
@@ -50,8 +51,8 @@ public class ProcessCSV {
     public void addSuperRoot() {
        IVertex sr = db.addVertex();
         
-       sr.property(NodeProperty.NODE_NAME.t(), config.getStringProperty(Property.SUPER_ROOT_NAME));
-       sr.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(Property.SUPER_ROOT_TYPE));
+       sr.property(NodeProperty.NODE_NAME.t(), config.getStringProperty(ConfigProperty.SUPER_ROOT_NAME));
+       sr.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.SUPER_ROOT_TYPE));
 
        trans.setSuperRootId(sr.id().toString());
        LOG.info("Added super-root");
@@ -80,7 +81,7 @@ public class ProcessCSV {
 
     private void linePostprocessing(int progress) {
         // To log or not to log
-        if ((progress % config.getIntegerProperty(Property.LOAD_PROGRESS_INFO_COUNT) == 0)) {
+        if ((progress % config.getIntegerProperty(ConfigProperty.LOAD_PROGRESS_INFO_COUNT) == 0)) {
             LOG.info(MessageFormat.format("... processed records: {0}", progress));
         }
 
@@ -110,14 +111,14 @@ public class ProcessCSV {
         int progress = 0;
         try {
             while ((parts = csvReader.readNext()) != null) {
-                Integer edgeStartPosition = config.getIntegerProperty(Property.EDGE_I_START);
-                Integer edgeEndPosition = config.getIntegerProperty(Property.EDGE_I_END);
+                Integer edgeStartPosition = config.getIntegerProperty(ConfigProperty.EDGE_I_START);
+                Integer edgeEndPosition = config.getIntegerProperty(ConfigProperty.EDGE_I_END);
 
                 IVertex startNode = getVertex(edgeStartPosition, parts);
                 IVertex endNode = getVertex(edgeEndPosition, parts);
 
                 String type;
-                Integer edgeTypePosition = config.getIntegerProperty(Property.EDGE_I_END);
+                Integer edgeTypePosition = config.getIntegerProperty(ConfigProperty.EDGE_I_END);
 
                 if (parts[edgeTypePosition].equalsIgnoreCase(EdgeLabel.FILTER.t())) {
                     type = EdgeLabel.FILTER.t();
@@ -133,7 +134,7 @@ public class ProcessCSV {
                     //Zapsat hranu
                     IEdge edge;
                     edge = db.addEdge(startNode, endNode, type);
-                    trans.putTempEdge(parts[config.getIntegerProperty(Property.EDGE_I_ID)], edge);
+                    trans.putTempEdge(parts[config.getIntegerProperty(ConfigProperty.EDGE_I_ID)], edge);
                 }
 
                 progress++;
@@ -151,7 +152,7 @@ public class ProcessCSV {
 
         try {
             while ((parts = csvReader.readNext()) != null) {
-                Integer edgePosition = config.getIntegerProperty(Property.EDGE_ATTRIBUTE_I_EDGE);
+                Integer edgePosition = config.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_EDGE);
 
                 if (parts[edgePosition].length() > 0) {
                     String edgeAttrID = trans.getEdge(parts[edgePosition]);
@@ -162,8 +163,8 @@ public class ProcessCSV {
 
                         if (edgeAttr != null) {
                             db.setEdgeProperty(edgeAttr,
-                                    parts[config.getIntegerProperty(Property.EDGE_ATTRIBUTE_I_KEY)],
-                                    parts[config.getIntegerProperty(Property.EDGE_ATTRIBUTE_I_VALUE)]);
+                                    parts[config.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_KEY)],
+                                    parts[config.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_VALUE)]);
                         } else LOG.warn(
                                 MessageFormat.format("The database cannot find an edge of the edge attribute. " +
                                                 "Original edge id: \"{0}\", new edge id: \"{1}\"",

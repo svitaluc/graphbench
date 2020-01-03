@@ -2,8 +2,9 @@ package eu.profinit.manta.graphbench.tinkerpop2;
 
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import eu.profinit.manta.graphbench.core.config.Config;
-import eu.profinit.manta.graphbench.core.config.Property;
+import eu.profinit.manta.graphbench.core.config.Configuration;
+import eu.profinit.manta.graphbench.core.config.ConfigProperties;
+import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import org.apache.log4j.Logger;
 import eu.profinit.manta.graphbench.core.access.IGraphOperations;
@@ -14,7 +15,7 @@ import java.util.*;
 
 public class GraphOperations extends IGraphOperations<TP2Vertex> {
     final static Logger LOG = Logger.getLogger(GraphOperations.class);
-    private Config config = Config.getInstance();
+    private Configuration config = ConfigProperties.getInstance();
     public GraphOperations(IGraphDBConnector db) {
         super(db);
     }
@@ -23,7 +24,7 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
     public List<TP2Vertex> getChildren(TP2Vertex node) {
         List<TP2Vertex> childList = new ArrayList<>();
         Iterable<Vertex> children = node.getVertex().query()
-                .labels(config.getStringProperty(Property.EDGE_PARENT_LABEL))
+                .labels(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .direction(com.tinkerpop.blueprints.Direction.IN).vertices();
         for(Vertex v: children) {
             childList.add(new TP2Vertex(v));
@@ -35,8 +36,8 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
     public List<TP2Vertex> getChildrenByName(TP2Vertex node, String name) {
         List<TP2Vertex> childList = new ArrayList<>();
         Iterable<Vertex> children = node.getVertex().query()
-                .has(config.getStringProperty(Property.EDGE_CHILD_NAME), name)
-                .labels(config.getStringProperty(Property.EDGE_PARENT_LABEL))
+                .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
+                .labels(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .direction(com.tinkerpop.blueprints.Direction.IN)
                 .vertices();
 
@@ -52,7 +53,7 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
     @Override
     public TP2Vertex getParent(TP2Vertex node) {
         Iterable<Vertex> parentIt = node.getVertex()
-                .getVertices(com.tinkerpop.blueprints.Direction.OUT, config.getStringProperty(Property.EDGE_PARENT_LABEL));
+                .getVertices(com.tinkerpop.blueprints.Direction.OUT, config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         Vertex parent = parentIt.iterator().next();
 
         if(parentIt.iterator().hasNext()) {
