@@ -10,6 +10,10 @@ public enum GraphDBType {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public static GraphDBType getGraphDBType(String type) {
         for (GraphDBType item : values()) {
             if (item.name.equals(type)) {

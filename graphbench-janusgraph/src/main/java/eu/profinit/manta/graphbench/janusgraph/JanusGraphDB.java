@@ -1,15 +1,15 @@
 package eu.profinit.manta.graphbench.janusgraph;
 
-import eu.profinit.manta.graphbench.core.config.ConfigProperties;
-import eu.profinit.manta.graphbench.core.config.Configuration;
+import eu.profinit.manta.graphbench.backend.cassandra.CassandraVersion;
+import eu.profinit.manta.graphbench.backend.cassandra.CassandraYaml;
+import eu.profinit.manta.graphbench.backend.cassandra.model.CassandraProperty;
+import eu.profinit.manta.graphbench.core.config.GraphDBConfiguration;
 import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
 import eu.profinit.manta.graphbench.core.db.Translator;
 import eu.profinit.manta.graphbench.core.db.structure.EdgeProperty;
 import eu.profinit.manta.graphbench.core.db.structure.NodeProperty;
-import eu.profinit.manta.graphbench.janusgraph.config.CassandraYaml;
 import eu.profinit.manta.graphbench.janusgraph.config.JanusGraphProperties;
-import eu.profinit.manta.graphbench.janusgraph.config.model.CassandraProperty;
 import eu.profinit.manta.graphbench.janusgraph.config.model.JanusGraphProperty;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.log4j.Logger;
@@ -24,7 +24,7 @@ import eu.profinit.manta.graphbench.core.util.Util;
 import eu.profinit.manta.graphbench.tinkerpop3.TP3Edge;
 import eu.profinit.manta.graphbench.tinkerpop3.TP3Vertex;
 
-import java.net.URL;
+import java.io.File;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -40,24 +40,24 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	private org.apache.commons.configuration.Configuration configuration = new BaseConfiguration();
 	private JanusGraph internalGraph;
 	private CassandraYaml cassandraProperties;
-	private Configuration janusGraphProperties;
+	private JanusGraphProperties janusGraphProperties;
 	private final Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
 	public JanusGraphDB() {
-		cassandraProperties = CassandraYaml.getInstance();
+		cassandraProperties = CassandraYaml.getInstance(CassandraVersion.CASSANDRA_3110);
 		janusGraphProperties = JanusGraphProperties.getInstance();
 	}
 
 	private void setCassandraPaths(String dbPath) {
-		cassandraProperties.setProperty(CassandraProperty.COMMITLOG_DIRECTORY, dbPath + "/" + CassandraProperty.COMMITLOG_DIRECTORY_NAME);
-		cassandraProperties.setProperty(CassandraProperty.SAVED_CACHES_DIRECTORY, dbPath + "/" + CassandraProperty.SAVED_CACHES_DIRECTORY_NAME);
-		cassandraProperties.setProperty(CassandraProperty.DATA_FILE_DIRECTORIES, dbPath + "/" + CassandraProperty.DATA_DIRECTORY_NAME);
+		cassandraProperties.setProperty(CassandraProperty.COMMITLOG_DIRECTORY, dbPath + File.separator + CassandraProperty.COMMITLOG_DIRECTORY_NAME);
+		cassandraProperties.setProperty(CassandraProperty.SAVED_CACHES_DIRECTORY, dbPath + File.separator + CassandraProperty.SAVED_CACHES_DIRECTORY_NAME);
+		cassandraProperties.setProperty(CassandraProperty.DATA_FILE_DIRECTORIES, dbPath + File.separator + CassandraProperty.DATA_DIRECTORY_NAME);
 	}
 
 	private void setConfiguration(String dbPath) {
 		Util.setConfiguration(configuration, janusGraphProperties);
 
-		String cassandraYamlPath = CassandraYaml.getAbsolutePropertiesPath();
+		String cassandraYamlPath = cassandraProperties.getAbsolutePropertiesPath();
 		configuration.setProperty(JanusGraphProperty.STORAGE_CONF_FILE.getName(), "file:\\\\\\" + cassandraYamlPath);
 
 		String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
@@ -87,8 +87,14 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	}
 
 	@Override
+	public GraphDBConfiguration getGraphDBConfiguration() {
+		return janusGraphProperties;
+	}
+
+	@Override
 	public void connect(String dbPath, String userName, String userPassword) {
 		setCassandraPaths(dbPath);
+		LOG.info("DB PATH " + dbPath);
 		Util.clearDirectory(dbPath, LOG);
 
 		setConfiguration(dbPath);

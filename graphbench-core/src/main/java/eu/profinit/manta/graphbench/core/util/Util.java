@@ -6,18 +6,23 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import eu.profinit.manta.graphbench.core.config.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import static org.hibernate.validator.internal.util.ReflectionHelper.getPropertyName;
 
 public class Util {
+    private final static String graphbenchRun = "graphbench-run";
+
     public static void clearDirectory(String directory, Logger LOG) {
         File directoryPathFile = new File(directory);
         LOG.debug("Directory to be deleted: " + directoryPathFile.getAbsolutePath());
@@ -33,8 +38,33 @@ public class Util {
      * @return
      */
     public static String getJarPath() {
-        File tmp = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        return tmp.getParentFile().getAbsolutePath();
+        String userDir = System.getProperty("user.dir");
+        String version = getProjectVersion();
+        String graphbenchRunWithVersion = graphbenchRun + "-" + version;
+        return userDir + File.separator + graphbenchRun + File.separator + "target" +
+                File.separator + graphbenchRunWithVersion + File.separator + graphbenchRunWithVersion;
+    }
+
+    private static String getProjectVersion() {
+        Logger logger = Logger.getLogger(Util.class);
+        String version = Util.class.getPackage().getImplementationVersion();
+        // case when the method is called outside of a jar file (f.e. a Launcher)
+        // - the addDefaultImplementationEntries does not have an effect then
+        if (version == null) {
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model;
+            try {
+                if ((new File("pom.xml")).exists())
+                    model = reader.read(new FileReader("pom.xml"));
+                else
+                    model = reader.read(new InputStreamReader(Util.class.getResourceAsStream(
+                             "/META-INF/maven/eu.profinit.manta/graphbench-all/pom.xml")));
+                version = model.getVersion();
+            } catch (IOException | XmlPullParserException e) {
+                logger.error("Couldn't read the project version from a pom file.", e);
+            }
+        }
+        return version;
     }
 
     /**

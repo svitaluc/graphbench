@@ -1,4 +1,4 @@
-package eu.profinit.manta.graphbench.janusgraph.config.model;
+package eu.profinit.manta.graphbench.backend.cassandra.model;
 
 import eu.profinit.manta.graphbench.core.config.IConfigurationProperty;
 
@@ -10,7 +10,7 @@ public enum CassandraProperty implements IConfigurationProperty {
 
     COMMITLOG_DIRECTORY("commitlog_directory", String.class),
     SAVED_CACHES_DIRECTORY("saved_caches_directory", String.class),
-    DATA_FILE_DIRECTORIES("data_file_directories", String[].class);
+    DATA_FILE_DIRECTORIES("data_file_directories", String.class);
 
     public static String DATA_DIRECTORY_NAME = "data";
     public static String COMMITLOG_DIRECTORY_NAME = "commitlog";

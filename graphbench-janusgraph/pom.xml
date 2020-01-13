@@ -29,6 +29,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>graphbench-tinkerpop3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphbench-backend</artifactId>
+        </dependency>
 
         <!-- =============== jackson dependencies =============== -->
         <dependency>
@@ -111,7 +115,22 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--            </plugin>-->
-
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>properties-maven-plugin</artifactId>-->
+<!--                <version>1.0.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>generate-resources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>write-project-properties</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputFile>/media/veracrypt54/bench/graph-db-benchmark/graphbench-janusgraph/janusgraph.properties</outputFile>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

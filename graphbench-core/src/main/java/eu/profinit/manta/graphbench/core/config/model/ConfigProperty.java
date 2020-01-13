@@ -13,7 +13,7 @@ public enum ConfigProperty implements IConfigurationProperty {
     NODE_NAME("NODE_NAME", String.class),
     WITH_IMPORT("WITH_IMPORT", boolean.class),
     CSV_ENCODING("CSV_ENCODING", String.class),
-    COMMIT_EVERY_COUNT("COMMIT_EVERY_COUNT", int.class),
+    COMMIT_EVERY_COUNT("COMMIT_EVERY_COUNT", Integer.class),
     SUPER_ROOT_NAME("SUPER_ROOT_NAME", String.class),
     SUPER_ROOT_DESC("SUPER_ROOT_DESC", String.class),
     SUPER_ROOT_TYPE("SUPER_ROOT_TYPE", String.class),

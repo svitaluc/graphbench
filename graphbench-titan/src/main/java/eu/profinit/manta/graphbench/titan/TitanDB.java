@@ -8,6 +8,9 @@ import com.thinkaurelius.titan.core.TitanFactory;
 import com.thinkaurelius.titan.core.TitanKey;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
+import eu.profinit.manta.graphbench.backend.cassandra.CassandraVersion;
+import eu.profinit.manta.graphbench.backend.cassandra.CassandraYaml;
+import eu.profinit.manta.graphbench.core.config.GraphDBConfiguration;
 import eu.profinit.manta.graphbench.titan.config.TitanProperties;
 import eu.profinit.manta.graphbench.titan.config.model.TitanProperty;
 import org.apache.commons.configuration.BaseConfiguration;
@@ -22,6 +25,7 @@ import eu.profinit.manta.graphbench.core.util.Util;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Edge;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Vertex;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -36,17 +40,19 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
     private TitanGraph internalGraph;
     final static Logger LOG = Logger.getLogger(TitanDB.class);
     private TitanProperties titanProperties;
+    private CassandraYaml cassandraProperties;
 
     public TitanDB() {
         titanProperties = TitanProperties.getInstance();
+        cassandraProperties = CassandraYaml.getInstance(CassandraVersion.CASSANDRA_122);
     }
 
     private void setConfiguration(String dbPath) {
         Util.setConfiguration(configuration, titanProperties);
 
         configuration.setProperty(TitanProperty.STORAGE_DIRECTORY.getName(), dbPath);
-        URL cassandraYamlUrl = getClass().getResource("/cassandra/cassandra-1.2.2.yaml"); //TODO
-        configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlUrl.toString());
+        String cassandraYamlPath = File.separator + cassandraProperties.getRelativePropertiesPath();
+        configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlPath);
 
         String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
         configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_STORAGEDIR.getName(), storageDir);
@@ -74,6 +80,11 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
         internalGraph.makeLabel(eu.profinit.manta.graphbench.core.db.structure.EdgeLabel.HAS_PARENT.t()).sortKey(childKey).make();
         internalGraph.makeLabel(eu.profinit.manta.graphbench.core.db.structure.EdgeLabel.DIRECT.t()).sortKey(childKey).make();
         internalGraph.makeLabel(eu.profinit.manta.graphbench.core.db.structure.EdgeLabel.FILTER.t()).sortKey(childKey).make();
+    }
+
+    @Override
+    public GraphDBConfiguration getGraphDBConfiguration() {
+        return titanProperties;
     }
 
     @Override

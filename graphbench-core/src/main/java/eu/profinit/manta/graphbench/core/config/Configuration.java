@@ -1,6 +1,12 @@
 package eu.profinit.manta.graphbench.core.config;
 
 import org.apache.commons.configuration2.AbstractConfiguration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.YAMLConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.FileHandler;
 import org.apache.log4j.Logger;
 import eu.profinit.manta.graphbench.core.db.product.GraphDBType;
 import eu.profinit.manta.graphbench.core.test.TestType;
@@ -14,14 +20,17 @@ import java.util.*;
  */
 public abstract class Configuration {
     private AbstractConfiguration config;
+    private FileHandler fileHandler;
     protected final Logger LOG = Logger.getLogger(Configuration.class);
 
     /**
      * Sets configuration variable.
      * @param config configuration from a file
      */
-    public void setConfig(AbstractConfiguration config) {
+    public void setConfig(AbstractConfiguration config, String configPath) {
         this.config = config;
+        fileHandler = new FileHandler((FileBasedConfiguration)config);
+        fileHandler.setFile(new File(configPath));
     }
 
     /**
@@ -119,6 +128,11 @@ public abstract class Configuration {
      */
     public void setProperty(IConfigurationProperty property, Object value) {
         config.setProperty(property.getName(), value);
+//        try {
+//            fileHandler.save();
+//        } catch (ConfigurationException e) {
+//            LOG.error("Can't set property " + property.getName() + ".", e);
+//        }
     }
 
     /**

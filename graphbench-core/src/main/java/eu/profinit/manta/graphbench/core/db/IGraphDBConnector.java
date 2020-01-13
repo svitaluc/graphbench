@@ -4,6 +4,9 @@ import eu.profinit.manta.graphbench.core.config.Configuration;
 import eu.profinit.manta.graphbench.core.access.IEdge;
 import eu.profinit.manta.graphbench.core.access.IVertex;
 import eu.profinit.manta.graphbench.core.config.ConfigProperties;
+import eu.profinit.manta.graphbench.core.config.GraphDBConfiguration;
+import eu.profinit.manta.graphbench.core.test.ITest;
+import org.apache.commons.configuration.BaseConfiguration;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +19,9 @@ import java.util.List;
 public interface IGraphDBConnector<V extends IVertex, E extends IEdge> {
 
 	/** Instance for reading properties from a config file. */
-	public Configuration config = ConfigProperties.getInstance();
+	public ConfigProperties config = ConfigProperties.getInstance();
 
+	public GraphDBConfiguration getGraphDBConfiguration();
 	/**
 	 * Creates connection with the database.
 	 * @param dbPath directory where to store the database

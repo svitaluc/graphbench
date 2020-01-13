@@ -1,6 +1,7 @@
 package eu.profinit.manta.graphbench.all;
 
 import eu.profinit.manta.graphbench.core.config.ConfigProperties;
+import eu.profinit.manta.graphbench.core.csv.CSVOutput;
 import eu.profinit.manta.graphbench.core.db.product.GraphDBType;
 import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.csv.CSVType;
@@ -14,10 +15,18 @@ import eu.profinit.manta.graphbench.core.test.TestFactory;
 
 import java.io.IOException;
 
+/**
+ * The main class running the application.
+ */
 public class App {
-
+	/** A String flag to denote the end of a benchmark. In some cases (f.e. JanusGraph + Cassandra), the
+	 * process running a cassandra instance does not stop. Therefore the end of a test is further labeled. */
+	public final static String BENCHMARK_FINISHED = "BENCHMARK TEST FINISHED";
+	/** Logger. */
 	private final static Logger LOG = Logger.getLogger(App.class);
+	/** User configuration set in the config.properties file. */
 	private ConfigProperties config = ConfigProperties.getInstance();
+	/** Database connector. */
 	private IGraphDBConnector db;
 
 	/**
@@ -58,7 +67,15 @@ public class App {
 
 			runBenchmarkTest(dataset, test, db);
 
+			CSVOutput csvOut = new CSVOutput("C:\\manta\\projects\\graph-db-benchmark\\output\\out.csv");//TODO
+			try {
+				csvOut.writeTestToCSV(test);
+			}
+			catch (IOException e) {
+
+			}
 			finishDB();
+			LOG.info(BENCHMARK_FINISHED);
 
 		} catch (Exception e) {
 			LOG.error("Error when starting the test!", e);

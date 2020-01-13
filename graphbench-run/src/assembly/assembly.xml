@@ -8,7 +8,19 @@
     </formats>
     <fileSets>
         <fileSet>
+            <directory>${project.build.outputDirectory}</directory>
+            <outputDirectory>./</outputDirectory>
+            <excludes>
+                <exclude>eu/profinit/manta/graphbench/run/*.*</exclude>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
             <directory>${project.basedir}/../graphbench-core/src/main/resources</directory>
+            <outputDirectory>./conf</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/../graphbench-backend/src/main/resources</directory>
             <outputDirectory>./conf</outputDirectory>
         </fileSet>
         <fileSet>

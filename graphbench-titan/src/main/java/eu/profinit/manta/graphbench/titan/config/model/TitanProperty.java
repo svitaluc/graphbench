@@ -8,9 +8,11 @@ import eu.profinit.manta.graphbench.core.config.IConfigurationProperty;
  */
 public enum TitanProperty implements IConfigurationProperty {
 
+    STORAGE_BACKEND("storage.backend", String.class),
     STORAGE_DIRECTORY("storage.directory", String.class),
     STORAGE_CASSANDRA_CONFIG_DIR("storage.cassandra-config-dir", String.class),
     STORAGE_INDEX_SEARCH_DIRECTORY("storage.index.search.directory", String.class),
+    STORAGE_INDEX_SEARCH_BACKEND("storage.index.search.backend", String.class),
     STORAGE_CASSANDRA_STORAGEDIR("storage.cassandra.storagedir", String.class);
 
     public static String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";

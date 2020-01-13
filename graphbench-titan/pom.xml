@@ -29,6 +29,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>graphbench-tinkerpop2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphbench-backend</artifactId>
+        </dependency>
 
         <!-- =============== titan dependencies =============== -->
         <dependency>
@@ -87,7 +91,22 @@
 
     <build>
         <plugins>
-
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>properties-maven-plugin</artifactId>-->
+<!--                <version>1.0.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>generate-resources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>write-project-properties</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputFile>/media/veracrypt54/bench/graph-db-benchmark/graphbench-titan/titan.properties</outputFile>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

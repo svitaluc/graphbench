@@ -2,6 +2,8 @@ package eu.profinit.manta.graphbench.core.db;
 
 import eu.profinit.manta.graphbench.core.access.IEdge;
 import eu.profinit.manta.graphbench.core.access.IVertex;
+import eu.profinit.manta.graphbench.core.config.GraphDBConfiguration;
+import org.apache.commons.configuration.Configuration;
 
 import java.util.List;
 
@@ -13,6 +15,11 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 
 	public GraphDBCommonImpl(IGraphDBConnector<IVertex, IEdge> db) {
 		iFace = db;
+	}
+
+	@Override
+	public GraphDBConfiguration getGraphDBConfiguration() {
+		return iFace.getGraphDBConfiguration();
 	}
 
 	@Override
@@ -159,5 +166,10 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
             throw new IllegalStateException("Tried to get edge in disconnected DB.");
         }
     }
+
+	public IGraphDBConnector<IVertex, IEdge> getiFace()
+	{
+		return iFace;
+	}
 
 }
