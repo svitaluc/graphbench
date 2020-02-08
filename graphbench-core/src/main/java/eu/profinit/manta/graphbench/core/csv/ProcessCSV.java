@@ -22,8 +22,10 @@ public class ProcessCSV {
     private Translator trans = new Translator();
     private IGraphDBConnector db;
     private Configuration config = ConfigProperties.getInstance();
+    private long importTime;
 
     private int commitEveryCount = config.getIntegerProperty(ConfigProperty.COMMIT_EVERY_COUNT);
+    private int loadProgressInfoCount = config.getIntegerProperty(ConfigProperty.LOAD_PROGRESS_INFO_COUNT);
 
     private BufferedReader getInput(String csvDir, String fileName) throws UnsupportedEncodingException, FileNotFoundException {
         return new BufferedReader(new InputStreamReader(new FileInputStream(new File(csvDir, fileName)),
@@ -81,7 +83,7 @@ public class ProcessCSV {
 
     private void linePostprocessing(int progress) {
         // To log or not to log
-        if ((progress % config.getIntegerProperty(ConfigProperty.LOAD_PROGRESS_INFO_COUNT) == 0)) {
+        if ((progress % loadProgressInfoCount == 0)) {
             LOG.info(MessageFormat.format("... processed records: {0}", progress));
         }
 
@@ -182,13 +184,16 @@ public class ProcessCSV {
         }
     }
 
-    
+    public long getImportTime() {
+        return importTime;
+    }
 
     public void loadCSV(String csvDir, CSVType typ) {
         String fileName = typ.getFileName();
 
         Integer progress = 0;
         CSVReader csvReader = null;
+        long startTime = System.currentTimeMillis();
         try {
             csvReader = new CSVReader(getInput(csvDir, fileName));
             switch (typ) {
@@ -214,6 +219,7 @@ public class ProcessCSV {
             throw new IllegalStateException(message, e);
         } finally {
             IOUtils.closeQuietly(csvReader);
+            importTime = System.currentTimeMillis() - startTime;
         }
 
         LOG.info(MessageFormat.format("...total number of processed records {0}: {1}", typ.toString(), progress));

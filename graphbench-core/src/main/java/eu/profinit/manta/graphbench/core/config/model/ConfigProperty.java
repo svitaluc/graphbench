@@ -9,13 +9,10 @@ public enum ConfigProperty implements IConfigurationProperty {
     /**  */
     EDGE_PARENT_LABEL("EDGE_PARENT_LABEL", String.class),
     EDGE_CHILD_NAME("EDGE_CHILD_NAME", String.class),
-    EDGE_RESOURCE_LABEL("EDGE_RESOURCE_LABEL", String.class),
-    NODE_NAME("NODE_NAME", String.class),
     WITH_IMPORT("WITH_IMPORT", boolean.class),
     CSV_ENCODING("CSV_ENCODING", String.class),
     COMMIT_EVERY_COUNT("COMMIT_EVERY_COUNT", Integer.class),
     SUPER_ROOT_NAME("SUPER_ROOT_NAME", String.class),
-    SUPER_ROOT_DESC("SUPER_ROOT_DESC", String.class),
     SUPER_ROOT_TYPE("SUPER_ROOT_TYPE", String.class),
     VERTEX_NODE_TYPE("VERTEX_NODE_TYPE", String.class),
 
@@ -45,9 +42,7 @@ public enum ConfigProperty implements IConfigurationProperty {
 
     LOAD_PROGRESS_INFO_COUNT("LOAD_PROGRESS_INFO_COUNT", Integer.class),
 
-    TEST_TYPE("TEST_TYPE", String.class),
-
-    MAX_RES_LOAD_COUNT("MAX_RES_LOAD_COUNT", int.class);
+    TEST_TYPE("TEST_TYPE", String.class);
 
     private final String property;
     private final Class clazz;

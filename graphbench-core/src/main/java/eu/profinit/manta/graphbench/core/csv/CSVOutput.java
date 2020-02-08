@@ -6,14 +6,12 @@ import eu.profinit.manta.graphbench.core.config.GraphDBConfiguration;
 import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.dataset.Dataset;
 import eu.profinit.manta.graphbench.core.test.ITest;
+import eu.profinit.manta.graphbench.core.test.TestResult;
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class CSVOutput {
     private String outputPath;
@@ -72,10 +70,10 @@ public class CSVOutput {
      * @param test
      * @throws IOException
      */
-    public void writeTestToCSV(ITest test) throws IOException {
-        Map<String, Long> results = test.getRestults();
-        for (Map.Entry<String, Long> result : results.entrySet()) {
-            writeLineToCSV(test.getDataset(), result.getKey(), result.getValue(), test.getGraphDBConfiguration());
+    public void writeTestToCSV(ITest test, GraphDBConfiguration graphDBConfiguration) throws IOException {
+        List<TestResult> results = test.getResults();
+        for (TestResult result : results) {
+            writeLineToCSV(test.getDataset(), result.getTestName(), result.getTestTime(), graphDBConfiguration);
         }
     }
 
@@ -110,10 +108,11 @@ public class CSVOutput {
             line.add("unknown");
 
         String backend = conf.getStorageBackend();
-        if (backend.contains("embedded"))
-            line.add("Embedded Cassandra");
-        else
-            line.add("Standalone Cassandra");
+        line.add(backend);
+//        if (backend.contains("embedded"))
+//            line.add("Embedded Cassandra");
+//        else
+//            line.add("Standalone Cassandra");
 
         line.add(dataset.getDatasetDir());
         line.add(config.getStringProperty(ConfigProperty.TEST_TYPE));

@@ -26,6 +26,7 @@ import eu.profinit.manta.graphbench.tinkerpop2.TP2Edge;
 import eu.profinit.manta.graphbench.tinkerpop2.TP2Vertex;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -51,8 +52,12 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
         Util.setConfiguration(configuration, titanProperties);
 
         configuration.setProperty(TitanProperty.STORAGE_DIRECTORY.getName(), dbPath);
-        String cassandraYamlPath = File.separator + cassandraProperties.getRelativePropertiesPath();
-        configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlPath);
+//        try {
+            String cassandraYamlUrl = "file:\\\\\\" + cassandraProperties.getAbsolutePropertiesPath();
+            configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlUrl);
+//        } catch (MalformedURLException e) {
+//            LOG.error("Cannot set cassandra config file!", e);
+//        }
 
         String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
         configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_STORAGEDIR.getName(), storageDir);
@@ -205,7 +210,12 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
 
             TP2Vertex parentNode = (TP2Vertex) trans.getTemp(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
             if(parentNode == null || parentNode.isVertexNull()) {
-                parentNode = getVertex(parentString);
+                try {
+                    parentNode = getVertex(parentString);
+                } catch (IllegalArgumentException e) {
+                    LOG.error("Could not find parent with id: " + parentString);
+                    parentNode = new TP2Vertex();
+                }
             }
 
             if (!parentNode.isVertexNull()) {

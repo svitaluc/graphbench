@@ -9,13 +9,13 @@ import java.io.*;
 
 public class Launcher {
     private final Logger LOG = Logger.getLogger(Launcher.class);
-    private String datasetDir50 = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-50000-e-200000";
+    private String datasetDir50 = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-10-e-30";
 //    private String datasetDir50 = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-1000-e-1000";
     private ConfigProperties configProperties = ConfigProperties.getInstance();
 
     public void run() {
-//        runSetting(3, datasetDir50, GraphDBType.JANUSGRAPH);
-        runSetting(3, datasetDir50, GraphDBType.TITAN);
+        runSetting(3, datasetDir50, GraphDBType.JANUSGRAPH);
+//        runSetting(3, datasetDir50, GraphDBType.TITAN);
     }
 
     private void runSetting(Integer repetitions, String datasetDir, GraphDBType dbType) {
@@ -24,11 +24,11 @@ public class Launcher {
 
         String jarPath = new File("graphbench-run/target/"+
                 "graphbench-run-1.0-SNAPSHOT/graphbench-run-1.0-SNAPSHOT/" +
-                "graphbench-all-1.0-SNAPSHOT-jar-with-dependencies.jar").getAbsolutePath();
+                "graphbench.jar").getAbsolutePath();
 
         for (int i = 0; i < repetitions; i++) {
             try {
-                String output = Processes.run("java", "-jar", jarPath);
+                String output = Processes.run("java", "-jar", "-Xmx4g", jarPath);
                 LOG.info("Process " + i + " finished.");
             } catch (IOException e) {
                 LOG.error("Cannot run the jar file at " + jarPath, e);

@@ -3,11 +3,6 @@ package eu.profinit.manta.graphbench.data.generator.model;
 public class Edge extends Entity {
     public static final String FILE_NAME = "edge.csv";
 
-    private final int EDGE_I_ID = 0;
-    private final int EDGE_I_START = 1;
-    private final int EDGE_I_END = 2;
-    private final int EDGE_I_NAME = 3;
-
     private Long startNode;
     private Long endNode;
     private String name;
@@ -35,5 +30,10 @@ public class Edge extends Entity {
     @Override
     public String[] getStringSet() {
         return new String[]{id.toString(), startNode.toString(), endNode.toString(), name};
+    }
+
+    @Override
+    public String toString() {
+        return startNode + ", " + endNode + ", " + name;
     }
 }

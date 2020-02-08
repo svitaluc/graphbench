@@ -1,6 +1,5 @@
 package eu.profinit.manta.graphbench.core.test;
 
-import eu.profinit.manta.graphbench.core.config.GraphDBConfiguration;
 import eu.profinit.manta.graphbench.core.csv.ProcessCSV;
 import eu.profinit.manta.graphbench.core.dataset.Dataset;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
@@ -17,8 +16,7 @@ public class BasicOperationsTest implements ITest {
     private final static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ITest.class);
 
     private Dataset dataset;
-    private Map<String, Long> results;
-    private GraphDBConfiguration configuration;
+    private List<TestResult> results;
 
     public BasicOperationsTest() {
     }
@@ -29,9 +27,8 @@ public class BasicOperationsTest implements ITest {
 
     @Override
     public void test(ProcessCSV csv, IGraphDBConnector db) {
-        configuration = db.getGraphDBConfiguration();
-
-        results = new HashMap<String, Long>();
+        results = new ArrayList<>();
+        results.add(new TestResult(System.currentTimeMillis(), "import", csv.getImportTime()));
 
         // GET VERTICES TEST
         LOGGER.info("BasicOperations: getVertices: The test begins.");
@@ -41,19 +38,7 @@ public class BasicOperationsTest implements ITest {
         long testEnd = System.currentTimeMillis();
         LOGGER.info("BasicOperations: getVertices: Found " + getVerticesResult.size() + " vertices.");
         LOGGER.info("BasicOperations: getVertices: Test time: " + (testEnd - testStart));
-        results.put("getVertices", testEnd-testStart);
-
-
-        // GET VERTICES WITH NEIGHBORS TEST
-        LOGGER.info("BasicOperations: getVerticesWithNeighbors: The test begins.");
-        testStart = System.currentTimeMillis();
-        Map getVerticesWithNeighborsResult = getVerticesWithNeighbors(csv.getTranslator(), db, 789123);
-        LOGGER.info("BasicOperations: getVerticesWithNeighbors: Test end.");
-        testEnd = System.currentTimeMillis();
-        LOGGER.info("BasicOperations: getVerticesWithNeighbors: Found " + getVerticesWithNeighborsResult.keySet().size() + " vertices with some neighbors.");
-        LOGGER.info("BasicOperations: getVerticesWithNeighbors: Test time: " + (testEnd - testStart));
-        results.put("getVerticesWithNeighbours", testEnd-testStart);
-
+        results.add(new TestResult(System.currentTimeMillis(), "getVertices", testEnd-testStart));
 
         // GET VERTICES WITH EDGES TEST
         LOGGER.info("BasicOperations: getVerticesWithEdges: The test begins.");
@@ -63,7 +48,18 @@ public class BasicOperationsTest implements ITest {
         testEnd = System.currentTimeMillis();
         LOGGER.info("BasicOperations: getVerticesWithEdges: Found " + getVerticesWithEdgesResult.keySet().size() + " vertices with some edges.");
         LOGGER.info("BasicOperations: getVerticesWithEdges: Test time: " + (testEnd - testStart));
-        results.put("getVerticesWithEdges", testEnd-testStart);
+        results.add(new TestResult(System.currentTimeMillis(), "getVerticesWithEdges", testEnd-testStart));
+
+        // GET VERTICES WITH NEIGHBORS TEST
+        LOGGER.info("BasicOperations: getVerticesWithNeighbors: The test begins.");
+        testStart = System.currentTimeMillis();
+        Map getVerticesWithNeighborsResult = getVerticesWithNeighbors(csv.getTranslator(), db, 789123);
+        LOGGER.info("BasicOperations: getVerticesWithNeighbors: Test end.");
+        testEnd = System.currentTimeMillis();
+        LOGGER.info("BasicOperations: getVerticesWithNeighbors: Found " + getVerticesWithNeighborsResult.keySet().size() + " vertices with some neighbors.");
+        LOGGER.info("BasicOperations: getVerticesWithNeighbors: Test time: " + (testEnd - testStart));
+        results.add(new TestResult(System.currentTimeMillis(), "getVerticesWithNeighbours", testEnd-testStart));
+
 
         //-------------------------------------------------
 
@@ -76,7 +72,7 @@ public class BasicOperationsTest implements ITest {
         testEnd = System.currentTimeMillis();
         LOGGER.info("BasicOperations: getVerticesWithEdges: Found " + getVerticesWithEdgesResult2.keySet().size() + " vertices with some edges.");
         LOGGER.info("BasicOperations: getVerticesWithEdges: Test time: " + (testEnd - testStart));
-        results.put("getVerticesWithEdges2", testEnd-testStart);
+        results.add(new TestResult(System.currentTimeMillis(), "getVerticesWithEdges2", testEnd-testStart));
 
         // GET VERTICES WITH NEIGHBORS TEST
         LOGGER.info("BasicOperations: getVerticesWithNeighbors: The test begins.");
@@ -86,11 +82,11 @@ public class BasicOperationsTest implements ITest {
         testEnd = System.currentTimeMillis();
         LOGGER.info("BasicOperations: getVerticesWithNeighbors: Found " + getVerticesWithNeighborsResult2.keySet().size() + " vertices with some neighbors.");
         LOGGER.info("BasicOperations: getVerticesWithNeighbors: Test time: " + (testEnd - testStart));
-        results.put("getVerticesWithNeighbours2", testEnd-testStart);
+        results.add(new TestResult(System.currentTimeMillis(), "getVerticesWithNeighbours2", testEnd-testStart));
     }
 
     @Override
-    public Map<String, Long> getRestults() {
+    public List<TestResult> getResults() {
         return results;
     }
 
@@ -98,11 +94,6 @@ public class BasicOperationsTest implements ITest {
     public Dataset getDataset()
     {
         return dataset;
-    }
-
-    @Override
-    public GraphDBConfiguration getGraphDBConfiguration() {
-        return configuration;
     }
 
     private Set<IVertex> getVertices(Translator translator, IGraphDBConnector db, Integer seed) {

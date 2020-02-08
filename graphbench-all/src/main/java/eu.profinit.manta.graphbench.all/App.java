@@ -67,13 +67,8 @@ public class App {
 
 			runBenchmarkTest(dataset, test, db);
 
-			CSVOutput csvOut = new CSVOutput("C:\\manta\\projects\\graph-db-benchmark\\output\\out.csv");//TODO
-			try {
-				csvOut.writeTestToCSV(test);
-			}
-			catch (IOException e) {
+			writeTestResults(test);
 
-			}
 			finishDB();
 			LOG.info(BENCHMARK_FINISHED);
 
@@ -82,6 +77,16 @@ public class App {
 			if (db.isConnected()) {
 				db.rollback();
 			}
+		}
+	}
+
+	private void writeTestResults(ITest test) {
+		CSVOutput csvOut = new CSVOutput("C:\\manta\\projects\\graph-db-benchmark\\output\\out.csv");//TODO
+		try {
+			csvOut.writeTestToCSV(test, db.getGraphDBConfiguration());
+		}
+		catch (IOException e) {
+			LOG.error("Problem with writing the test results.", e);
 		}
 	}
 
@@ -145,7 +150,12 @@ public class App {
 
 		if(ConfigProperties.getInstance().getBooleanProperty(ConfigProperty.WITH_IMPORT)) {
 			ProcessCSV csv = loadCSV(dataset.getDatasetDir(), db);
-			test.test(csv, db);
+			try {
+				test.test(csv, db);
+			} catch (Throwable e) {
+				LOG.error("Unexpected exception!", e);
+				writeTestResults(test);
+			}
 		} else {
 			throw new UnsupportedOperationException("'WITH_IMPORT = false' not yet implemented.");
 		}

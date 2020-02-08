@@ -8,8 +8,12 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>${project.build.outputDirectory}</directory>
+<!--            <directory>${project.build.outputDirectory}</directory>-->
+            <directory>${project.basedir}/target/graphbench-run-${project.version}</directory>
             <outputDirectory>./</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
             <excludes>
                 <exclude>eu/profinit/manta/graphbench/run/*.*</exclude>
             </excludes>
@@ -34,7 +38,7 @@
     </fileSets>
     <files>
         <file>
-            <source>${project.basedir}/../graphbench-all/target/graphbench-all-${project.version}-jar-with-dependencies.jar</source>
+            <source>${project.basedir}/../graphbench-all/target/graphbench.jar</source>
             <outputDirectory/>
         </file>
     </files>

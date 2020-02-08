@@ -4,6 +4,7 @@ import eu.profinit.manta.graphbench.core.config.Configuration;
 import eu.profinit.manta.graphbench.core.config.ConfigProperties;
 import eu.profinit.manta.graphbench.core.config.model.ConfigProperty;
 import eu.profinit.manta.graphbench.core.db.IGraphDBConnector;
+import eu.profinit.manta.graphbench.core.db.structure.NodeProperty;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -74,7 +75,7 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
         }
         long endTime = System.nanoTime();
         System.out.println("getParent Total time = " + (endTime - startTime));
-        System.out.println(parent.property(config.getStringProperty(ConfigProperty.NODE_NAME)).toString());
+        System.out.println(parent.property(NodeProperty.NODE_NAME.t()).toString());
         System.out.println("--------------------------------------\n");
 
         return new TP3Vertex(parent);
