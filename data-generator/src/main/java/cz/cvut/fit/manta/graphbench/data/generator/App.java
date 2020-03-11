@@ -5,8 +5,8 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) {
-//        final String outputPath = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-10-e-30";
-        final String outputPath = "C:\\Users\\lsvitakova\\tmp\\data-generator\\trash";
+        // ! Fill in the output path !
+        final String outputPath = "";
         final Long verticesAmount = 112L;
         final Long edgesAmount = 112L;
 

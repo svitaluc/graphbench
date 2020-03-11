@@ -9,8 +9,8 @@ import java.io.*;
 
 public class Launcher {
     private final Logger LOG = Logger.getLogger(Launcher.class);
-    private String datasetDir50 = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-112-e-112";
-//    private String datasetDir50 = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-1000-e-1000";
+    // ! Fill in the dataset directory !
+    private String datasetDir50 = "";
     private ConfigProperties configProperties = ConfigProperties.getInstance();
 
     public void run() {
