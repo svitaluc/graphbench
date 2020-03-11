@@ -15,7 +15,7 @@
                 <include>*.*</include>
             </includes>
             <excludes>
-                <exclude>eu/profinit/manta/graphbench/run/*.*</exclude>
+                <exclude>cz/cvut/fit/manta/graphbench/run/*.*</exclude>
             </excludes>
         </fileSet>
 
@@ -32,8 +32,16 @@
             <outputDirectory>./conf</outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>${project.basedir}/../graphbench-janusgraph/target/classes/pom-properties</directory>
+            <outputDirectory>./pom-properties</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${project.basedir}/../graphbench-titan/src/main/resources</directory>
             <outputDirectory>./conf</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/../graphbench-titan/target/classes/pom-properties</directory>
+            <outputDirectory>./pom-properties</outputDirectory>
         </fileSet>
     </fileSets>
     <files>

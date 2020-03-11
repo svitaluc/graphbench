@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>graphbench</artifactId>
-        <groupId>eu.profinit.manta</groupId>
+        <groupId>cz.cvut.fit.manta</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -91,6 +91,12 @@
             <version>${janusgraph.lucene.version}</version>
         </dependency>
 
+        <!-- =============== other dependencies =============== -->
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+        </dependency>
+
     </dependencies>
 
 
@@ -115,22 +121,22 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>properties-maven-plugin</artifactId>-->
-<!--                <version>1.0.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>generate-resources</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>write-project-properties</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <outputFile>/media/veracrypt54/bench/graph-db-benchmark/graphbench-janusgraph/janusgraph.properties</outputFile>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.outputDirectory}/pom-properties/janusgraph-pom.properties</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

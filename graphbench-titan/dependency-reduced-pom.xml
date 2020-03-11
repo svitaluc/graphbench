@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>graphbench</artifactId>
-    <groupId>eu.profinit.manta</groupId>
+    <groupId>cz.cvut.fit.manta</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -10,6 +10,22 @@
   <version>1.0-SNAPSHOT</version>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.build.outputDirectory}/pom-properties/titan-pom.properties</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>3.1.1</version>
@@ -81,9 +97,9 @@
     </plugins>
   </build>
   <properties>
-    <persistit.version>3.3.0</persistit.version>
+    <titan.cassandra.version>1.2.2</titan.cassandra.version>
     <titan.version>0.4.4</titan.version>
-    <cassandra.version>1.2.2</cassandra.version>
+    <titan.persistit.version>3.3.0</titan.persistit.version>
     <titan.lucene.version>4.4.0</titan.lucene.version>
   </properties>
 </project>
