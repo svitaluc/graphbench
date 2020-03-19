@@ -1,19 +1,20 @@
 package cz.cvut.fit.manta.graphbench.core.db;
 
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
-import cz.cvut.fit.manta.graphbench.core.access.IEdge;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
 import cz.cvut.fit.manta.graphbench.core.config.GraphDBConfiguration;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Interface declaring all the methods for graph database communication.
- * @param <V> implementation of {@link IVertex}
- * @param <E> implementation of {@link IEdge}
+ * @param <V> implementation of {@link Vertex}
+ * @param <E> implementation of {@link Edge}
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public interface IGraphDBConnector<V extends IVertex, E extends IEdge> {
+public interface GraphDBConnector<V extends Vertex, E extends Edge> {
 
 	/** Instance for reading properties from a config file. */
 	public ConfigProperties config = ConfigProperties.getInstance();
@@ -74,7 +75,7 @@ public interface IGraphDBConnector<V extends IVertex, E extends IEdge> {
 	/**
 	 * Returns a vertex with the provided id.
 	 * Note, that this method doesn't use any optimization utilities such as the {@link Translator}.
-	 * Such approach is left for functions calling the {@link IGraphDBConnector} methods.
+	 * Such approach is left for functions calling the {@link GraphDBConnector} methods.
 	 * The local getVertex method only accesses the database and tries to acquire a vertex of a given {@code id}.
 	 * @param id id of a vertex
 	 * @return vertex with the given id
@@ -124,34 +125,4 @@ public interface IGraphDBConnector<V extends IVertex, E extends IEdge> {
 	 * @param trans translator from logical to physical ids and vice versa
 	 */
 	public void addVertex(String[] parts, Translator trans);
-
-	/**
-	 * Iterator for iterating over vertices of the database.
-	 * The iterator returns the vertex of the {@link IVertex} interface, but it
-	 * iterates over the lower level vertices of tinkerpop2/3 framework.
-	 * @param <V> vertex of the database (implementing {@link IVertex} interface)
-	 * @param <T> vertex of the database (specific tinkerpop or blueprints vertex)
-	 */
-	abstract class DbIterator<V, T> {
-		/** Iterator over vertices of the TinkerPop framework. */
-		protected Iterator<T> iterator;
-
-		protected DbIterator(){}
-
-		protected DbIterator(Iterator<T> iterator) {
-			this.iterator = iterator;
-		}
-
-		/**
-		 * Returns true if this iterator has another vertex in its input.
-		 * @return true if and only if this iterator has another vertex
-		 */
-		protected abstract boolean hasNext();
-
-		/**
-		 * Finds and returns the next vertex of this iterator.
-		 * @return the next vertex
-		 */
-		protected abstract V next();
-	}
 }

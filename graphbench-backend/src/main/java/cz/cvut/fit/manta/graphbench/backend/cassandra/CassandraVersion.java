@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.backend.cassandra;
 
 /**
  * Enumeration of possible Cassandra versions within the project.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum CassandraVersion {
 

@@ -1,27 +1,32 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop3;
 
-import cz.cvut.fit.manta.graphbench.core.config.Configuration;
+import cz.cvut.fit.manta.graphbench.core.access.GraphOperations;
+import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
+import cz.cvut.fit.manta.graphbench.core.config.Configuration;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.db.structure.NodeProperty;
+import cz.cvut.fit.manta.graphbench.tinkerpop3.direction.TP3Direction;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import cz.cvut.fit.manta.graphbench.core.access.IGraphOperations;
-import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
-import cz.cvut.fit.manta.graphbench.tinkerpop3.direction.TP3Direction;
 
 import java.util.*;
 
-
-public class GraphOperations extends IGraphOperations<TP3Vertex> {
-    final static Logger LOG = Logger.getLogger(GraphOperations.class);
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
+    final static Logger LOG = Logger.getLogger(TP3GraphOperations.class);
     private GraphTraversalSource traversal;
     private Configuration config = ConfigProperties.getInstance();
+    private TP3Direction tp3Direction = new TP3Direction();
 
-    public GraphOperations(IGraphDBConnector<TP3Vertex, TP3Edge> db) {
+    public TP3GraphOperations(GraphDBConnector<TP3Vertex, TP3Edge> db) {
         super(db);
         traversal = db.getTraversal();
     }
@@ -30,8 +35,8 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
     public List<TP3Vertex> getChildren(TP3Vertex node) {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
-        Iterator<Vertex> children = traversal.V(node.id()).in(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
-        while(children.hasNext()) {
+        Iterator<Vertex> children = traversal.V(node.getId()).in(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+        while (children.hasNext()) {
             Vertex v = children.next();
             childList.add(new TP3Vertex(v));
         }
@@ -46,13 +51,13 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
 
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
-        Iterator<Vertex> children = traversal.V(node.id())
+        Iterator<Vertex> children = traversal.V(node.getId())
                 .inE(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
                 .outV();
 
         long endTime = System.nanoTime();
-        while(children.hasNext()) {
+        while (children.hasNext()) {
             Vertex v = children.next();
             childList.add(new TP3Vertex(v));
         }
@@ -66,12 +71,12 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
     @Override
     public TP3Vertex getParent(TP3Vertex node) {
         long startTime = System.nanoTime();
-        Iterator<Vertex> parentIt = traversal.V(node.id()).out(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+        Iterator<Vertex> parentIt = traversal.V(node.getId()).out(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
 
         Vertex parent = parentIt.next();
 
-        if(parentIt.hasNext()) {
-            LOG.error("Node:" + node.id() + " has more than one Parent node.");
+        if (parentIt.hasNext()) {
+            LOG.error("Node:" + node.getId() + " has more than one Parent node.");
         }
         long endTime = System.nanoTime();
         System.out.println("getParent Total time = " + (endTime - startTime));
@@ -84,11 +89,11 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
     @Override
     public List<TP3Vertex> getVerticesByEdgeType(TP3Vertex node, String edgeType, Direction dir) {
         List<TP3Vertex> vertices = new ArrayList<>();
-        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = TP3Direction.mapToOriginal(dir);
+        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = tp3Direction.mapToOriginal(dir);
         long startTime = System.nanoTime();
-        Iterator<Vertex> it = traversal.V(node.id()).toE(originalDirection, edgeType).toV(originalDirection);
+        Iterator<Vertex> it = traversal.V(node.getId()).toE(originalDirection, edgeType).toV(originalDirection);
 
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Vertex v = it.next();
             vertices.add(new TP3Vertex(v));
         }
@@ -103,19 +108,19 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
         List<TP3Vertex> reachable = new ArrayList<>();
         Deque<TP3Vertex> stack = new ArrayDeque<>();
         Map<String, Boolean> visited = new HashMap<>();
-        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = TP3Direction.mapToOriginal(dir);
+        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = tp3Direction.mapToOriginal(dir);
 
         stack.add(node);
         long startTime = System.nanoTime();
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             TP3Vertex currNode = stack.pop();
 
-            if(visited.containsKey(currNode.id())) {
+            if (visited.containsKey(currNode.getId())) {
                 continue; //this node was already visited
             }
 
 
-            Iterator<Edge> edges = traversal.V(currNode.id()).toE(originalDirection, edgeType);
+            Iterator<Edge> edges = traversal.V(currNode.getId()).toE(originalDirection, edgeType);
 
             while (edges.hasNext()) {
                 Edge outgoingEdge = edges.next();
@@ -124,7 +129,7 @@ public class GraphOperations extends IGraphOperations<TP3Vertex> {
                 stack.push(new TP3Vertex(neighbour));
             }
 
-            visited.put(currNode.id().toString(), true);
+            visited.put(currNode.getId().toString(), true);
             reachable.add(currNode);
         }
         long endTime = System.nanoTime();

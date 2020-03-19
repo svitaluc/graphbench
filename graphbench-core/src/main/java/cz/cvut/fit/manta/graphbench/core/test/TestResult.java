@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.test;
 
 /**
  * Class representing the result of a test.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TestResult {
     /** time when the result was created */

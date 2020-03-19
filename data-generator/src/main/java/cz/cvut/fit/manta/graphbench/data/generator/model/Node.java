@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.data.generator.model;
 
 /**
  * Represents a node.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class Node extends Element {
     public static final String FILE_NAME = "node.csv";

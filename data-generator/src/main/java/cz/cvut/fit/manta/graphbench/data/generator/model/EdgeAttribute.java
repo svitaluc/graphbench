@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.data.generator.model;
 
 /**
  * Represents an edge attribute.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class EdgeAttribute extends Element {
     public static final String FILE_NAME = "edge_attribute.csv";

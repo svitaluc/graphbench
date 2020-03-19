@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.db.structure;
 
 /**
  * All available edge properties.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum EdgeProperty {
     /** Call identification of an edge */ //TODO pryc

@@ -13,6 +13,8 @@ import java.io.FileReader;
  * Class representing a Cassandra yaml file containing configuration of a given Cassandra instance.
  * The class has a private constructor as it's supposed to be used as a Singleton, a single instance within
  * the whole project acquired with the {@code getInstance} method.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class CassandraYaml extends Configuration {
 
@@ -43,7 +45,7 @@ public class CassandraYaml extends Configuration {
      * @return An instance of the {@link CassandraYaml} class.
      */
     public static CassandraYaml getInstance(CassandraVersion cassandraVersion) {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             propertiesPath = "conf" + File.separator + "cassandra" + File.separator + cassandraVersion.getFileName();
             INSTANCE = new CassandraYaml(propertiesPath);
         }

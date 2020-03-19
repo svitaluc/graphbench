@@ -1,32 +1,34 @@
 package cz.cvut.fit.manta.graphbench.core.csv;
 
 import au.com.bytecode.opencsv.CSVReader;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.config.Configuration;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.db.Translator;
 import cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel;
 import cz.cvut.fit.manta.graphbench.core.db.structure.NodeProperty;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import cz.cvut.fit.manta.graphbench.core.access.IEdge;
 
 import java.io.*;
 import java.text.MessageFormat;
 
 /**
  * Serves for processing the input csv files.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class ProcessCSV {
 
     /**  Logger. **/
-    private final Logger LOG = Logger.getLogger(ProcessCSV.class);
+    private final static Logger LOG = Logger.getLogger(ProcessCSV.class);
     /** Translator from vertex id defined by the loaded data to db's internal vertex id. **/
     private Translator translator = new Translator();
     /** Database representation. **/
-    private IGraphDBConnector db;
+    private GraphDBConnector db;
     /** Properties of the main configuration file. **/
     private Configuration config = ConfigProperties.getInstance();
     /** How long the process of loading the csv file took. **/
@@ -54,7 +56,7 @@ public class ProcessCSV {
      * Constructor of the {@link ProcessCSV}.
      * @param database Underlying database representation
      */
-    public ProcessCSV(IGraphDBConnector database) {
+    public ProcessCSV(GraphDBConnector database) {
         db = database;
     }
 
@@ -77,9 +79,9 @@ public class ProcessCSV {
     /**
      * Gets a vertex of a given id.
      * @param id Id of a vertex
-     * @return {@link IVertex} representation of the vertex with the provided {@code id}
+     * @return {@link Vertex} representation of the vertex with the provided {@code id}
      */
-    public IVertex getNode(String id) {
+    public Vertex getNode(String id) {
         return db.getVertex(translator.getNode(id));
     }
 
@@ -87,12 +89,12 @@ public class ProcessCSV {
      * Creates a vertex that becomes a super root.
      */
     public void addSuperRoot() {
-       IVertex sr = db.addEmptyVertex();
+       Vertex sr = db.addEmptyVertex();
         
        sr.property(NodeProperty.NODE_NAME.t(), config.getStringProperty(ConfigProperty.SUPER_ROOT_NAME));
        sr.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.SUPER_ROOT_TYPE));
 
-       translator.setSuperRootId(sr.id().toString());
+       translator.setSuperRootId(sr.getId().toString());
        LOG.info("Added super-root");
     }
 
@@ -149,15 +151,15 @@ public class ProcessCSV {
      * @param row {@link String} array containing various information including id of the vertex to acquire
      * @return Vertex of an id stored in a {@code row} on a position {@code vertexPosition}
      */
-    private IVertex getVertex(Integer vertexPosition, String[] row) {
-        IVertex node = null;
+    private Vertex getVertex(Integer vertexPosition, String[] row) {
+        Vertex node = null;
         if (vertexPosition < row.length && row[vertexPosition].length() > 0) {
             // tries to find a record about the vertex in a translator
             String nodeID = translator.getNode(row[vertexPosition]);
             if (nodeID != null) {
                 // tries to get the vertex via translator
-                node = (IVertex) translator.getTempNode(row[vertexPosition]);
-                if(node == null) {
+                node = (Vertex) translator.getTempNode(row[vertexPosition]);
+                if (node == null) {
                     // tries to get the vertex directly from a database
                     node = db.getVertex(nodeID);
                 }
@@ -182,8 +184,8 @@ public class ProcessCSV {
                 Integer edgeStartPosition = config.getIntegerProperty(ConfigProperty.EDGE_I_START);
                 Integer edgeEndPosition = config.getIntegerProperty(ConfigProperty.EDGE_I_END);
 
-                IVertex startNode = getVertex(edgeStartPosition, parts);
-                IVertex endNode = getVertex(edgeEndPosition, parts);
+                Vertex startNode = getVertex(edgeStartPosition, parts);
+                Vertex endNode = getVertex(edgeEndPosition, parts);
 
                 String type;
                 Integer edgeTypePosition = config.getIntegerProperty(ConfigProperty.EDGE_I_END);
@@ -200,7 +202,7 @@ public class ProcessCSV {
                             parts[edgeStartPosition], parts[edgeEndPosition]));
                 else {
                     //Zapsat hranu
-                    IEdge edge;
+                    Edge edge;
                     edge = db.addEdge(startNode, endNode, type);
                     translator.putTempEdge(parts[config.getIntegerProperty(ConfigProperty.EDGE_I_ID)], edge);
                 }
@@ -232,7 +234,7 @@ public class ProcessCSV {
 
                     if (edgeAttrID != null) {
 
-                        IEdge edgeAttr = db.getEdge(edgeAttrID);
+                        Edge edgeAttr = db.getEdge(edgeAttrID);
 
                         if (edgeAttr != null) {
                             db.setEdgeProperty(edgeAttr,

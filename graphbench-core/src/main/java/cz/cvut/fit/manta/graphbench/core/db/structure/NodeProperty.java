@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.db.structure;
 
 /**
  * All available node properties.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum NodeProperty {
 

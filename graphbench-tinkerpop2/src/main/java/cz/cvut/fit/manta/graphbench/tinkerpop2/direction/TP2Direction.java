@@ -1,32 +1,43 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop2.direction;
 
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
-import cz.cvut.fit.manta.graphbench.core.access.direction.IDirection;
+import cz.cvut.fit.manta.graphbench.core.access.direction.DirectionTranslation;
+import org.apache.commons.lang.Validate;
 
-public class TP2Direction implements IDirection {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP2Direction implements DirectionTranslation<com.tinkerpop.blueprints.Direction> {
 
     @Override
-    public Direction opposite(Direction direction) {
-        com.tinkerpop.blueprints.Direction blueprintsDirection = mapToOriginal(direction);
-        com.tinkerpop.blueprints.Direction opposite = blueprintsDirection.opposite();
-        return mapToTP2(opposite);
-    }
-
-    public static com.tinkerpop.blueprints.Direction mapToOriginal(Direction tp2Direction) {
-        switch (tp2Direction) {
-            case OUT: return com.tinkerpop.blueprints.Direction.OUT;
-            case IN: return com.tinkerpop.blueprints.Direction.IN;
-            case BOTH: return com.tinkerpop.blueprints.Direction.BOTH;
-            default: throw new UnsupportedOperationException("Direction type " + tp2Direction + "is not supported.");
+    public com.tinkerpop.blueprints.Direction mapToOriginal(Direction direction) {
+        Validate.notNull(direction);
+        switch (direction) {
+            case OUT:
+                return com.tinkerpop.blueprints.Direction.OUT;
+            case IN:
+                return com.tinkerpop.blueprints.Direction.IN;
+            case BOTH:
+                return com.tinkerpop.blueprints.Direction.BOTH;
+            default:
+                throw new IllegalArgumentException ("Direction type " + direction + "is not supported.");
         }
     }
 
-    private Direction mapToTP2(com.tinkerpop.blueprints.Direction direction) {
+    @Override
+    public Direction mapFromOriginal(com.tinkerpop.blueprints.Direction direction) {
+        Validate.notNull(direction);
         switch (direction) {
-            case OUT: return Direction.OUT;
-            case IN: return Direction.IN;
-            case BOTH: return Direction.BOTH;
-            default: throw new UnsupportedOperationException("Direction type " + direction + " is not supported.");
+            case OUT:
+                return Direction.OUT;
+            case IN:
+                return Direction.IN;
+            case BOTH:
+                return Direction.BOTH;
+            default:
+                throw new IllegalArgumentException ("Direction type " + direction + " is not supported.");
         }
     }
 }

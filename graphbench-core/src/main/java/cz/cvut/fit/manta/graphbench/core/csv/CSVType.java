@@ -5,6 +5,8 @@ import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
 
 /**
  * Type of the csv file. It determines whether the file contains information about nodes, edges, etc.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum CSVType {
     NODE(ConfigProperties.getInstance().getStringProperty(ConfigProperty.CSV_NODE_NAME)),

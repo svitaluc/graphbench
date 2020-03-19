@@ -5,24 +5,23 @@ import cz.cvut.fit.manta.graphbench.backend.cassandra.CassandraYaml;
 import cz.cvut.fit.manta.graphbench.backend.cassandra.model.CassandraProperty;
 import cz.cvut.fit.manta.graphbench.core.config.GraphDBConfiguration;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.db.Translator;
 import cz.cvut.fit.manta.graphbench.core.db.structure.EdgeProperty;
 import cz.cvut.fit.manta.graphbench.core.db.structure.NodeProperty;
+import cz.cvut.fit.manta.graphbench.core.util.Util;
 import cz.cvut.fit.manta.graphbench.janusgraph.config.JanusGraphProperties;
 import cz.cvut.fit.manta.graphbench.janusgraph.config.model.JanusGraphProperty;
+import cz.cvut.fit.manta.graphbench.tinkerpop3.TP3Edge;
+import cz.cvut.fit.manta.graphbench.tinkerpop3.TP3Vertex;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.log4j.Logger;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.*;
 import org.janusgraph.core.JanusGraphIndexQuery.Result;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.janusgraph.core.schema.Mapping;
-import cz.cvut.fit.manta.graphbench.core.util.Util;
-import cz.cvut.fit.manta.graphbench.tinkerpop3.TP3Edge;
-import cz.cvut.fit.manta.graphbench.tinkerpop3.TP3Vertex;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -32,8 +31,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 
 	private boolean connected = false;
 	private String dbName = null;
@@ -41,7 +44,7 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	private JanusGraph internalGraph;
 	private CassandraYaml cassandraProperties;
 	private JanusGraphProperties janusGraphProperties;
-	private final Logger LOG = Logger.getLogger(JanusGraphDB.class);
+	private final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
 	public JanusGraphDB() {
 		cassandraProperties = CassandraYaml.getInstance(CassandraVersion.CASSANDRA_3110);
@@ -203,7 +206,7 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 			String parentString = trans.getNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
 			TP3Vertex parentNode = (TP3Vertex) trans.getTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
-			if(parentNode == null || parentNode.isVertexNull()) {
+			if (parentNode == null || parentNode.isVertexNull()) {
 				parentNode = getVertex(parentString);
 			}
 
@@ -212,7 +215,7 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 			} else {
 				LOG.warn(MessageFormat.format(
 						"Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-						parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.id().toString()));
+						parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
 			}
 		}
 	}
@@ -233,40 +236,4 @@ public class JanusGraphDB implements IGraphDBConnector<TP3Vertex, TP3Edge> {
 	     System.out.println("getVertexByName Total time = " + (endTime - startTime));
 	     return result;
 	}
-
-	// DbIterators -------------------------------------------------------------------
-
-	abstract class JanusDbIterator<V, T> extends IGraphDBConnector.DbIterator<V, T> {
-
-		JanusDbIterator(Iterator<T> iterator) {
-			super(iterator);
-		}
-
-		@Override
-		protected boolean hasNext() {
-			return iterator.hasNext();
-		}
-
-	}
-
-	class JanusDbVertexIterator extends JanusDbIterator<TP3Vertex, Vertex> {
-		JanusDbVertexIterator(Iterator<Vertex> iterator) {
-			super(iterator);
-		}
-		@Override
-		protected TP3Vertex next() {
-			return new TP3Vertex(iterator.next());
-		}
-	}
-
-	class JanusDbEdgeIterator extends JanusDbIterator<TP3Edge, Edge> {
-		JanusDbEdgeIterator(Iterator<Edge> iterator) {
-			super(iterator);
-		}
-		@Override
-		protected TP3Edge next() {
-			return new TP3Edge(iterator.next());
-		}
-	}
-
 }

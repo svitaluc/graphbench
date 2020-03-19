@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.config;
 
 /**
  * Interface for graph database configuration containing its specific methods.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public interface GraphDBConfiguration {
         /**

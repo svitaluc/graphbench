@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.test;
 
 /**
  * Enumeration of all possible tests.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum TestType {
     BASIC_OPERATIONS("BASIC_OPERATIONS");

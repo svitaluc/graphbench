@@ -1,16 +1,18 @@
 package cz.cvut.fit.manta.graphbench.core.test;
 
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.csv.ProcessCSV;
-import cz.cvut.fit.manta.graphbench.core.dataset.IDataset;
+import cz.cvut.fit.manta.graphbench.core.dataset.Dataset;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 
 import java.util.List;
 
 /**
  * Interface for individual tests.
  * @param <C> graph database
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public interface ITest<C extends IGraphDBConnector> {
+public interface Test<C extends GraphDBConnector> {
     void test(ProcessCSV csv, C db);
 
     /**
@@ -21,5 +23,5 @@ public interface ITest<C extends IGraphDBConnector> {
     /**
      * @return Gets a dataset on which the test was run. It can be null if no dataset was used.
      */
-    IDataset getDataset();
+    Dataset getDataset();
 }

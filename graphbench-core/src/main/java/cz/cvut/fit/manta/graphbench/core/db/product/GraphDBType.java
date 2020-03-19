@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.db.product;
 
 /**
  * Type of the graph database.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum GraphDBType {
     JANUSGRAPH("JANUSGRAPH"),
@@ -35,6 +37,6 @@ public enum GraphDBType {
                 return item;
             }
         }
-        throw new UnsupportedOperationException("The required graph type " + type + " is not supported.");
+        throw new IllegalArgumentException ("The required graph type " + type + " is not supported.");
     }
 }

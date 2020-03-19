@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 
 /**
  * Class for creating processes with their output provided in a standard output.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 final class Processes {
     private static final String NEWLINE = System.getProperty("line.separator");

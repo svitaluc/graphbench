@@ -5,18 +5,24 @@ import com.tinkerpop.blueprints.Vertex;
 import cz.cvut.fit.manta.graphbench.core.config.Configuration;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.direction.TP2Direction;
 import org.apache.log4j.Logger;
-import cz.cvut.fit.manta.graphbench.core.access.IGraphOperations;
+import cz.cvut.fit.manta.graphbench.core.access.GraphOperations;
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
 
 import java.util.*;
 
-public class GraphOperations extends IGraphOperations<TP2Vertex> {
-    final static Logger LOG = Logger.getLogger(GraphOperations.class);
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
+    final static Logger LOG = Logger.getLogger(TP2GraphOperations.class);
+    private TP2Direction tp2Direction = new TP2Direction();
     private Configuration config = ConfigProperties.getInstance();
-    public GraphOperations(IGraphDBConnector db) {
+    public TP2GraphOperations(GraphDBConnector db) {
         super(db);
     }
 
@@ -56,8 +62,8 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
                 .getVertices(com.tinkerpop.blueprints.Direction.OUT, config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         Vertex parent = parentIt.iterator().next();
 
-        if(parentIt.iterator().hasNext()) {
-            LOG.error("Node:" + node.id() + " has more than one Parent node.");
+        if (parentIt.iterator().hasNext()) {
+            LOG.error("Node:" + node.getId() + " has more than one Parent node.");
 
         }
 
@@ -70,7 +76,7 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
     @Override
     public List<TP2Vertex> getVerticesByEdgeType(TP2Vertex node, String edgeType, Direction dir) {
         List<TP2Vertex> vertices = new ArrayList<>();
-        com.tinkerpop.blueprints.Direction originalDirection = TP2Direction.mapToOriginal(dir);
+        com.tinkerpop.blueprints.Direction originalDirection = tp2Direction.mapToOriginal(dir);
         Iterable<Vertex> it = node.getVertex().getVertices(originalDirection, edgeType);
 
         for(Vertex v: it) {
@@ -86,14 +92,14 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
         List<TP2Vertex> reachable = new ArrayList<>();
         Deque<TP2Vertex> stack = new ArrayDeque<>();
         Map<String, Boolean> visited = new HashMap<>();
-        com.tinkerpop.blueprints.Direction originalDirection = TP2Direction.mapToOriginal(dir);
+        com.tinkerpop.blueprints.Direction originalDirection = tp2Direction.mapToOriginal(dir);
 
         stack.add(node);
 
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             TP2Vertex currNode = stack.pop();
 
-            if(visited.containsKey(currNode.id())) {
+            if (visited.containsKey(currNode.getId())) {
                 continue; //this node was already visited
             }
 
@@ -106,7 +112,7 @@ public class GraphOperations extends IGraphOperations<TP2Vertex> {
                 stack.push(new TP2Vertex(neighbour));
             }
 
-            visited.put(currNode.id().toString(), true);
+            visited.put(currNode.getId().toString(), true);
             reachable.add(currNode);
         }
 

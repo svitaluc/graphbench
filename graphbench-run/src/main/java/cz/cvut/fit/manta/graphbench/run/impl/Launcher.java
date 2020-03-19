@@ -10,9 +10,11 @@ import java.io.*;
 
 /**
  * Class running the benchmark jar file.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class Launcher {
-    private final Logger LOG = Logger.getLogger(Launcher.class);
+    private final static Logger LOG = Logger.getLogger(Launcher.class);
     private ConfigProperties configProperties = ConfigProperties.getInstance();
 
     /**

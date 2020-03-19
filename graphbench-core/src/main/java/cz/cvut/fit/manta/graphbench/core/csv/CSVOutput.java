@@ -4,17 +4,21 @@ import au.com.bytecode.opencsv.CSVWriter;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.config.GraphDBConfiguration;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.dataset.IDataset;
-import cz.cvut.fit.manta.graphbench.core.test.ITest;
+import cz.cvut.fit.manta.graphbench.core.dataset.Dataset;
+import cz.cvut.fit.manta.graphbench.core.test.Test;
 import cz.cvut.fit.manta.graphbench.core.test.TestResult;
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Class for writing results of a benchmark into a csv file.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class CSVOutput {
     /** Path to a directory into which the output csv file should be written. **/
@@ -23,7 +27,7 @@ public class CSVOutput {
      * a new file with a following postfix is created. **/
     private final int SIZE_LIMIT = 1000000;
     /** Logger. **/
-    private Logger LOGGER = Logger.getLogger(CSVOutput.class);
+    private static Logger LOGGER = Logger.getLogger(CSVOutput.class);
     /** Properties of the main configuration file. **/
     private ConfigProperties config = ConfigProperties.getInstance();
 
@@ -41,7 +45,7 @@ public class CSVOutput {
      * @param graphDBConfiguration Configuration of a graph database
      * @throws IOException When the results cannot be written to the file
      */
-    public void writeTestToCSV(ITest test, GraphDBConfiguration graphDBConfiguration) throws IOException {
+    public void writeTestToCSV(Test test, GraphDBConfiguration graphDBConfiguration) throws IOException {
         List<TestResult> results = test.getResults();
         for (TestResult result : results) {
             writeLineToCSV(test.getDataset(), result.getTestName(), result.getTestTime(), graphDBConfiguration);
@@ -56,7 +60,7 @@ public class CSVOutput {
      * @param conf Configuration of a database used for the test
      * @throws IOException When a writer can't be created
      */
-    private void writeLineToCSV(IDataset dataset, String testName, long time, GraphDBConfiguration conf) throws IOException {
+    private void writeLineToCSV(Dataset dataset, String testName, long time, GraphDBConfiguration conf) throws IOException {
         ArrayList<String> line = new ArrayList<String>();
         CSVWriter writer;
 

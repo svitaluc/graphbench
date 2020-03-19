@@ -1,12 +1,18 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop2;
 
-import cz.cvut.fit.manta.graphbench.core.access.IProperty;
+import cz.cvut.fit.manta.graphbench.core.access.Property;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class TP2VertexProperty<P> implements IProperty<P> {
+/**
+ *
+ * @param <P>
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP2VertexProperty<P> implements Property<P> {
 
     private Map<String, P> property;
 

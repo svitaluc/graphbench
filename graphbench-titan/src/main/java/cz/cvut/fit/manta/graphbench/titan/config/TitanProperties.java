@@ -15,6 +15,8 @@ import java.io.File;
 /**
  * Class representing local configuration file titan.properties.
  * Only one instance of the class is allowed within the application.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TitanProperties extends Configuration implements GraphDBConfiguration {
 
@@ -33,8 +35,8 @@ public class TitanProperties extends Configuration implements GraphDBConfigurati
             setConfig(config, absoluteConfigPath);
 
             //titan pom properties
-            String absolutePomPropertiesPath = jarPath + File.separator + pomPropertiesPath;
-            this.pomProperties = new PomProperties(absolutePomPropertiesPath);
+//            String absolutePomPropertiesPath = jarPath + File.separator + pomPropertiesPath;
+            this.pomProperties = new PomProperties(pomPropertiesPath);
         } catch (ConfigurationException e) {
             LOG.error("Configuration file" + configPath + " cannot be opened.", e);
         }
@@ -45,7 +47,7 @@ public class TitanProperties extends Configuration implements GraphDBConfigurati
      * @return content of the config.properties file represented as an instance of {@link TitanProperties} class
      */
     public static TitanProperties getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new TitanProperties(propertiesPath);
         }
         return INSTANCE;

@@ -11,6 +11,8 @@ import java.io.File;
 /**
  * Class representing local configuration file config.properties.
  * Only one instance of the class is allowed within the application.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class ConfigProperties extends Configuration {
     private static ConfigProperties INSTANCE;
@@ -35,7 +37,7 @@ public class ConfigProperties extends Configuration {
      * @return content of the config.properties file represented as an instance of {@link ConfigProperties} class
      */
     public static ConfigProperties getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new ConfigProperties(propertiesPath);
         }
         return INSTANCE;

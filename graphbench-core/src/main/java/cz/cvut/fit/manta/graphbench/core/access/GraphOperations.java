@@ -1,26 +1,29 @@
 package cz.cvut.fit.manta.graphbench.core.access;
 
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
-import org.apache.log4j.Logger;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 
 import java.util.List;
 
 
 /**
- * Interface for all the graph operations in the database.
- * @param <V> vertex extending the {@link IVertex} interface
+ * Class for all the graph operations in the database.
+ * @param <V> vertex extending the {@link Vertex} interface
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public abstract class IGraphOperations<V extends IVertex> {
+public abstract class GraphOperations<V extends Vertex> {
 
     /** Database representation. */
-    protected IGraphDBConnector db;
+    protected GraphDBConnector db;
 
-    public IGraphOperations(IGraphDBConnector db) {
+    /**
+     * Constructor for the {@link GraphOperations}.
+     * @param db Database connector
+     */
+    public GraphOperations(GraphDBConnector db) {
         this.db = db;
     }
-
-    final static Logger LOG = Logger.getLogger(IGraphOperations.class);
 
     /**
      * Returns a list of children of the provided vertex.

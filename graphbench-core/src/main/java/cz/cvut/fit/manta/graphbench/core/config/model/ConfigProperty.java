@@ -1,11 +1,13 @@
 package cz.cvut.fit.manta.graphbench.core.config.model;
 
-import cz.cvut.fit.manta.graphbench.core.config.IConfigurationProperty;
+import cz.cvut.fit.manta.graphbench.core.config.ConfigurationProperty;
 
 /**
  * All properties of the configuration file config.properties.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public enum ConfigProperty implements IConfigurationProperty {
+public enum ConfigProperty implements ConfigurationProperty {
     /** Name of the edge label connecting a parent */
     EDGE_PARENT_LABEL("EDGE_PARENT_LABEL", String.class),
     /** Name of the edge property connecting a child */

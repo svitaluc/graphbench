@@ -1,15 +1,20 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop3;
 
-import org.apache.tinkerpop.gremlin.structure.Property;
-import cz.cvut.fit.manta.graphbench.core.access.IProperty;
+import cz.cvut.fit.manta.graphbench.core.access.Property;
 
 import java.util.NoSuchElementException;
 
-public class TP3Property<P> implements IProperty<P> {
+/**
+ *
+ * @param <P>
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP3Property<P> implements Property<P> {
 
-    private Property<P> property;
+    private org.apache.tinkerpop.gremlin.structure.Property<P> property;
 
-    public TP3Property(Property<P> property) {
+    public TP3Property(org.apache.tinkerpop.gremlin.structure.Property<P> property) {
         this.property = property;
     }
 

@@ -16,12 +16,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.hibernate.validator.internal.util.ReflectionHelper.getPropertyName;
 
 /**
  * Class containing various utility functions used across the whole project.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class Util {
     private final static String graphbenchRun = "graphbench-run";
@@ -140,7 +145,7 @@ public class Util {
         List<Method> getters = new ArrayList<>();
 
         for(Method method : methods){
-            if(isProprietaryGetter(method)) {
+            if (isProprietaryGetter(method)) {
                 getters.add(method);
             }
         }
@@ -157,10 +162,10 @@ public class Util {
      * @return
      */
     private static boolean isProprietaryGetter(Method method){
-        if(!method.getName().startsWith("get")) return false;
-        if(method.getParameterTypes().length != 0) return false;
-        if(void.class.equals(method.getReturnType())) return false;
-        if(method.getName().startsWith("getClass")) return false;
+        if (!method.getName().startsWith("get")) return false;
+        if (method.getParameterTypes().length != 0) return false;
+        if (void.class.equals(method.getReturnType())) return false;
+        if (method.getName().startsWith("getClass")) return false;
         return true;
     }
 
@@ -180,7 +185,7 @@ public class Util {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-            if(getterValue != null) {
+            if (getterValue != null) {
                 Map<String, Object> endProperty = getEndProperty(name + "." + getPropertyName(getter), getterValue, configurationMap);
                 if (endProperty != null) {
                     endProperty.forEach(configurationMap::putIfAbsent);

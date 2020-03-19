@@ -2,38 +2,17 @@ package cz.cvut.fit.manta.graphbench.core.dataset;
 
 import cz.cvut.fit.manta.graphbench.core.db.Translator;
 
-import java.util.*;
+import java.util.Collection;
 
 /**
- * Basic implementation of the {@link IDataset} interface.
+ * Interface representing a dataset containing records of particular vertices/edges/edge attributes
+ * (always in a separate file).
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public class Dataset implements IDataset {
-    private String datasetDir;
-
-    public Dataset(String datasetDir) {
-        this.datasetDir = datasetDir;
-    }
-
-    @Override
-    public String getDatasetDir() {
-        return datasetDir;
-    }
-
-    @Override
-    public Collection<String> getVerticesIds(Translator trans, Integer seed) {
-        Collection<String> allIds = trans.getAllNodeIds();
-        return allIds;
-    }
-
-    /**
-     * Creates a sorted list out of a collection of comparable objects, in ascending order.
-     * @param c collection of comparable objects
-     * @param <T> comparable type
-     * @return sorted list of provided objects, in ascending order
-     */
-    private <T extends Comparable<? super T>> List<T> createSortedList(Collection<T> c) {
-        List<T> list = new ArrayList<>(c);
-        Collections.sort(list);
-        return list;
-    }
+public interface Dataset {
+    /** Get directory path of the dataset. */
+    String getDatasetDir();
+    /** Get collection of all vertex ids in the dataset. */
+    Collection<String> getVerticesIds(Translator trans, Integer seed);
 }

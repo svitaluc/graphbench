@@ -1,28 +1,33 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop3;
 
-import cz.cvut.fit.manta.graphbench.tinkerpop3.iterator.TP3EdgeIterator;
-import cz.cvut.fit.manta.graphbench.tinkerpop3.iterator.TP3VertexIterator;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import cz.cvut.fit.manta.graphbench.core.access.IProperty;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
+import cz.cvut.fit.manta.graphbench.core.access.Property;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
 import cz.cvut.fit.manta.graphbench.tinkerpop3.direction.TP3Direction;
+import cz.cvut.fit.manta.graphbench.tinkerpop3.iterator.TP3EdgeIterator;
+import cz.cvut.fit.manta.graphbench.tinkerpop3.iterator.TP3VertexIterator;
 
-public class TP3Vertex implements IVertex<Vertex> {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP3Vertex implements Vertex<org.apache.tinkerpop.gremlin.structure.Vertex, Object> {
 
-    private Vertex vertex;
+    private org.apache.tinkerpop.gremlin.structure.Vertex vertex;
+    private TP3Direction tp3Direction = new TP3Direction();
 
     public TP3Vertex() {
         this.vertex = null;
     }
 
-    public TP3Vertex(Vertex vertex) {
+    public TP3Vertex(org.apache.tinkerpop.gremlin.structure.Vertex vertex) {
         this.vertex = vertex;
     }
 
     @Override
     public TP3VertexIterator vertices(Direction direction, String... edgeLabels) {
-        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = TP3Direction.mapToOriginal(direction);
+        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = tp3Direction.mapToOriginal(direction);
         if (vertex == null) {
             return null;
         }
@@ -31,7 +36,7 @@ public class TP3Vertex implements IVertex<Vertex> {
 
     @Override
     public TP3EdgeIterator edges(Direction direction, String... edgeLabels) {
-        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = TP3Direction.mapToOriginal(direction);
+        org.apache.tinkerpop.gremlin.structure.Direction originalDirection = tp3Direction.mapToOriginal(direction);
         if (vertex == null) {
             return null;
         }
@@ -39,21 +44,21 @@ public class TP3Vertex implements IVertex<Vertex> {
     }
 
     @Override
-    public <P> IProperty<P> property(String key) {
+    public <P> Property<P> property(String key) {
         return new TP3VertexProperty<>(vertex.property(key));
     }
 
-    public <P> IProperty<P> property(String key, P value) {
+    public <P> Property<P> property(String key, P value) {
         return new TP3VertexProperty<>(vertex.property(key, value));
     }
 
     @Override
-    public Object id() {
+    public Object getId() {
         return vertex.id();
     }
 
     @Override
-    public Vertex getVertex() {
+    public org.apache.tinkerpop.gremlin.structure.Vertex getVertex() {
         return vertex;
     }
 
@@ -63,7 +68,8 @@ public class TP3Vertex implements IVertex<Vertex> {
     }
 
     @Override
-    public TP3Edge addEdge(String label, IVertex inVertex, Object... keyValues) {
-        return new TP3Edge(vertex.addEdge(label, (Vertex)inVertex.getVertex(), keyValues));
+    public TP3Edge addEdge(String label, Vertex<org.apache.tinkerpop.gremlin.structure.Vertex, Object> inVertex,
+                           Object... keyValues) {
+        return new TP3Edge(vertex.addEdge(label, inVertex.getVertex(), keyValues));
     }
 }

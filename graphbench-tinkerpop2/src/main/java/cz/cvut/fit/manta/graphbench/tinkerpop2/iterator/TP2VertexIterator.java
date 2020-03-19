@@ -1,17 +1,20 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop2.iterator;
 
-import com.tinkerpop.blueprints.Vertex;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
-import cz.cvut.fit.manta.graphbench.core.access.iterator.IVertexIterator;
+import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.TP2Vertex;
 
-public class TP2VertexIterator extends IVertexIterator {
-    public TP2VertexIterator(Iterable<Vertex> iterable) {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP2VertexIterator extends VertexIterator<TP2Vertex, com.tinkerpop.blueprints.Vertex> {
+    public TP2VertexIterator(Iterable<com.tinkerpop.blueprints.Vertex> iterable) {
         super(iterable.iterator());
     }
 
     @Override
-    public IVertex next() {
-        return new TP2Vertex((Vertex)iterator.next());
+    public TP2Vertex next() {
+        return new TP2Vertex(iterator.next());
     }
 }

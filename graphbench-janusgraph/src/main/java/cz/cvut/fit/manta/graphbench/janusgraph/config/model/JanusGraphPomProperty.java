@@ -1,8 +1,13 @@
 package cz.cvut.fit.manta.graphbench.janusgraph.config.model;
 
-import cz.cvut.fit.manta.graphbench.core.config.IConfigurationProperty;
+import cz.cvut.fit.manta.graphbench.core.config.ConfigurationProperty;
 
-public enum JanusGraphPomProperty implements IConfigurationProperty {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public enum JanusGraphPomProperty implements ConfigurationProperty {
     DATABASE_VERSION("janusgraph.version", String.class);
 
     private final String property;

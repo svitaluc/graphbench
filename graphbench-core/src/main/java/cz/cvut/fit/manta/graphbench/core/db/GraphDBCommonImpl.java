@@ -1,33 +1,35 @@
 package cz.cvut.fit.manta.graphbench.core.db;
 
-import cz.cvut.fit.manta.graphbench.core.access.IEdge;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.config.GraphDBConfiguration;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
 /**
- * Basic implementation of the {@link IGraphDBConnector} that contains an attribute of another
- * {@link IGraphDBConnector} instance.
+ * Basic implementation of the {@link GraphDBConnector} that contains an attribute of another
+ * {@link GraphDBConnector} instance.
  * The reason is that this class serves as a decorator
- * (without a decorator interface that would only extend the {@link IGraphDBConnector} and wouldn't
+ * (without a decorator interface that would only extend the {@link GraphDBConnector} and wouldn't
  * add any other methods). It adds behavior such as a check whether the database is connected, or logging.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
+public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 
 	/** Flag whether the database is connected. */
 	private boolean connected = false;
 	/** Instance of a specific database connector. */
-	private IGraphDBConnector<IVertex, IEdge> iFace;
+	private GraphDBConnector<Vertex, Edge> iFace;
 	/** Logger. */
-	protected final Logger LOG = Logger.getLogger(GraphDBCommonImpl.class);
+	protected final static Logger LOG = Logger.getLogger(GraphDBCommonImpl.class);
 
 	/**
 	 * Constructor of the {@link GraphDBCommonImpl}.
 	 * @param db Instance of a specific database connector.
 	 */
-	public GraphDBCommonImpl(IGraphDBConnector<IVertex, IEdge> db) {
+	public GraphDBCommonImpl(GraphDBConnector<Vertex, Edge> db) {
 		iFace = db;
 	}
 
@@ -105,7 +107,7 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 	}
 
 	@Override
-	public IVertex addEmptyVertex() {
+	public Vertex addEmptyVertex() {
 		if (connected) {
 			return iFace.addEmptyVertex();
 		} else {
@@ -114,7 +116,7 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 	}
 
 	@Override
-	public IVertex getVertex(Object id) {
+	public Vertex getVertex(Object id) {
 		if (connected) {
 			return iFace.getVertex(id);
 		} else {
@@ -123,7 +125,7 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 	}
 
 	@Override
-	public IEdge addEdge(IVertex outVertex, IVertex inVertex, String label) {
+	public Edge addEdge(Vertex outVertex, Vertex inVertex, String label) {
 		if (connected) {
 			return iFace.addEdge(outVertex, inVertex, label);
 		} else {
@@ -132,7 +134,7 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 	}
 
 	@Override
-	public IEdge getEdge(Object id) {
+	public Edge getEdge(Object id) {
 		if (connected) {
 			return iFace.getEdge(id);
 		} else {
@@ -141,7 +143,7 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 	}
 
 	@Override
-	public void setEdgeProperty(IEdge edge, String name, Object value) {
+	public void setEdgeProperty(Edge edge, String name, Object value) {
 		if (connected) {
 			iFace.setEdgeProperty(edge, name, value);
 		} else {
@@ -168,7 +170,7 @@ public class GraphDBCommonImpl implements IGraphDBConnector<IVertex, IEdge> {
 	}
 
 	@Override
-    public List<IVertex> getVertexByName(String name) {
+    public List<Vertex> getVertexByName(String name) {
         if (connected) {
             return iFace.getVertexByName(name);
         } else {

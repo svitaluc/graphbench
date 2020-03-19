@@ -1,13 +1,15 @@
 package cz.cvut.fit.manta.graphbench.core.access;
 
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
-import cz.cvut.fit.manta.graphbench.core.access.iterator.IVertexIterator;
+import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 
 /**
  * Interface representing an edge of a graph.
- * @param <V> vertex type of the TinkerPop framework which is connected with the {@link IEdge}
+ * @param <V> vertex type of the TinkerPop framework which is connected with the {@link Edge}
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public interface IEdge<V> extends IElement {
+public interface Edge<V, I> extends Element<I> {
     /**
      * Retrieve the vertex (or vertices) associated with this edge as defined by the direction.
      * If the direction is {@link Direction#BOTH} then the iterator order is:
@@ -15,16 +17,16 @@ public interface IEdge<V> extends IElement {
      * @param direction get the incoming vertex, outgoing vertex, or both vertices
      * @return an iterator with 1 or 2 vertices
      */
-    IVertexIterator vertices(final Direction direction);
+    VertexIterator vertices(final Direction direction);
 
     /**
-     * Get the {@link IProperty} for the provided key. It calls the corresponding method of the specific
+     * Get the {@link Property} for the provided key. It calls the corresponding method of the specific
      * TinkerPop vertex.
      * @param key the key of the edge property to get
      * @param <P> the type of the edge property value
      * @return the retrieved edge property
      */
-    <P> IProperty<P> property(final String key);
+    <P> Property<P> property(final String key);
 
     /**
      * Set the provided key to the provided value.
@@ -33,11 +35,11 @@ public interface IEdge<V> extends IElement {
      * @param <P> the type of the value of the edge property
      * @return the newly created property
      */
-    <P> IProperty<P> property(String key, P value);
+    <P> Property<P> property(String key, P value);
 
     /**
      * Returns the incoming vertex of the edge.
      * @return the incoming vertex of the edge
      */
-    IVertex inVertex();
+    Vertex<V, I> inVertex();
 }

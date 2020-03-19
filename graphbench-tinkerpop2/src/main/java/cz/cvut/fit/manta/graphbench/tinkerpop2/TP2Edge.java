@@ -1,10 +1,8 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop2;
 
-import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Vertex;
-import cz.cvut.fit.manta.graphbench.core.access.IEdge;
-import cz.cvut.fit.manta.graphbench.core.access.IProperty;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Property;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.direction.TP2Direction;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.iterator.TP2VertexIterator;
@@ -12,15 +10,21 @@ import cz.cvut.fit.manta.graphbench.tinkerpop2.iterator.TP2VertexIterator;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class TP2Edge implements IEdge<Vertex> {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP2Edge implements Edge<com.tinkerpop.blueprints.Vertex, Object> {
 
-    private Edge edge;
+    private com.tinkerpop.blueprints.Edge edge;
+    private TP2Direction tp2Direction = new TP2Direction();
 
     public TP2Edge() {
         this.edge = null;
     }
 
-    public TP2Edge(Edge edge) {
+    public TP2Edge(com.tinkerpop.blueprints.Edge edge) {
         this.edge = edge;
     }
 
@@ -30,31 +34,31 @@ public class TP2Edge implements IEdge<Vertex> {
     }
 
     @Override
-    public <P> IProperty<P> property(String key) {
+    public <P> Property<P> property(String key) {
         return new TP2Property<>(key, edge.getProperty(key));
     }
 
     @Override
-    public <P> IProperty<P> property(String name, P value) {
+    public <P> Property<P> property(String name, P value) {
         edge.setProperty(name,value);
         return new TP2Property<>(name, edge.getProperty(name));
     }
 
     @Override
-    public IVertex inVertex() {
+    public TP2Vertex inVertex() {
         return new TP2Vertex(edge.getVertex(com.tinkerpop.blueprints.Direction.IN));
     }
 
     @Override
-    public Object id() {
+    public Object getId() {
         return edge.getId();
     }
 
-    private Iterable<Vertex> getIterableOfEdgeVertices(Edge edge, Direction direction) {
-        Iterator<Vertex> iterator;
-        com.tinkerpop.blueprints.Direction originalDirection = TP2Direction.mapToOriginal(direction);
+    private Iterable<com.tinkerpop.blueprints.Vertex> getIterableOfEdgeVertices(com.tinkerpop.blueprints.Edge edge, Direction direction) {
+        Iterator<com.tinkerpop.blueprints.Vertex> iterator;
+        com.tinkerpop.blueprints.Direction originalDirection = tp2Direction.mapToOriginal(direction);
 
-        if(direction.equals(Direction.BOTH)) {
+        if (direction.equals(Direction.BOTH)) {
             iterator = Stream.of(
                     edge.getVertex(com.tinkerpop.blueprints.Direction.OUT),
                     edge.getVertex(com.tinkerpop.blueprints.Direction.IN)).iterator();

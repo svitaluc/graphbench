@@ -2,6 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.db.structure;
 
 /**
  * All available edge labels.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum EdgeLabel {
     /** Denoting parenting relationship. */

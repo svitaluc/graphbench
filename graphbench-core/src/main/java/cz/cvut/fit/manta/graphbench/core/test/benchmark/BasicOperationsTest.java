@@ -1,15 +1,15 @@
 package cz.cvut.fit.manta.graphbench.core.test.benchmark;
 
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
-import cz.cvut.fit.manta.graphbench.core.db.Translator;
-import cz.cvut.fit.manta.graphbench.core.csv.ProcessCSV;
-import cz.cvut.fit.manta.graphbench.core.dataset.IDataset;
-import cz.cvut.fit.manta.graphbench.core.access.IEdge;
-import cz.cvut.fit.manta.graphbench.core.access.IVertex;
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
-import cz.cvut.fit.manta.graphbench.core.access.iterator.IEdgeIterator;
-import cz.cvut.fit.manta.graphbench.core.access.iterator.IVertexIterator;
-import cz.cvut.fit.manta.graphbench.core.test.ITest;
+import cz.cvut.fit.manta.graphbench.core.access.iterator.EdgeIterator;
+import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
+import cz.cvut.fit.manta.graphbench.core.csv.ProcessCSV;
+import cz.cvut.fit.manta.graphbench.core.dataset.Dataset;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.Translator;
+import cz.cvut.fit.manta.graphbench.core.test.Test;
 import cz.cvut.fit.manta.graphbench.core.test.TestResult;
 
 import java.util.*;
@@ -20,12 +20,14 @@ import java.util.concurrent.Callable;
  *  - get all vertices
  *  - get all vertices with their edges
  *  - get all vertices with their neighbors
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public class BasicOperationsTest implements ITest {
-    private final static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ITest.class);
+public class BasicOperationsTest implements Test {
+    private final static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Test.class);
 
-    /** Dataset containing information about all elements. */
-    private IDataset dataset;
+    /** DatasetImpl containing information about all elements. */
+    private Dataset dataset;
     /** Test results */
     private List<TestResult> results;
 
@@ -39,12 +41,12 @@ public class BasicOperationsTest implements ITest {
      * Constructor of the {@link BasicOperationsTest}.
      * @param dataset Dataset containing information about all elements
      */
-    public BasicOperationsTest(IDataset dataset) {
+    public BasicOperationsTest(Dataset dataset) {
         this.dataset = dataset;
     }
 
     @Override
-    public void test(ProcessCSV csv, final IGraphDBConnector db) {
+    public void test(ProcessCSV csv, final GraphDBConnector db) {
         results = new ArrayList<>();
         results.add(new TestResult(System.currentTimeMillis(), "import", csv.getImportTime()));
         final Translator translator = csv.getTranslator();
@@ -113,7 +115,7 @@ public class BasicOperationsTest implements ITest {
     }
 
     @Override
-    public IDataset getDataset()
+    public Dataset getDataset()
     {
         return dataset;
     }
@@ -125,10 +127,10 @@ public class BasicOperationsTest implements ITest {
      * @param db Connector to a graph database
      * @return {@link Set} of vertices
      */
-    private Set<IVertex> getVertices(Translator translator, IGraphDBConnector db) {
+    private Set<Vertex> getVertices(Translator translator, GraphDBConnector db) {
         Collection<String> idSet = dataset.getVerticesIds(translator, 123456);
         LOGGER.info("idSet size: " + idSet.size());
-        Set<IVertex> result = new HashSet<>();
+        Set<Vertex> result = new HashSet<>();
 
         idSet.forEach(id ->
             result.add(db.getVertex(translator.getNode(id)))
@@ -144,20 +146,20 @@ public class BasicOperationsTest implements ITest {
      * @param db Connector to a graph database
      * @return {@link Map} containing vertex as a key and a {@link Set} of its edges as its value
      */
-    private Map<IVertex, Set<IEdge>> getVerticesWithEdges(Translator translator, IGraphDBConnector db) {
+    private Map<Vertex, Set<Edge>> getVerticesWithEdges(Translator translator, GraphDBConnector db) {
         Collection<String> idSet = dataset.getVerticesIds(translator, 456789);
-        Map<IVertex, Set<IEdge>> result = new HashMap<>();
+        Map<Vertex, Set<Edge>> result = new HashMap<>();
 
         List<String> idList = new ArrayList<>(idSet);
 
         int c = 0;
         for(int i = 0; i < idSet.size(); i++) {
-            IVertex vertex = db.getVertex(translator.getNode(idList.get(i)));
-            IEdgeIterator edgeIterator = vertex.edges(Direction.BOTH);
-            Set<IEdge> edgeSet = new HashSet<>();
+            Vertex vertex = db.getVertex(translator.getNode(idList.get(i)));
+            EdgeIterator edgeIterator = vertex.edges(Direction.BOTH);
+            Set<Edge> edgeSet = new HashSet<>();
             if (edgeIterator != null) {
                 while (edgeIterator.hasNext()) {
-                    edgeSet.add(edgeIterator.next());
+                    edgeSet.add((Edge) edgeIterator.next());
                 }
             } else {
                 c++;
@@ -176,19 +178,19 @@ public class BasicOperationsTest implements ITest {
      * @param db Connector to a graph database
      * @return {@link Map} containing vertex as a key and a {@link Set} of its neighbors (vertices) as its value
      */
-    private Map<IVertex, Set<IVertex>> getVerticesWithNeighbors(Translator translator, IGraphDBConnector db, Integer seed) {
+    private Map<Vertex, Set<Vertex>> getVerticesWithNeighbors(Translator translator, GraphDBConnector db, Integer seed) {
         Collection<String> idSet = dataset.getVerticesIds(translator, seed);
-        Map<IVertex, Set<IVertex>> result = new HashMap<>();
+        Map<Vertex, Set<Vertex>> result = new HashMap<>();
         List<String> idList = new ArrayList<>(idSet);
 
         int c = 0;
         for (int i = 0; i < idSet.size(); i++) {
-            IVertex vertex = db.getVertex(translator.getNode(idList.get(i)));
-            IVertexIterator vertexIterator = vertex.vertices(Direction.BOTH);
-            Set<IVertex> vertexSet = new HashSet<>();
+            Vertex vertex = db.getVertex(translator.getNode(idList.get(i)));
+            VertexIterator vertexIterator = vertex.vertices(Direction.BOTH);
+            Set<Vertex> vertexSet = new HashSet<>();
             if (vertexIterator != null) {
                 while (vertexIterator.hasNext()) {
-                    vertexSet.add(vertexIterator.next());
+                    vertexSet.add((Vertex) vertexIterator.next());
                 }
             } else {
                 c++;

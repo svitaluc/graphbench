@@ -14,9 +14,11 @@ import java.util.concurrent.*;
 
 /**
  * Class generating the required data.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class DataGenerator {
-    private Logger LOGGER = Logger.getLogger(DataGenerator.class);
+    private static Logger LOGGER = Logger.getLogger(DataGenerator.class);
     /** After how many generated items the progress is logged. */
     private final int LOG_EACH = 1000;
     /** Path of a directory into which the data will be generated. */
@@ -151,7 +153,7 @@ public class DataGenerator {
         List<List<Long>> nodeIdLists = createNodeIdLists(numberOfSets);
         List<int[]> combinations = new ArrayList<>();
         Iterator<int[]> iterator = CombinatoricsUtils.combinationsIterator(numberOfSets, 2);
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             combinations.add(iterator.next());
         }
 

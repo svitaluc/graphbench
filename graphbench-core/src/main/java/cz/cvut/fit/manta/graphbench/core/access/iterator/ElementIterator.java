@@ -5,13 +5,15 @@ import java.util.Iterator;
 /**
  * Abstract class for all element (both a vertex and an edge) iterators.
  * @param <E> element type to be iterated over
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public abstract class IElementIterator<E> {
-    protected Iterator iterator;
+public abstract class ElementIterator<E, I> {
+    protected Iterator<I> iterator;
 
-    public IElementIterator(){}
+    public ElementIterator(){}
 
-    public IElementIterator(Iterator iterator) {
+    public ElementIterator(Iterator iterator) {
         this.iterator = iterator;
     }
 

@@ -10,6 +10,8 @@ import java.io.File;
 
 /**
  * Class representing properties defined in a pom file.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class PomProperties extends Configuration {
 

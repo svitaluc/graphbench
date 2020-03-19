@@ -2,6 +2,11 @@ package cz.cvut.fit.manta.graphbench.data.generator;
 
 import java.io.IOException;
 
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
 public class App {
 
     public static void main(String[] args) {

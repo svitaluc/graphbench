@@ -1,12 +1,14 @@
 package cz.cvut.fit.manta.graphbench.backend.cassandra.model;
 
-import cz.cvut.fit.manta.graphbench.core.config.IConfigurationProperty;
+import cz.cvut.fit.manta.graphbench.core.config.ConfigurationProperty;
 
 /**
  * Properties of the cassandra configuration file. The enumeration here is not full, only those properties explicitly
  * used within the code are defined.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public enum CassandraProperty implements IConfigurationProperty {
+public enum CassandraProperty implements ConfigurationProperty {
 
     COMMITLOG_DIRECTORY("commitlog_directory", String.class),
     SAVED_CACHES_DIRECTORY("saved_caches_directory", String.class),

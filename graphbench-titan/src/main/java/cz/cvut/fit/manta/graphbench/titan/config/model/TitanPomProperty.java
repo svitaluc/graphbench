@@ -1,8 +1,13 @@
 package cz.cvut.fit.manta.graphbench.titan.config.model;
 
-import cz.cvut.fit.manta.graphbench.core.config.IConfigurationProperty;
+import cz.cvut.fit.manta.graphbench.core.config.ConfigurationProperty;
 
-public enum TitanPomProperty implements IConfigurationProperty {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public enum TitanPomProperty implements ConfigurationProperty {
     DATABASE_VERSION("titan.version", String.class);
 
     private final String property;

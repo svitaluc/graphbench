@@ -6,18 +6,20 @@ import cz.cvut.fit.manta.graphbench.core.db.product.GraphDBType;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
 import cz.cvut.fit.manta.graphbench.core.csv.CSVType;
 import cz.cvut.fit.manta.graphbench.core.csv.ProcessCSV;
-import cz.cvut.fit.manta.graphbench.core.dataset.IDataset;
 import cz.cvut.fit.manta.graphbench.core.dataset.Dataset;
+import cz.cvut.fit.manta.graphbench.core.dataset.DatasetImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBCommonImpl;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import org.apache.log4j.Logger;
-import cz.cvut.fit.manta.graphbench.core.test.ITest;
+import cz.cvut.fit.manta.graphbench.core.test.Test;
 import cz.cvut.fit.manta.graphbench.core.test.TestFactory;
 
 import java.io.IOException;
 
 /**
  * The main class running the application.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class App {
 	/** A String flag to denote the end of a benchmark. In some cases (f.e. JanusGraph + Cassandra), the
@@ -28,11 +30,11 @@ public class App {
 	/** User configuration set in the config.properties file. */
 	private ConfigProperties config = ConfigProperties.getInstance();
 	/** Database connector. */
-	private IGraphDBConnector db;
+	private GraphDBConnector db;
 
 	/**
 	 * The main method run when the jar filed is executed.
-	 * In order to run your own database implementation (implementation of the interface {@link IGraphDBConnector})
+	 * In order to run your own database implementation (implementation of the interface {@link GraphDBConnector})
 	 * without adjusting this project, call the below start method.
 	 * @param args - main arguments (not used)
 	 */
@@ -50,10 +52,10 @@ public class App {
 	}
 
 	/**
-	 * Start method that can be called with a custom {@link IGraphDBConnector} implementation.
-	 * @param graphDB an implementation of the {@link IGraphDBConnector} interface.
+	 * Start method that can be called with a custom {@link GraphDBConnector} implementation.
+	 * @param graphDB an implementation of the {@link GraphDBConnector} interface.
 	 */
-	public void start(IGraphDBConnector graphDB) {
+	public void start(GraphDBConnector graphDB) {
 		connectDB(graphDB);
 		startBody();
 	}
@@ -63,8 +65,8 @@ public class App {
 	 */
 	private void startBody() {
 		try{
-			IDataset dataset = new Dataset(config.getStringProperty(ConfigProperty.DATASET_DIR));
-			ITest test = TestFactory.getTest(config.getTestTypeProperty(ConfigProperty.TEST_TYPE), dataset);
+			Dataset dataset = new DatasetImpl(config.getStringProperty(ConfigProperty.DATASET_DIR));
+			Test test = TestFactory.createTest(config.getTestTypeProperty(ConfigProperty.TEST_TYPE), dataset);
 
 			runBenchmarkTest(dataset, test, db);
 
@@ -83,9 +85,9 @@ public class App {
 
 	/**
 	 * Writes results of a test to a csv file.
-	 * @param test {@link ITest} implementation providing results of its run.
+	 * @param test {@link Test} implementation providing results of its run.
 	 */
-	private void writeTestResults(ITest test) {
+	private void writeTestResults(Test test) {
 		CSVOutput csvOut = new CSVOutput(config.getStringProperty(ConfigProperty.CSV_OUTPUT_DIRECTORY));
 		try {
 			csvOut.writeTestToCSV(test, db.getGraphDBConfiguration());
@@ -118,7 +120,7 @@ public class App {
 	 * Connects a database set by the connector parameter.
 	 * @param connector a custom database connector
 	 */
-	private void connectDB(IGraphDBConnector connector) {
+	private void connectDB(GraphDBConnector connector) {
 		String databasePath;
 		try {
 			databasePath = config.getPathProperty(ConfigProperty.DATABASE_DIR);
@@ -150,9 +152,9 @@ public class App {
 	 * @param test particular test
 	 * @param db database connector
 	 */
-	private void runBenchmarkTest(IDataset dataset, ITest test, IGraphDBConnector db) {
+	private void runBenchmarkTest(Dataset dataset, Test test, GraphDBConnector db) {
 
-		if(ConfigProperties.getInstance().getBooleanProperty(ConfigProperty.WITH_IMPORT)) {
+		if (ConfigProperties.getInstance().getBooleanProperty(ConfigProperty.WITH_IMPORT)) {
 			ProcessCSV csv = loadCSV(dataset.getDatasetDir(), db);
 			try {
 				test.test(csv, db);
@@ -171,7 +173,7 @@ public class App {
 	 * @param db database connector
 	 * @return
 	 */
-	private static ProcessCSV loadCSV(String csvDir, IGraphDBConnector db) {
+	private static ProcessCSV loadCSV(String csvDir, GraphDBConnector db) {
 		ProcessCSV csv = new ProcessCSV(db);
 		csv.addSuperRoot();
 

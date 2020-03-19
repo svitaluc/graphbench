@@ -9,15 +9,19 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Class for reading and setting properties of a configuration file.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public abstract class Configuration {
     private AbstractConfiguration config;
     private FileHandler fileHandler;
-    protected final Logger LOG = Logger.getLogger(Configuration.class);
+    protected final static Logger LOG = Logger.getLogger(Configuration.class);
 
     /**
      * Sets configuration variable.
@@ -40,7 +44,7 @@ public abstract class Configuration {
     public Map<String, Object> getAllProperties() {
         Iterator<String> keys = config.getKeys();
         Map<String, Object> properties = new HashMap<>();
-        while(keys.hasNext()) {
+        while (keys.hasNext()) {
             String key = keys.next();
             properties.put(key, config.getProperty(key));
         }
@@ -52,14 +56,14 @@ public abstract class Configuration {
      * @param property property to be acquired
      * @return value of the property
      */
-    public String getStringProperty(IConfigurationProperty property) {
+    public String getStringProperty(ConfigurationProperty property) {
         propertyCheck(property, String.class.toString());
         return config.getString(property.getName());
     }
 
     /**
      * Gets a property of {@link String} type. Usage only for cases
-     * when {@link IConfigurationProperty} cannot be used.
+     * when {@link ConfigurationProperty} cannot be used.
      * @param property property to be acquired
      * @return value of the property in the config
      */
@@ -72,7 +76,7 @@ public abstract class Configuration {
      * @param property property to be acquired
      * @return value of the property
      */
-    public String[] getStringArrayProperty(IConfigurationProperty property) {
+    public String[] getStringArrayProperty(ConfigurationProperty property) {
         propertyCheck(property, String[].class.toString());
         return config.getStringArray(property.getName());
     }
@@ -83,7 +87,7 @@ public abstract class Configuration {
      * @param property property to be read
      * @return String representing absolute path to a file/directory in the property
      */
-    public String getPathProperty(IConfigurationProperty property) throws IOException {
+    public String getPathProperty(ConfigurationProperty property) throws IOException {
         String originalPath = getStringProperty(property);
         File tmp = new File(originalPath);
         return tmp.getCanonicalPath();
@@ -94,7 +98,7 @@ public abstract class Configuration {
      * @param property property to be acquired
      * @return value of the property
      */
-    public boolean getBooleanProperty(IConfigurationProperty property) {
+    public boolean getBooleanProperty(ConfigurationProperty property) {
         propertyCheck(property, boolean.class.toString());
         return config.getBoolean(property.getName());
     }
@@ -104,7 +108,7 @@ public abstract class Configuration {
      * @param property property to be acquired
      * @return value of the property
      */
-    public Integer getIntegerProperty(IConfigurationProperty property) {
+    public Integer getIntegerProperty(ConfigurationProperty property) {
         propertyCheck(property, Integer.class.toString());
         return config.getInt(property.getName());
     }
@@ -114,7 +118,7 @@ public abstract class Configuration {
      * @param property property to be acquired
      * @return value of the property
      */
-    public TestType getTestTypeProperty(IConfigurationProperty property) {
+    public TestType getTestTypeProperty(ConfigurationProperty property) {
         propertyCheck(property, String.class.toString());
         String testOption = config.getString(property.getName());
         return TestType.getTestType(testOption);
@@ -125,7 +129,7 @@ public abstract class Configuration {
      * @param property property to be acquired
      * @return value of the property
      */
-    public GraphDBType getGraphDBTypeProperty(IConfigurationProperty property) {
+    public GraphDBType getGraphDBTypeProperty(ConfigurationProperty property) {
         propertyCheck(property, String.class.toString());
         String graphOption = config.getString(property.getName());
         return GraphDBType.getGraphDBType(graphOption);
@@ -136,7 +140,7 @@ public abstract class Configuration {
      * @param property property to be stored
      * @param value its value
      */
-    public void setProperty(IConfigurationProperty property, Object value) {
+    public void setProperty(ConfigurationProperty property, Object value) {
         config.setProperty(property.getName(), value);
     }
 
@@ -146,7 +150,7 @@ public abstract class Configuration {
      * @param property property which type is checked
      * @param clazz class to be checked with
      */
-    private void propertyCheck(IConfigurationProperty property, String clazz) {
+    private void propertyCheck(ConfigurationProperty property, String clazz) {
         String propertyClazz = property.getClazz().toString();
 
         if (!propertyClazz.equals(clazz)) {

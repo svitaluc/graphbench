@@ -1,18 +1,22 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop3.iterator;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import cz.cvut.fit.manta.graphbench.core.access.iterator.IVertexIterator;
+import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 import cz.cvut.fit.manta.graphbench.tinkerpop3.TP3Vertex;
 
 import java.util.Iterator;
 
-public class TP3VertexIterator extends IVertexIterator {
-    public TP3VertexIterator(Iterator<Vertex> iterator) {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TP3VertexIterator extends VertexIterator<TP3Vertex, org.apache.tinkerpop.gremlin.structure.Vertex> {
+    public TP3VertexIterator(Iterator<org.apache.tinkerpop.gremlin.structure.Vertex> iterator) {
         super(iterator);
     }
 
     @Override
     public TP3Vertex next() {
-        return new TP3Vertex((Vertex)iterator.next());
+        return new TP3Vertex(iterator.next());
     }
 }

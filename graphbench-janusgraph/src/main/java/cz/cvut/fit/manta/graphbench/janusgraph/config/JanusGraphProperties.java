@@ -14,6 +14,8 @@ import java.io.File;
 /**
  * Class representing local configuration file janusgraph.properties.
  * Only one instance of the class is allowed within the application.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class JanusGraphProperties extends Configuration implements GraphDBConfiguration {
 
@@ -44,7 +46,7 @@ public class JanusGraphProperties extends Configuration implements GraphDBConfig
      * @return content of the config.properties file represented as an instance of {@link JanusGraphProperties} class
      */
     public static JanusGraphProperties getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new JanusGraphProperties();
         }
         return INSTANCE;

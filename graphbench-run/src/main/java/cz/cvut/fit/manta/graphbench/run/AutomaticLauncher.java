@@ -7,6 +7,8 @@ import cz.cvut.fit.manta.graphbench.run.impl.Launcher;
  * Class intended for automatic launch of the benchmark tests.
  * Dataset directory must be set. You can call any number of the {@link Launcher#runSetting(Integer, String, GraphDBType)}
  * method, with any settings.
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class AutomaticLauncher {
 
@@ -16,7 +18,7 @@ public class AutomaticLauncher {
 
         Launcher launcher = new Launcher();
 
-        launcher.runSetting(3, datasetDir, GraphDBType.JANUSGRAPH);
+        launcher.runSetting(1, datasetDir, GraphDBType.TITAN);
 //        launcher.runSetting(3, datasetDir, GraphDBType.TITAN);
     }
 }

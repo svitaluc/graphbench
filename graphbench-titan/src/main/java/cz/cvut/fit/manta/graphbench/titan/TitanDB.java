@@ -18,7 +18,7 @@ import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.db.IGraphDBConnector;
+import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.db.Translator;
 import cz.cvut.fit.manta.graphbench.core.db.structure.EdgeProperty;
 import cz.cvut.fit.manta.graphbench.core.db.structure.NodeProperty;
@@ -31,7 +31,12 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
+/**
+ *
+ *
+ * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
+ */
+public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
 
     private boolean connected = false;
     private String dbName = null;
@@ -207,7 +212,7 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
             String parentString = trans.getNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
             TP2Vertex parentNode = (TP2Vertex) trans.getTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
-            if(parentNode == null || parentNode.isVertexNull()) {
+            if (parentNode == null || parentNode.isVertexNull()) {
                 try {
                     parentNode = getVertex(parentString);
                 } catch (IllegalArgumentException e) {
@@ -221,7 +226,7 @@ public class TitanDB implements IGraphDBConnector<TP2Vertex, TP2Edge> {
             } else {
                 LOG.warn(MessageFormat.format(
                         "Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-                        parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.id().toString()));
+                        parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
             }
         }
     }
