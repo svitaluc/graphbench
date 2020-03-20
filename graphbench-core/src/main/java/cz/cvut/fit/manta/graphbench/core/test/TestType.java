@@ -28,6 +28,6 @@ public enum TestType {
                 return item;
             }
         }
-        throw new IllegalArgumentException("The required test type " + type + " is not supported.");
+        throw new IllegalArgumentException("The required test " + type + " is not supported.");
     }
 }

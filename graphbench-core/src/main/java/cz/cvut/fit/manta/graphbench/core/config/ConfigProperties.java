@@ -5,6 +5,7 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 
@@ -15,8 +16,9 @@ import java.io.File;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class ConfigProperties extends Configuration {
-    private static ConfigProperties INSTANCE;
-    private final static String propertiesPath = "conf" + File.separator + "config.properties";
+    private static final Logger LOG = Logger.getLogger(ConfigProperties.class);
+    private static ConfigProperties instance;
+    private final static String PROPERTIES_PATH = "conf" + File.separator + "config.properties";
 
     private ConfigProperties(String configPath) {
         Configurations configs = new Configurations();
@@ -37,10 +39,10 @@ public class ConfigProperties extends Configuration {
      * @return content of the config.properties file represented as an instance of {@link ConfigProperties} class
      */
     public static ConfigProperties getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ConfigProperties(propertiesPath);
+        if (instance == null) {
+            instance = new ConfigProperties(PROPERTIES_PATH);
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**
@@ -49,6 +51,6 @@ public class ConfigProperties extends Configuration {
      * from which the application is launched
      */
     public static String getPropertiesPath() {
-        return propertiesPath;
+        return PROPERTIES_PATH;
     }
 }

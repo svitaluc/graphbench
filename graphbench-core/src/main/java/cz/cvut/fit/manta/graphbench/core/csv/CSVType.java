@@ -14,7 +14,7 @@ public enum CSVType {
     EDGE_ATTR(ConfigProperties.getInstance().getStringProperty(ConfigProperty.CSV_EDGE_ATTR_NAME));
 
     /** Name of the file which stores given type of data. **/
-    private final String filename;
+    private String filename;
 
     /**
      * Constructor of the {@link CSVType}.

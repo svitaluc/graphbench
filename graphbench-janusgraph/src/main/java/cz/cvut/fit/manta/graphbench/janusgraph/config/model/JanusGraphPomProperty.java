@@ -10,8 +10,8 @@ import cz.cvut.fit.manta.graphbench.core.config.ConfigurationProperty;
 public enum JanusGraphPomProperty implements ConfigurationProperty {
     DATABASE_VERSION("janusgraph.version", String.class);
 
-    private final String property;
-    private final Class clazz;
+    private String property;
+    private Class clazz;
 
     JanusGraphPomProperty(String property, Class clazz) {
         this.property = property;

@@ -17,7 +17,7 @@ import cz.cvut.fit.manta.graphbench.tinkerpop2.iterator.TP2VertexIterator;
 public class TP2Vertex implements Vertex<com.tinkerpop.blueprints.Vertex, Object> {
 
     private com.tinkerpop.blueprints.Vertex vertex;
-    private final static Logger logger = Logger.getLogger(TP2Vertex.class);
+    private final static Logger LOGGER = Logger.getLogger(TP2Vertex.class);
     private TP2Direction tp2Direction = new TP2Direction();
 
     public TP2Vertex() {
@@ -67,7 +67,7 @@ public class TP2Vertex implements Vertex<com.tinkerpop.blueprints.Vertex, Object
         Edge edge = vertex.addEdge(label, inVertex.getVertex());
 
         if (keyValues != null && keyValues.length % 2 == 1) {
-            logger.error("Invalid edge properties. No properties for edge " + label + " were stored.");
+            LOGGER.error("Invalid edge properties. No properties for edge " + label + " were stored.");
             return new TP2Edge(edge);
         }
         if (keyValues != null) {

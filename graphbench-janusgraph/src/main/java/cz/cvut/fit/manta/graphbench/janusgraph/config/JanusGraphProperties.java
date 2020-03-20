@@ -9,8 +9,10 @@ import cz.cvut.fit.manta.graphbench.janusgraph.config.model.JanusGraphProperty;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.log4j.Logger;
 
 import java.io.File;
+
 /**
  * Class representing local configuration file janusgraph.properties.
  * Only one instance of the class is allowed within the application.
@@ -19,25 +21,26 @@ import java.io.File;
  */
 public class JanusGraphProperties extends Configuration implements GraphDBConfiguration {
 
-    private static JanusGraphProperties INSTANCE;
+    private static JanusGraphProperties instance;
     private PomProperties pomProperties;
-    private final static String propertiesPath = "conf" + File.separator + "janusgraph" + File.separator + "janusgraph.properties";
-    private final static String pomPropertiesPath = "pom-properties" + File.separator + "janusgraph-pom.properties";
+    private final static String PROPERTIES_PATH = "conf" + File.separator + "janusgraph" + File.separator + "janusgraph.properties";
+    private final static String POM_PROPERTIES_PATH = "pom-properties" + File.separator + "janusgraph-pom.properties";
+    private static final Logger LOG = Logger.getLogger(JanusGraphProperties.class);
 
     private JanusGraphProperties() {
         Configurations configs = new Configurations();
         try {
             String jarPath = Util.getJarPath();
             // janusgraph properties
-            String absoluteConfigPath = jarPath + File.separator + propertiesPath;
+            String absoluteConfigPath = jarPath + File.separator + PROPERTIES_PATH;
             PropertiesConfiguration config = configs.properties(new File(absoluteConfigPath));
             setConfig(config, absoluteConfigPath);
 
             //janusgraph pom properties
 //            String absolutePomPropertiesPath = jarPath + File.separator + pomPropertiesPath;
-            this.pomProperties = new PomProperties(pomPropertiesPath);
+            this.pomProperties = new PomProperties(POM_PROPERTIES_PATH);
         } catch (ConfigurationException e) {
-            LOG.error("Configuration file" + propertiesPath + " cannot be opened.", e);
+            LOG.error("Configuration file" + PROPERTIES_PATH + " cannot be opened.", e);
         }
     }
 
@@ -46,10 +49,10 @@ public class JanusGraphProperties extends Configuration implements GraphDBConfig
      * @return content of the config.properties file represented as an instance of {@link JanusGraphProperties} class
      */
     public static JanusGraphProperties getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new JanusGraphProperties();
+        if (instance == null) {
+            instance = new JanusGraphProperties();
         }
-        return INSTANCE;
+        return instance;
     }
 
     @Override

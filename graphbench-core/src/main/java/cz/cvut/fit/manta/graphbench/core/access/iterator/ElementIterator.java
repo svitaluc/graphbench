@@ -13,7 +13,7 @@ public abstract class ElementIterator<E, I> {
 
     public ElementIterator(){}
 
-    public ElementIterator(Iterator iterator) {
+    public ElementIterator(Iterator<I> iterator) {
         this.iterator = iterator;
     }
 

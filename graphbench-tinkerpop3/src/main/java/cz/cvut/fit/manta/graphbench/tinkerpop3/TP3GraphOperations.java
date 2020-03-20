@@ -21,9 +21,9 @@ import java.util.*;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
-    final static Logger LOG = Logger.getLogger(TP3GraphOperations.class);
+    private final static Logger LOG = Logger.getLogger(TP3GraphOperations.class);
     private GraphTraversalSource traversal;
-    private Configuration config = ConfigProperties.getInstance();
+    private final Configuration CONFIG = ConfigProperties.getInstance();
     private TP3Direction tp3Direction = new TP3Direction();
 
     public TP3GraphOperations(GraphDBConnector<TP3Vertex, TP3Edge> db) {
@@ -35,14 +35,14 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
     public List<TP3Vertex> getChildren(TP3Vertex node) {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
-        Iterator<Vertex> children = traversal.V(node.getId()).in(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+        Iterator<Vertex> children = traversal.V(node.getId()).in(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         while (children.hasNext()) {
             Vertex v = children.next();
             childList.add(new TP3Vertex(v));
         }
         long endTime = System.nanoTime();
-        System.out.println("getChildren Total time = " + (endTime - startTime));
-        System.out.println("--------------------------------------\n");
+        LOG.info("getChildren Total time = " + (endTime - startTime));
+        LOG.info("--------------------------------------\n");
         return childList;
     }
 
@@ -52,8 +52,8 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
         Iterator<Vertex> children = traversal.V(node.getId())
-                .inE(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
-                .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
+                .inE(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .has(CONFIG.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
                 .outV();
 
         long endTime = System.nanoTime();
@@ -62,8 +62,8 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
             childList.add(new TP3Vertex(v));
         }
 
-        System.out.println("getChildrenByName Total time = " + (endTime - startTime));
-        System.out.println("--------------------------------------\n");
+        LOG.info("getChildrenByName Total time = " + (endTime - startTime));
+        LOG.info("--------------------------------------\n");
         return childList;
     }
 
@@ -71,7 +71,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
     @Override
     public TP3Vertex getParent(TP3Vertex node) {
         long startTime = System.nanoTime();
-        Iterator<Vertex> parentIt = traversal.V(node.getId()).out(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+        Iterator<Vertex> parentIt = traversal.V(node.getId()).out(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
 
         Vertex parent = parentIt.next();
 
@@ -79,9 +79,9 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
             LOG.error("Node:" + node.getId() + " has more than one Parent node.");
         }
         long endTime = System.nanoTime();
-        System.out.println("getParent Total time = " + (endTime - startTime));
-        System.out.println(parent.property(NodeProperty.NODE_NAME.t()).toString());
-        System.out.println("--------------------------------------\n");
+        LOG.info("getParent Total time = " + (endTime - startTime));
+        LOG.info(parent.property(NodeProperty.NODE_NAME.t()).toString());
+        LOG.info("--------------------------------------\n");
 
         return new TP3Vertex(parent);
     }
@@ -98,7 +98,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
             vertices.add(new TP3Vertex(v));
         }
         long endTime = System.nanoTime();
-        System.out.println("getVerticesByEdgeType Total time = " + (endTime - startTime));
+        LOG.info("getVerticesByEdgeType Total time = " + (endTime - startTime));
         return vertices;
     }
 
@@ -133,7 +133,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
             reachable.add(currNode);
         }
         long endTime = System.nanoTime();
-        System.out.println("simpleFlow Total time = " + (endTime - startTime));
+        LOG.info("simpleFlow Total time = " + (endTime - startTime));
         return reachable;
     }
 }

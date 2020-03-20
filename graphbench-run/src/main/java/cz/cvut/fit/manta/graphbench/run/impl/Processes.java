@@ -1,6 +1,7 @@
 package cz.cvut.fit.manta.graphbench.run.impl;
 
 import cz.cvut.fit.manta.graphbench.all.App;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,9 +34,10 @@ final class Processes {
                 String line = in.readLine();
                 if (line == null || line.contains(App.BENCHMARK_FINISHED))
                     break;
+                /* This is a valid usage of System.out.println as we just move the original output to the local one
+                /* (we don't want to log the original output, but have it as an output in console) */
                 System.out.println(line);
                 result.append(line).append(NEWLINE);
-
             }
         }
         process.destroy();

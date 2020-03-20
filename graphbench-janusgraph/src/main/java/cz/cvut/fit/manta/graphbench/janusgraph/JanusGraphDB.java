@@ -167,7 +167,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 			Vertex vertex = it.next();
 			return new TP3Vertex(vertex);
 	    } catch (Exception ex) {
-	        ex.printStackTrace();
+	        LOG.info("An unexpected exception when getting a vertex.", ex);
 	        return new TP3Vertex(null);
 	    }
 	}
@@ -196,16 +196,16 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	public void addVertex(String[] parts, Translator trans) {
 		TP3Vertex node = new TP3Vertex(addEmptyVertex().getVertex());
 
-		trans.putTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
+		trans.putTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
 
-		node.property(NodeProperty.NODE_NAME.t(), parts[config.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
-		node.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
+		node.property(NodeProperty.NODE_NAME.t(), parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
+		node.property(NodeProperty.NODE_TYPE.t(), CONFIG.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
 
 		//Parent edge
-		if (parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
-			String parentString = trans.getNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+		if (parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
+			String parentString = trans.getNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
-			TP3Vertex parentNode = (TP3Vertex) trans.getTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+			TP3Vertex parentNode = (TP3Vertex) trans.getTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 			if (parentNode == null || parentNode.isVertexNull()) {
 				parentNode = getVertex(parentString);
 			}
@@ -215,7 +215,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 			} else {
 				LOG.warn(MessageFormat.format(
 						"Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-						parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
+						parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
 			}
 		}
 	}
@@ -225,15 +225,14 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	     long startTime = System.nanoTime();
 	     Iterable<Result<JanusGraphVertex>> it = internalGraph.indexQuery("nodeName", "lbl." + NodeProperty.NODE_NAME.t() + ":(/" + name + "/)").vertexStream().collect(Collectors.toList());;
 
-	     List<TP3Vertex> result = new ArrayList<TP3Vertex>();
+	     List<TP3Vertex> result = new ArrayList<>();
 
 	     for (Result<JanusGraphVertex> v : it) {
 	         result.add(new TP3Vertex(v.getElement()));
-	         //System.out.println(v.getElement());
 	     }
 
 	     long endTime = System.nanoTime();
-	     System.out.println("getVertexByName Total time = " + (endTime - startTime));
+	     LOG.info("getVertexByName Total time = " + (endTime - startTime));
 	     return result;
 	}
 }

@@ -14,12 +14,12 @@ public enum CassandraProperty implements ConfigurationProperty {
     SAVED_CACHES_DIRECTORY("saved_caches_directory", String.class),
     DATA_FILE_DIRECTORIES("data_file_directories", String.class);
 
-    public static String DATA_DIRECTORY_NAME = "data";
-    public static String COMMITLOG_DIRECTORY_NAME = "commitlog";
-    public static String SAVED_CACHES_DIRECTORY_NAME = "saved_caches";
+    public static final String DATA_DIRECTORY_NAME = "data";
+    public static final String COMMITLOG_DIRECTORY_NAME = "commitlog";
+    public static final String SAVED_CACHES_DIRECTORY_NAME = "saved_caches";
 
-    private final String property;
-    private final Class clazz;
+    private String property;
+    private Class clazz;
 
     /**
      * Constructor of the {@link CassandraProperty}.

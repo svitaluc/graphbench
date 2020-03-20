@@ -9,6 +9,7 @@ import cz.cvut.fit.manta.graphbench.titan.config.model.TitanProperty;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 
@@ -20,10 +21,11 @@ import java.io.File;
  */
 public class TitanProperties extends Configuration implements GraphDBConfiguration {
 
-    private static TitanProperties INSTANCE;
+    private static TitanProperties instance;
     private PomProperties pomProperties;
-    private final static String propertiesPath = "conf" + File.separator + "titan" + File.separator + "titan.properties";
-    private final static String pomPropertiesPath = "pom-properties" + File.separator + "titan-pom.properties";
+    private final static String PROPERTIES_PATH = "conf" + File.separator + "titan" + File.separator + "titan.properties";
+    private final static String POM_PROPERTIES_PATH = "pom-properties" + File.separator + "titan-pom.properties";
+    private final static Logger LOG = Logger.getLogger(TitanProperties.class);
 
     private TitanProperties(String configPath) {
         Configurations configs = new Configurations();
@@ -35,8 +37,7 @@ public class TitanProperties extends Configuration implements GraphDBConfigurati
             setConfig(config, absoluteConfigPath);
 
             //titan pom properties
-//            String absolutePomPropertiesPath = jarPath + File.separator + pomPropertiesPath;
-            this.pomProperties = new PomProperties(pomPropertiesPath);
+            this.pomProperties = new PomProperties(POM_PROPERTIES_PATH);
         } catch (ConfigurationException e) {
             LOG.error("Configuration file" + configPath + " cannot be opened.", e);
         }
@@ -47,10 +48,10 @@ public class TitanProperties extends Configuration implements GraphDBConfigurati
      * @return content of the config.properties file represented as an instance of {@link TitanProperties} class
      */
     public static TitanProperties getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new TitanProperties(propertiesPath);
+        if (instance == null) {
+            instance = new TitanProperties(PROPERTIES_PATH);
         }
-        return INSTANCE;
+        return instance;
     }
 
     @Override

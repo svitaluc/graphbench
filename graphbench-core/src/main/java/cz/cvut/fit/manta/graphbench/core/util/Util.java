@@ -14,14 +14,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.hibernate.validator.internal.util.ReflectionHelper.getPropertyName;
 
 /**
  * Class containing various utility functions used across the whole project.
@@ -29,7 +26,7 @@ import static org.hibernate.validator.internal.util.ReflectionHelper.getProperty
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class Util {
-    private final static String graphbenchRun = "graphbench-run";
+    private final static String GRAPHBENCH_RUN = "graphbench-run";
 
     /**
      * Clears given directory out of all insides.
@@ -53,8 +50,8 @@ public class Util {
     public static String getJarPath() {
         String userDir = System.getProperty("user.dir");
         String version = getProjectVersion();
-        String graphbenchRunWithVersion = graphbenchRun + "-" + version;
-        return userDir + File.separator + graphbenchRun + File.separator + "target" +
+        String graphbenchRunWithVersion = GRAPHBENCH_RUN + "-" + version;
+        return userDir + File.separator + GRAPHBENCH_RUN + File.separator + "target" +
                 File.separator + graphbenchRunWithVersion + File.separator + graphbenchRunWithVersion;
     }
 
@@ -111,13 +108,18 @@ public class Util {
     private static ObjectMapper createObjectMapper(String path) {
         String[] splitPath = path.split("\\.");
         if (splitPath.length < 1) {
-            throw new IllegalArgumentException("The path '" + path + "' does not contain a file with a specified file type.");
+            throw new IllegalArgumentException("The path '" + path +
+                    "' does not contain a file with a specified file type.");
         }
         String fileType = splitPath[1].toLowerCase();
         switch (fileType) {
-            case "yaml": return new ObjectMapper(new YAMLFactory());
-            case "properties": return new ObjectMapper(new JavaPropsFactory());
-            default: throw new UnsupportedOperationException("The file type " + fileType + " is not yet supported for object mapper.");
+            case "yaml":
+                return new ObjectMapper(new YAMLFactory());
+            case "properties":
+                return new ObjectMapper(new JavaPropsFactory());
+            default:
+                throw new UnsupportedOperationException("The file type " + fileType +
+                        " is not yet supported for object mapper.");
         }
     }
 
@@ -167,32 +169,6 @@ public class Util {
         if (void.class.equals(method.getReturnType())) return false;
         if (method.getName().startsWith("getClass")) return false;
         return true;
-    }
-
-    private static Map<String, Object> getEndProperty(String name, Object value, Map<String, Object> configurationMap) {
-        if (isEndProperty(value)) {
-            Map<String, Object> propertyMap = new HashMap<>();
-            propertyMap.put(name, value);
-            return propertyMap;
-        }
-        List<Method> getters = getGetterMethods(value.getClass());
-        getters.forEach(getter -> {
-            Object getterValue = null;
-            try {
-                getterValue = getter.invoke(value);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            if (getterValue != null) {
-                Map<String, Object> endProperty = getEndProperty(name + "." + getPropertyName(getter), getterValue, configurationMap);
-                if (endProperty != null) {
-                    endProperty.forEach(configurationMap::putIfAbsent);
-                }
-            }
-        });
-        return null;
     }
 
     /**

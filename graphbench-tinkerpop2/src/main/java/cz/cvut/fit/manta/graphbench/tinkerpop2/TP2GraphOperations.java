@@ -19,9 +19,10 @@ import java.util.*;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
-    final static Logger LOG = Logger.getLogger(TP2GraphOperations.class);
+    private final static Logger LOG = Logger.getLogger(TP2GraphOperations.class);
     private TP2Direction tp2Direction = new TP2Direction();
-    private Configuration config = ConfigProperties.getInstance();
+    private final Configuration CONFIG = ConfigProperties.getInstance();
+
     public TP2GraphOperations(GraphDBConnector db) {
         super(db);
     }
@@ -30,7 +31,7 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     public List<TP2Vertex> getChildren(TP2Vertex node) {
         List<TP2Vertex> childList = new ArrayList<>();
         Iterable<Vertex> children = node.getVertex().query()
-                .labels(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .labels(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .direction(com.tinkerpop.blueprints.Direction.IN).vertices();
         for(Vertex v: children) {
             childList.add(new TP2Vertex(v));
@@ -42,24 +43,21 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     public List<TP2Vertex> getChildrenByName(TP2Vertex node, String name) {
         List<TP2Vertex> childList = new ArrayList<>();
         Iterable<Vertex> children = node.getVertex().query()
-                .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
-                .labels(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .has(CONFIG.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
+                .labels(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .direction(com.tinkerpop.blueprints.Direction.IN)
                 .vertices();
 
-        //System.out.println("getChildrenByName:");
         for(Vertex v: children) {
             childList.add(new TP2Vertex(v));
-            //System.out.println(v.getProperty(MainConfig.NODE_NAME).toString());
         }
-        //System.out.println("--------------------------------------\n");
         return childList;
     }
 
     @Override
     public TP2Vertex getParent(TP2Vertex node) {
         Iterable<Vertex> parentIt = node.getVertex()
-                .getVertices(com.tinkerpop.blueprints.Direction.OUT, config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+                .getVertices(com.tinkerpop.blueprints.Direction.OUT, CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         Vertex parent = parentIt.iterator().next();
 
         if (parentIt.iterator().hasNext()) {
@@ -67,9 +65,6 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
 
         }
 
-       /* System.out.println("getParent:");
-        System.out.println(parent.getProperty(MainConfig.NODE_NAME).toString());
-        System.out.println("--------------------------------------\n");*/
         return new TP2Vertex(parent);
     }
 
@@ -81,7 +76,6 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
 
         for(Vertex v: it) {
             vertices.add(new TP2Vertex(v));
-            //System.out.println(v.getProperty(MainConfig.NODE_NAME).toString());
         }
 
         return vertices;

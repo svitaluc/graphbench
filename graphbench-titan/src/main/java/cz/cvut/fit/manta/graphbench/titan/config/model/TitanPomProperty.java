@@ -10,8 +10,8 @@ import cz.cvut.fit.manta.graphbench.core.config.ConfigurationProperty;
 public enum TitanPomProperty implements ConfigurationProperty {
     DATABASE_VERSION("titan.version", String.class);
 
-    private final String property;
-    private final Class clazz;
+    private String property;
+    private Class clazz;
 
     TitanPomProperty(String property, Class clazz) {
         this.property = property;

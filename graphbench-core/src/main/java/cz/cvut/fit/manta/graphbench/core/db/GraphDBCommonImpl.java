@@ -23,7 +23,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	/** Instance of a specific database connector. */
 	private GraphDBConnector<Vertex, Edge> iFace;
 	/** Logger. */
-	protected final static Logger LOG = Logger.getLogger(GraphDBCommonImpl.class);
+	private final static Logger LOG = Logger.getLogger(GraphDBCommonImpl.class);
 
 	/**
 	 * Constructor of the {@link GraphDBCommonImpl}.

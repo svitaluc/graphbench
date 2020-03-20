@@ -15,7 +15,7 @@ import java.io.*;
  */
 public class Launcher {
     private final static Logger LOG = Logger.getLogger(Launcher.class);
-    private ConfigProperties configProperties = ConfigProperties.getInstance();
+    private final ConfigProperties CONFIG_PROPERTIES = ConfigProperties.getInstance();
 
     /**
      * Calls the benchmark jar file, the number of times specified by {@code repetitions}, with dataset
@@ -25,8 +25,8 @@ public class Launcher {
      * @param dbType Type of the graph database to be used
      */
     public void runSetting(Integer repetitions, String datasetDir, GraphDBType dbType) {
-        configProperties.setProperty(ConfigProperty.DATASET_DIR, datasetDir);
-        configProperties.setProperty(ConfigProperty.DATABASE_TYPE, dbType.getName());
+        CONFIG_PROPERTIES.setProperty(ConfigProperty.DATASET_DIR, datasetDir);
+        CONFIG_PROPERTIES.setProperty(ConfigProperty.DATABASE_TYPE, dbType.getName());
 
         String jarPath = Util.getJarPath() + File.separator + "graphbench.jar";
 

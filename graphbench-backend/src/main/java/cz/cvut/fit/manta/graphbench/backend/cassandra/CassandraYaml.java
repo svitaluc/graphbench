@@ -4,6 +4,7 @@ import cz.cvut.fit.manta.graphbench.core.config.Configuration;
 import cz.cvut.fit.manta.graphbench.core.util.Util;
 import org.apache.commons.configuration2.YAMLConfiguration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,8 +19,9 @@ import java.io.FileReader;
  */
 public class CassandraYaml extends Configuration {
 
-    private static CassandraYaml INSTANCE;
+    private static CassandraYaml instance;
     private static String propertiesPath;
+    private static final Logger LOG = Logger.getLogger(CassandraYaml.class);
 
     /**
      * Constructor of the {@link CassandraYaml}. It's private as the class
@@ -45,11 +47,11 @@ public class CassandraYaml extends Configuration {
      * @return An instance of the {@link CassandraYaml} class.
      */
     public static CassandraYaml getInstance(CassandraVersion cassandraVersion) {
-        if (INSTANCE == null) {
+        if (instance == null) {
             propertiesPath = "conf" + File.separator + "cassandra" + File.separator + cassandraVersion.getFileName();
-            INSTANCE = new CassandraYaml(propertiesPath);
+            instance = new CassandraYaml(propertiesPath);
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**

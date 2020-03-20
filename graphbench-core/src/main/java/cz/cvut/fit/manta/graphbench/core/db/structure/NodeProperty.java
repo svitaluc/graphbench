@@ -15,7 +15,7 @@ public enum NodeProperty {
     /** Flag labeling a super root node of the whole graph. */
     SUPER_ROOT("superRoot");
 
-    private final String text;
+    private String text;
 
     /**
      * @param text text value for the database

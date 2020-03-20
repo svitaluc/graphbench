@@ -17,9 +17,9 @@ import java.util.concurrent.Callable;
 
 /**
  * Test for basic operations. It contains testing of
- *  - get all vertices
- *  - get all vertices with their edges
- *  - get all vertices with their neighbors
+ *  <li> get all vertices </li>
+ *  <li> get all vertices with their edges </li>
+ *  <li> get all vertices with their neighbors </li>
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
@@ -49,29 +49,29 @@ public class BasicOperationsTest implements Test {
     public void test(ProcessCSV csv, final GraphDBConnector db) {
         results = new ArrayList<>();
         results.add(new TestResult(System.currentTimeMillis(), "import", csv.getImportTime()));
-        final Translator translator = csv.getTranslator();
+        final Translator TRANSLATOR = csv.getTranslator();
 
         // GET VERTICES TEST
         runSubTest("getVertices", "vertices",
-                () -> getVertices(translator, db));
+                () -> getVertices(TRANSLATOR, db));
 
         // GET VERTICES WITH EDGES TEST
         runSubTest("getVerticesWithEdges", "vertices with some edges",
-                () -> getVerticesWithEdges(translator, db));
+                () -> getVerticesWithEdges(TRANSLATOR, db));
 
         // GET VERTICES WITH NEIGHBORS TEST
         runSubTest("getVerticesWithNeighbors", "vertices with some neighbors",
-                () -> getVerticesWithNeighbors(translator, db, 789123));
+                () -> getVerticesWithNeighbors(TRANSLATOR, db, 789123));
 
         //-------------------------------------------------
 
         // GET VERTICES WITH EDGES TEST
         runSubTest("getVerticesWithEdges", "vertices with some edges",
-                () -> getVerticesWithEdges(translator, db));
+                () -> getVerticesWithEdges(TRANSLATOR, db));
 
         // GET VERTICES WITH NEIGHBORS TEST
         runSubTest("getVerticesWithNeighbors", "vertices with some neighbors",
-                () -> getVerticesWithNeighbors(translator, db, 789123));
+                () -> getVerticesWithNeighbors(TRANSLATOR, db, 789123));
     }
 
     /**

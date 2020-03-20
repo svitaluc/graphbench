@@ -26,8 +26,7 @@ public class DatasetImpl implements Dataset {
 
     @Override
     public Collection<String> getVerticesIds(Translator trans, Integer seed) {
-        Collection<String> allIds = trans.getAllNodeIds();
-        return allIds;
+        return Collections.unmodifiableCollection(trans.getAllNodeIds());
     }
 
     /**

@@ -5,6 +5,7 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 
@@ -14,6 +15,8 @@ import java.io.File;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class PomProperties extends Configuration {
+
+    private static final Logger LOG = Logger.getLogger(PomProperties.class);
 
     /**
      * Constructor of the {@link PomProperties}.

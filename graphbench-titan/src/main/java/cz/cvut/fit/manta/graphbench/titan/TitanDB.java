@@ -42,7 +42,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
     private String dbName = null;
     private Configuration configuration = new BaseConfiguration();
     private TitanGraph internalGraph;
-    final static Logger LOG = Logger.getLogger(TitanDB.class);
+    private final static Logger LOG = Logger.getLogger(TitanDB.class);
     private TitanProperties titanProperties;
     private CassandraYaml cassandraProperties;
 
@@ -183,7 +183,6 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
         System.out.println("Get vertex by name:");
         for (Result<Vertex> v : it) {
             result.add(new TP2Vertex(v.getElement()));
-            //System.out.println(v.getElement());
         }
         return result;
     }
@@ -201,17 +200,17 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
     public void addVertex(String[] parts, Translator trans) {
         TP2Vertex node = new TP2Vertex(addEmptyVertex().getVertex());
 
-        trans.putTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
+        trans.putTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
 
-        node.property(NodeProperty.NODE_NAME.t(), parts[config.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
-        node.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
+        node.property(NodeProperty.NODE_NAME.t(), parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
+        node.property(NodeProperty.NODE_TYPE.t(), CONFIG.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
 
 
         //Parent edge
-        if (parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
-            String parentString = trans.getNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+        if (parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
+            String parentString = trans.getNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
-            TP2Vertex parentNode = (TP2Vertex) trans.getTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+            TP2Vertex parentNode = (TP2Vertex) trans.getTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
             if (parentNode == null || parentNode.isVertexNull()) {
                 try {
                     parentNode = getVertex(parentString);
@@ -226,7 +225,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
             } else {
                 LOG.warn(MessageFormat.format(
                         "Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-                        parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
+                        parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
             }
         }
     }

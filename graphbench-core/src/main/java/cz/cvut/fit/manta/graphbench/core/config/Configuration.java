@@ -21,7 +21,7 @@ import java.util.Map;
 public abstract class Configuration {
     private AbstractConfiguration config;
     private FileHandler fileHandler;
-    protected final static Logger LOG = Logger.getLogger(Configuration.class);
+    private final static Logger LOG = Logger.getLogger(Configuration.class);
 
     /**
      * Sets configuration variable.

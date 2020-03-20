@@ -17,10 +17,10 @@ public enum TitanProperty implements ConfigurationProperty {
     STORAGE_INDEX_SEARCH_BACKEND("storage.index.search.backend", String.class),
     STORAGE_CASSANDRA_STORAGEDIR("storage.cassandra.storagedir", String.class);
 
-    public static String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
+    public static final String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
 
-    private final String property;
-    private final Class clazz;
+    private String property;
+    private Class clazz;
 
     TitanProperty(String property, Class clazz) {
         this.property = property;

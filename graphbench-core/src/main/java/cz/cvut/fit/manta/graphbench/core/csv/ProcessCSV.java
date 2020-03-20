@@ -11,6 +11,7 @@ import cz.cvut.fit.manta.graphbench.core.db.Translator;
 import cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel;
 import cz.cvut.fit.manta.graphbench.core.db.structure.NodeProperty;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -30,14 +31,14 @@ public class ProcessCSV {
     /** Database representation. **/
     private GraphDBConnector db;
     /** Properties of the main configuration file. **/
-    private Configuration config = ConfigProperties.getInstance();
+    private final Configuration CONFIG = ConfigProperties.getInstance();
     /** How long the process of loading the csv file took. **/
     private long importTime;
 
     /** After how many items the data should be committed. **/
-    private int commitEveryCount = config.getIntegerProperty(ConfigProperty.COMMIT_EVERY_COUNT);
+    private int commitEveryCount = CONFIG.getIntegerProperty(ConfigProperty.COMMIT_EVERY_COUNT);
     /** After how many items the information about the loading process should be logged. **/
-    private int loadProgressInfoCount = config.getIntegerProperty(ConfigProperty.LOAD_PROGRESS_INFO_COUNT);
+    private int loadProgressInfoCount = CONFIG.getIntegerProperty(ConfigProperty.LOAD_PROGRESS_INFO_COUNT);
 
     /**
      * Creates a {@link BufferedReader} for a given csv file.
@@ -49,7 +50,7 @@ public class ProcessCSV {
      */
     private BufferedReader getInput(String csvDir, String fileName) throws UnsupportedEncodingException, FileNotFoundException {
         return new BufferedReader(new InputStreamReader(new FileInputStream(new File(csvDir, fileName)),
-                config.getStringProperty(ConfigProperty.CSV_ENCODING)));
+                CONFIG.getStringProperty(ConfigProperty.CSV_ENCODING)));
     }
 
     /**
@@ -91,8 +92,8 @@ public class ProcessCSV {
     public void addSuperRoot() {
        Vertex sr = db.addEmptyVertex();
         
-       sr.property(NodeProperty.NODE_NAME.t(), config.getStringProperty(ConfigProperty.SUPER_ROOT_NAME));
-       sr.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.SUPER_ROOT_TYPE));
+       sr.property(NodeProperty.NODE_NAME.t(), CONFIG.getStringProperty(ConfigProperty.SUPER_ROOT_NAME));
+       sr.property(NodeProperty.NODE_TYPE.t(), CONFIG.getStringProperty(ConfigProperty.SUPER_ROOT_TYPE));
 
        translator.setSuperRootId(sr.getId().toString());
        LOG.info("Added super-root");
@@ -124,7 +125,6 @@ public class ProcessCSV {
             }
         } catch (IOException e) {
             LOG.error(MessageFormat.format("Error when reading the file \"{0}\".", fileName), e);
-            throw new IllegalStateException(MessageFormat.format("Error when reading the file \"{0}\".", fileName), e);
         }
     }
 
@@ -181,14 +181,14 @@ public class ProcessCSV {
         int progress = 0;
         try {
             while ((parts = csvReader.readNext()) != null) {
-                Integer edgeStartPosition = config.getIntegerProperty(ConfigProperty.EDGE_I_START);
-                Integer edgeEndPosition = config.getIntegerProperty(ConfigProperty.EDGE_I_END);
+                Integer edgeStartPosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_START);
+                Integer edgeEndPosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_END);
 
                 Vertex startNode = getVertex(edgeStartPosition, parts);
                 Vertex endNode = getVertex(edgeEndPosition, parts);
 
                 String type;
-                Integer edgeTypePosition = config.getIntegerProperty(ConfigProperty.EDGE_I_END);
+                Integer edgeTypePosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_END);
 
                 if (parts[edgeTypePosition].equalsIgnoreCase(EdgeLabel.FILTER.t())) {
                     type = EdgeLabel.FILTER.t();
@@ -204,7 +204,7 @@ public class ProcessCSV {
                     //Zapsat hranu
                     Edge edge;
                     edge = db.addEdge(startNode, endNode, type);
-                    translator.putTempEdge(parts[config.getIntegerProperty(ConfigProperty.EDGE_I_ID)], edge);
+                    translator.putTempEdge(parts[CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_ID)], edge);
                 }
 
                 progress++;
@@ -227,7 +227,7 @@ public class ProcessCSV {
 
         try {
             while ((parts = csvReader.readNext()) != null) {
-                Integer edgePosition = config.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_EDGE);
+                Integer edgePosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_EDGE);
 
                 if (parts[edgePosition].length() > 0) {
                     String edgeAttrID = translator.getEdge(parts[edgePosition]);
@@ -238,8 +238,8 @@ public class ProcessCSV {
 
                         if (edgeAttr != null) {
                             db.setEdgeProperty(edgeAttr,
-                                    parts[config.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_KEY)],
-                                    parts[config.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_VALUE)]);
+                                    parts[CONFIG.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_KEY)],
+                                    parts[CONFIG.getIntegerProperty(ConfigProperty.EDGE_ATTRIBUTE_I_VALUE)]);
                         } else LOG.warn(
                                 MessageFormat.format("The database cannot find an edge of the edge attribute. " +
                                                 "Original edge id: \"{0}\", new edge id: \"{1}\"",
@@ -267,25 +267,26 @@ public class ProcessCSV {
     /**
      * Loads the whole csv file.
      * @param csvDir Directory of the csv file
-     * @param typ Type ({@link CSVType}) of the file to load
+     * @param type Type ({@link CSVType}) of the file to load
      */
-    public void loadCSV(String csvDir, CSVType typ) {
-        String fileName = typ.getFileName();
+    public void loadCSV(String csvDir, CSVType type) {
+        String fileName = type.getFileName();
 
         Integer progress = 0;
         CSVReader csvReader = null;
         long startTime = System.currentTimeMillis();
         try {
             csvReader = new CSVReader(getInput(csvDir, fileName));
-            switch (typ) {
+            Validate.notNull(type);
+            switch (type) {
                 case NODE: processCSVLineNode(csvReader, fileName);
                     break;
                 case EDGE: processCSVLineEdge(csvReader, fileName);
                     break;
                 case EDGE_ATTR: processCSVLineEdgeAttr(csvReader, fileName);
                     break;
-                default: throw new IllegalStateException(MessageFormat.format(
-                        "Wrong csv file type that cannot be processed: \"{0}\".", fileName, typ.toString()));
+                default: throw new IllegalArgumentException (MessageFormat.format(
+                        "Wrong csv file type that cannot be processed: \"{0}\".", fileName, type.toString()));
             }
         } catch (FileNotFoundException e) {
             LOG.error(MessageFormat.format("The file \"{0}\" does not exist in the directory \"{1}\".",
@@ -293,17 +294,17 @@ public class ProcessCSV {
         } catch (IOException e) {
             String message = "Error when reading the file \"{0}\".";
             LOG.error(MessageFormat.format(message, fileName), e);
-            throw new IllegalStateException(MessageFormat.format(message, fileName), e);
+            throw new IllegalArgumentException (MessageFormat.format(message, fileName), e);
         } catch (Throwable e) {
             String message = "Error when processing a row.";
             LOG.error(message, e);
-            throw new IllegalStateException(message, e);
+            throw new IllegalArgumentException (message, e);
         } finally {
             IOUtils.closeQuietly(csvReader);
             importTime = System.currentTimeMillis() - startTime;
         }
 
-        LOG.info(MessageFormat.format("...total number of processed records {0}: {1}", typ.toString(), progress));
+        LOG.info(MessageFormat.format("...total number of processed records {0}: {1}", type.toString(), progress));
 
         processCommit();
     }

@@ -25,11 +25,11 @@ public class CSVOutput {
     private String outputDirectoryPath;
     /** Maximum allowed size for a csv file. If a loaded file exceeds this limit,
      * a new file with a following postfix is created. **/
-    private final int SIZE_LIMIT = 1000000;
+    private final static int SIZE_LIMIT = 1000000;
     /** Logger. **/
-    private static Logger LOGGER = Logger.getLogger(CSVOutput.class);
+    private static final Logger LOGGER = Logger.getLogger(CSVOutput.class);
     /** Properties of the main configuration file. **/
-    private ConfigProperties config = ConfigProperties.getInstance();
+    private final ConfigProperties CONFIG = ConfigProperties.getInstance();
 
     /**
      * Constructor for {@link CSVOutput}.
@@ -72,7 +72,7 @@ public class CSVOutput {
         }
 
         line.add(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        line.add(config.getStringProperty(ConfigProperty.DATABASE_TYPE));
+        line.add(CONFIG.getStringProperty(ConfigProperty.DATABASE_TYPE));
         line.add(conf.getDatabaseVersion());
 
         line.add(conf.getIndexBackend());
@@ -85,7 +85,7 @@ public class CSVOutput {
             line.add(dataset.getDatasetDir());
         }
 
-        line.add(config.getStringProperty(ConfigProperty.TEST_TYPE));
+        line.add(CONFIG.getStringProperty(ConfigProperty.TEST_TYPE));
         line.add(testName);
         line.add(Long.toString(time));
 

@@ -13,7 +13,7 @@ public enum EdgeLabel {
     /** Indirect relationship between the two nodes. */
     FILTER("filter");
 
-    private final String text;
+    private String text;
 
     /**
      * @param text text value for the database

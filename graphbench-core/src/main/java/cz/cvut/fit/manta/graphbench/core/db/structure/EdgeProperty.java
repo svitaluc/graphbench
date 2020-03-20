@@ -9,7 +9,7 @@ public enum EdgeProperty {
     /** Call identification of an edge */ //TODO pryc
     EDGE_ATTRIBUTE("edge_attribute");
 
-    private final String text;
+    private String text;
 
     /**
      * @param text text value for the database

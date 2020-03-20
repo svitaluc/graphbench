@@ -16,10 +16,10 @@ public enum JanusGraphProperty implements ConfigurationProperty {
     INDEX_SEARCH_DIRECTORY("index.search.directory", String.class),
     INDEX_SEARCH_BACKEND("index.search.backend", String.class);
 
-    public static String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
+    public static final String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
 
-    private final String property;
-    private final Class clazz;
+    private String property;
+    private Class clazz;
 
     JanusGraphProperty(String property, Class clazz) {
         this.property = property;
