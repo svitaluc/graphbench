@@ -26,6 +26,7 @@ import java.util.Map;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class Util {
+    /** Name of the graphbench-run module. */
     private final static String GRAPHBENCH_RUN = "graphbench-run";
 
     /**

@@ -18,6 +18,7 @@ import java.util.concurrent.*;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class DataGenerator {
+    /** Logger. */
     private static final Logger LOGGER = Logger.getLogger(DataGenerator.class);
     /** After how many generated items the progress is logged. */
     private final int LOG_EACH = 1000;
@@ -35,8 +36,8 @@ public class DataGenerator {
     private List<Long> nodeKeys = new ArrayList<>();
 
     /**
-     * Constructor of the {@link DataGenerator}.
-     * @param path Path of a directory into which the data will be generated
+      * Constructor of the {@link DataGenerator}.
+      * @param path Path of a directory into which the data will be generated
      */
     DataGenerator(String path) {
         outputPath = path;

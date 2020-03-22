@@ -11,8 +11,10 @@ import java.util.Collection;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public interface Dataset {
+
     /** Get directory path of the dataset. */
     String getDatasetDir();
+
     /** Get collection of all vertex ids in the dataset. */
     Collection<String> getVerticesIds(Translator trans, Integer seed);
 }

@@ -32,33 +32,52 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Connector for the JanusGraph database (https://janusgraph.org/).
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
-
+	/** Flag holding information, whether the database is connected. */
 	private boolean connected = false;
-	private String dbName = null;
+	/** Path to the database. */
+	private String dbPath = null;
+	/** Configuration of the JanusGraph database. */
 	private org.apache.commons.configuration.Configuration configuration = new BaseConfiguration();
+	/** Graph stored in the JanusGraph database. */
 	private JanusGraph internalGraph;
+	/** Properties of the Cassandra backend storage. */
 	private CassandraYaml cassandraProperties;
-	private JanusGraphProperties janusGraphProperties;
+	/** Properties of the JansuGraph, immutable. */
+	private final static JanusGraphProperties JANUSGRAPH_PROPERTIES = JanusGraphProperties.getInstance();
+	/** Logger. */
 	private final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
+	/**
+	 * Constructor of the {@link JanusGraphDB}.
+	 */
 	public JanusGraphDB() {
 		cassandraProperties = CassandraYaml.getInstance(CassandraVersion.CASSANDRA_3110);
-		janusGraphProperties = JanusGraphProperties.getInstance();
 	}
 
+	/**
+	 * Sets directory paths of the Cassandra configuration to the ones set
+	 * by the {@code dbPath} parameter and specific names of the concrete directories.
+	 * @param dbPath Directory path where to store Cassandra data
+	 */
 	private void setCassandraPaths(String dbPath) {
 		cassandraProperties.setProperty(CassandraProperty.COMMITLOG_DIRECTORY, dbPath + File.separator + CassandraProperty.COMMITLOG_DIRECTORY_NAME);
 		cassandraProperties.setProperty(CassandraProperty.SAVED_CACHES_DIRECTORY, dbPath + File.separator + CassandraProperty.SAVED_CACHES_DIRECTORY_NAME);
 		cassandraProperties.setProperty(CassandraProperty.DATA_FILE_DIRECTORIES, dbPath + File.separator + CassandraProperty.DATA_DIRECTORY_NAME);
 	}
 
+	/**
+	 * Sets the inner configuration with the properties set in the janusgraph.properties file
+	 * and important directory paths with the {@code dbPath} parameter.
+	 *
+	 * @param dbPath Directory in which supporting JanusGraph data will be stored
+	 */
 	private void setConfiguration(String dbPath) {
-		Util.setConfiguration(configuration, janusGraphProperties);
+		Util.setConfiguration(configuration, JANUSGRAPH_PROPERTIES);
 
 		String cassandraYamlPath = cassandraProperties.getAbsolutePropertiesPath();
 		configuration.setProperty(JanusGraphProperty.STORAGE_CONF_FILE.getName(), "file:\\\\\\" + cassandraYamlPath);
@@ -66,9 +85,13 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 		String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
 		configuration.setProperty(JanusGraphProperty.STORAGE_CASSANDRA_STORAGEDIR.getName(), storageDir);
 
-		configuration.setProperty(JanusGraphProperty.INDEX_SEARCH_DIRECTORY.getName(), dbPath + "/" + JanusGraphProperty.INDEX_SEARCH_DIRECTORY_NAME);
+		configuration.setProperty(JanusGraphProperty.INDEX_SEARCH_DIRECTORY.getName(), dbPath + "/"
+				+ JanusGraphProperty.INDEX_SEARCH_DIRECTORY_NAME);
 	}
 
+	/**
+	 * Sets schema of the JanusGraph database.
+	 */
 	private void setSchema() {
 		JanusGraphManagement mgmt = internalGraph.openManagement();
 
@@ -91,7 +114,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 
 	@Override
 	public GraphDBConfiguration getGraphDBConfiguration() {
-		return janusGraphProperties;
+		return JANUSGRAPH_PROPERTIES;
 	}
 
 	@Override
@@ -105,7 +128,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 
 		setSchema();
 
-		dbName = dbPath;
+		this.dbPath = dbPath;
 		connected = true;
 	}
 
@@ -118,8 +141,8 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	}
 
 	@Override
-	public String getDBName() {
-		return dbName;
+	public String getDBPath() {
+		return dbPath;
 	}
 
 	@Override

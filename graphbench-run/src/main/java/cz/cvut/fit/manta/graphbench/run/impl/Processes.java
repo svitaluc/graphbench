@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 final class Processes {
+    /** New line of a given system. */
     private static final String NEWLINE = System.getProperty("line.separator");
 
     /**

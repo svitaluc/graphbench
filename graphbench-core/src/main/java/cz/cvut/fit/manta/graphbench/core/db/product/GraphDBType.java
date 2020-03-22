@@ -6,7 +6,9 @@ package cz.cvut.fit.manta.graphbench.core.db.product;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum GraphDBType {
+    /** JanusGraph graph database. */
     JANUSGRAPH("JANUSGRAPH"),
+    /** Titan graph database. */
     TITAN("TITAN");
 
     /** Name of the graph database that should correspond with a value in the config file. */

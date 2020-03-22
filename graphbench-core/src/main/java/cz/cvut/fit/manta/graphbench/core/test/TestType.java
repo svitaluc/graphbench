@@ -6,12 +6,17 @@ package cz.cvut.fit.manta.graphbench.core.test;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum TestType {
+    /** The {@link cz.cvut.fit.manta.graphbench.core.test.benchmark.BasicOperationsTest} test. */
     BASIC_OPERATIONS("BASIC_OPERATIONS");
 
     /** Name of the test that must eventually match with the property
      * {@link cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty#TEST_TYPE} in the config.properties file. */
     private String name;
 
+    /**
+     * Constructor of the {@link TestType}.
+     * @param name Name of the test type
+     */
     TestType(String name) {
         this.name = name;
     }

@@ -5,16 +5,21 @@ import cz.cvut.fit.manta.graphbench.run.impl.Launcher;
 
 /**
  * Class intended for automatic launch of the benchmark tests.
- * Dataset directory must be set. You can call any number of the {@link Launcher#runSetting(Integer, String, GraphDBType)}
+ * Dataset directory must be set. You can call any number of the
+ * {@link Launcher#runSetting(Integer, String, GraphDBType)}
  * method, with any settings.
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class AutomaticLauncher {
 
+    /**
+     * The main method to be called to run the benchmarks.
+     * @param args Main method arguments
+     */
     public static void main(String[] args) {
         // ! Fill in the dataset directory !
-        String datasetDir = "";
+        String datasetDir = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-1k-e-1k";
 
         Launcher launcher = new Launcher();
 

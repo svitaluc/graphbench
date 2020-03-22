@@ -6,20 +6,21 @@ package cz.cvut.fit.manta.graphbench.core.db.structure;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum EdgeProperty {
-    /** Call identification of an edge */ //TODO pryc
+    /** General edge attribute. */
     EDGE_ATTRIBUTE("edge_attribute");
 
+    /** Text of the property. */
     private String text;
 
     /**
-     * @param text text value for the database
+     * @param text Text value for the database
      */
     EdgeProperty(String text) {
         this.text = text;
     }
 
     /**
-     * @return text value for the database
+     * @return Text value for the database
      */
     public String t() {
         return text;
@@ -27,8 +28,8 @@ public enum EdgeProperty {
 
     /**
      * Factory creating the enum instance from its string representation.
-     * @param input string name of the label
-     * @return enum instance. Null if the string doesn't match any of the enum instances.
+     * @param input String name of the label
+     * @return Enum instance. Null if the string doesn't match any of the enum instances.
      */
     public static EdgeProperty parseFromDbType(String input) {
         for (EdgeProperty item : values()) {

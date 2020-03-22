@@ -20,26 +20,33 @@ import java.io.File;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TitanProperties extends Configuration implements GraphDBConfiguration {
-
+    /** {@link TitanProperties} instance representing configuration properties of the Titan. */
     private static TitanProperties instance;
+    /** Properties of the pom file in the graphbench-titan module. */
     private PomProperties pomProperties;
+    /** Relative path to Titan properties */
     private final static String PROPERTIES_PATH = "conf" + File.separator + "titan" + File.separator + "titan.properties";
+    /** Relative path to the file containing pom properties of the graphbench-titan module. */
     private final static String POM_PROPERTIES_PATH = "pom-properties" + File.separator + "titan-pom.properties";
+    /** Logger. */
     private final static Logger LOG = Logger.getLogger(TitanProperties.class);
 
-    private TitanProperties(String configPath) {
+    /**
+     * Constructor for the {@link TitanProperties}.
+     */
+    private TitanProperties() {
         Configurations configs = new Configurations();
         try {
             // titan properties
             String jarPath = Util.getJarPath();
-            String absoluteConfigPath = jarPath + File.separator + configPath;
-            PropertiesConfiguration config = configs.properties(new File(jarPath + File.separator + configPath));
+            String absoluteConfigPath = jarPath + File.separator + PROPERTIES_PATH;
+            PropertiesConfiguration config = configs.properties(new File(jarPath + File.separator + PROPERTIES_PATH));
             setConfig(config, absoluteConfigPath);
 
             //titan pom properties
             this.pomProperties = new PomProperties(POM_PROPERTIES_PATH);
         } catch (ConfigurationException e) {
-            LOG.error("Configuration file" + configPath + " cannot be opened.", e);
+            LOG.error("Configuration file" + PROPERTIES_PATH + " cannot be opened.", e);
         }
     }
 
@@ -49,7 +56,7 @@ public class TitanProperties extends Configuration implements GraphDBConfigurati
      */
     public static TitanProperties getInstance() {
         if (instance == null) {
-            instance = new TitanProperties(PROPERTIES_PATH);
+            instance = new TitanProperties();
         }
         return instance;
     }

@@ -13,8 +13,14 @@ import java.util.List;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class DatasetImpl implements Dataset {
+    /** Directory path of the dataset. */
     private String datasetDir;
 
+    /**
+     * Constructor of the {@link DatasetImpl}.
+     *
+     * @param datasetDir Directory path of the dataset
+     */
     public DatasetImpl(String datasetDir) {
         this.datasetDir = datasetDir;
     }

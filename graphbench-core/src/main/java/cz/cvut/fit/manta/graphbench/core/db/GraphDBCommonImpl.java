@@ -57,8 +57,8 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-	public String getDBName() {
-		return iFace.getDBName();
+	public String getDBPath() {
+		return iFace.getDBPath();
 	}
 
 	@Override

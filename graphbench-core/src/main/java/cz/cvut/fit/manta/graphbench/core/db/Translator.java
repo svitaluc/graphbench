@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class Translator {
 
+    /** Logger. */
 	private final static Logger LOG = Logger.getLogger(Translator.class);
 
     /** Map containing mappings from a vertex id defined in dataset to a vertex id in a db. */

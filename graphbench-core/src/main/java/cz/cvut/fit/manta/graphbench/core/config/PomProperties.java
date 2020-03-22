@@ -16,6 +16,7 @@ import java.io.File;
  */
 public class PomProperties extends Configuration {
 
+    /** Logger. */
     private static final Logger LOG = Logger.getLogger(PomProperties.class);
 
     /**

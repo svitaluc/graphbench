@@ -13,6 +13,7 @@ public enum EdgeLabel {
     /** Indirect relationship between the two nodes. */
     FILTER("filter");
 
+    /** Text of the edge label. */
     private String text;
 
     /**

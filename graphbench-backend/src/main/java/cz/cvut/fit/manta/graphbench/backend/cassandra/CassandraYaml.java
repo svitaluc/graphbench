@@ -19,8 +19,11 @@ import java.io.FileReader;
  */
 public class CassandraYaml extends Configuration {
 
+    /** {@link CassandraYaml} instance representing configuration properties of the Cassandra yaml file. */
     private static CassandraYaml instance;
+    /** Relative path to the cassandra properties file. */
     private static String propertiesPath;
+    /** Logger. */
     private static final Logger LOG = Logger.getLogger(CassandraYaml.class);
 
     /**

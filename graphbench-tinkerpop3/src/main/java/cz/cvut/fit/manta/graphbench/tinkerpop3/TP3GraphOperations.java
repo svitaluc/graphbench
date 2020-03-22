@@ -16,16 +16,24 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import java.util.*;
 
 /**
- *
+ * Class for graph operations in the TinkerPop 3 framework.
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
+    /** Logger. */
     private final static Logger LOG = Logger.getLogger(TP3GraphOperations.class);
+    /** Traversal source of the TinkerPop 3 framework. */
     private GraphTraversalSource traversal;
+    /** Configuration of the config.properties. */
     private final Configuration CONFIG = ConfigProperties.getInstance();
+    /** Utility for translation of local and TinkerPop 2 direction. */
     private TP3Direction tp3Direction = new TP3Direction();
 
+    /**
+     * Constructor of the {@link TP3GraphOperations}.
+     * @param db Connector to the graph database.
+     */
     public TP3GraphOperations(GraphDBConnector<TP3Vertex, TP3Edge> db) {
         super(db);
         traversal = db.getTraversal();

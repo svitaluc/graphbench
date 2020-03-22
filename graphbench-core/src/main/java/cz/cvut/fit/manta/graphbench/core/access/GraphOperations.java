@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Class for all the graph operations in the database.
- * @param <V> vertex extending the {@link Vertex} interface
+ * @param <V> Vertex extending the {@link Vertex} interface
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */

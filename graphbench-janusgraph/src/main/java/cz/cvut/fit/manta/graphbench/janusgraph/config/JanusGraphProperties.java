@@ -20,13 +20,20 @@ import java.io.File;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class JanusGraphProperties extends Configuration implements GraphDBConfiguration {
-
+    /** {@link JanusGraphProperties} instance representing configuration properties of the JanusGraph. */
     private static JanusGraphProperties instance;
+    /** Properties of the pom file in the graphbench-janusgraph module. */
     private PomProperties pomProperties;
+    /** Relative path to JanusGraph properties */
     private final static String PROPERTIES_PATH = "conf" + File.separator + "janusgraph" + File.separator + "janusgraph.properties";
+    /** Relative path to the file containing pom properties of the graphbench-janusgraph module. */
     private final static String POM_PROPERTIES_PATH = "pom-properties" + File.separator + "janusgraph-pom.properties";
+    /** Logger. */
     private static final Logger LOG = Logger.getLogger(JanusGraphProperties.class);
 
+    /**
+     * Constructor of the {@link JanusGraphProperties}
+     */
     private JanusGraphProperties() {
         Configurations configs = new Configurations();
         try {
@@ -76,6 +83,9 @@ public class JanusGraphProperties extends Configuration implements GraphDBConfig
         return pomProperties.getStringProperty(JanusGraphPomProperty.DATABASE_VERSION);
     }
 
+    /**
+     * @return True if the backend is embedded, false otherwise.
+     */
     private boolean isBackendEmbedded() {
         return getStringProperty(JanusGraphProperty.STORAGE_BACKEND).contains("embedded");
     }

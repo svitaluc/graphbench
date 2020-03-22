@@ -6,10 +6,12 @@ package cz.cvut.fit.manta.graphbench.backend.cassandra;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum CassandraVersion {
-
+    /** Name of the configuration file for the Cassandra, version 3.1.1.0 */
     CASSANDRA_3110("cassandra.yaml"),
+    /** Name of the configuration file for the Cassandra, version 1.2.2 */
     CASSANDRA_122("cassandra-1.2.2.yaml");
 
+    /** Name of the configuration file for the given version. */
     private String fileName;
 
     /**

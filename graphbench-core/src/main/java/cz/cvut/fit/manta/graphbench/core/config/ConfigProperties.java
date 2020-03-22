@@ -16,10 +16,20 @@ import java.io.File;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class ConfigProperties extends Configuration {
+    /** Logger */
     private static final Logger LOG = Logger.getLogger(ConfigProperties.class);
+    /** Instance of configuration properties. */
     private static ConfigProperties instance;
+    /** Relative path of the configuration properties. */
     private final static String PROPERTIES_PATH = "conf" + File.separator + "config.properties";
 
+    /**
+     * Constructor of the {@link ConfigProperties}.
+     * The constructor is private to avoid its outer initialization and push the usage
+     * of the {@link #getInstance()} method to use only one instance within the whole project.
+     *
+     * @param configPath Relative path of the configuration properties
+     */
     private ConfigProperties(String configPath) {
         Configurations configs = new Configurations();
         try {

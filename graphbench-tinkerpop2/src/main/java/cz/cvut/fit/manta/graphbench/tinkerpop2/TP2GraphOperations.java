@@ -14,15 +14,22 @@ import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
 import java.util.*;
 
 /**
- *
+ * Class for graph operations in the TinkerPop 2 framework.
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
+    /** Logger. */
     private final static Logger LOG = Logger.getLogger(TP2GraphOperations.class);
+    /** Utility for translation of local and TinkerPop 2 direction. */
     private TP2Direction tp2Direction = new TP2Direction();
+    /** Configuration of the config.properties. */
     private final Configuration CONFIG = ConfigProperties.getInstance();
 
+    /**
+     * Constructor of the {@link TP2GraphOperations}.
+     * @param db Connector to a graph database.
+     */
     public TP2GraphOperations(GraphDBConnector db) {
         super(db);
     }

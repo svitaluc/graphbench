@@ -8,19 +8,28 @@ import cz.cvut.fit.manta.graphbench.tinkerpop3.iterator.TP3EdgeIterator;
 import cz.cvut.fit.manta.graphbench.tinkerpop3.iterator.TP3VertexIterator;
 
 /**
- *
+ * Wrapper for a vertex of the TinkerPop 3 framework.
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TP3Vertex implements Vertex<org.apache.tinkerpop.gremlin.structure.Vertex, Object> {
 
+    /** Vertex of the TinkerPop 3 framework wrapped by the {@link TP3Vertex} */
     private org.apache.tinkerpop.gremlin.structure.Vertex vertex;
+    /** Utility for translation of local and TinkerPop 3 direction. */
     private TP3Direction tp3Direction = new TP3Direction();
 
+    /**
+     * Constructor of the {@link TP3Vertex}.
+     */
     public TP3Vertex() {
         this.vertex = null;
     }
 
+    /**
+     * Constructor of the {@link TP3Vertex}.
+     * @param vertex Vertex of the TinkerPop 3 framework that will be wrapped by the {@link TP3Vertex}
+     */
     public TP3Vertex(org.apache.tinkerpop.gremlin.structure.Vertex vertex) {
         this.vertex = vertex;
     }

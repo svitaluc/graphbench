@@ -19,6 +19,9 @@ public interface GraphDBConnector<V extends Vertex, E extends Edge> {
 	/** Instance for reading properties from a config file. */
 	public final ConfigProperties CONFIG = ConfigProperties.getInstance();
 
+	/**
+	 * @return Configuration of the given graph database.
+	 */
 	public GraphDBConfiguration getGraphDBConfiguration();
 	/**
 	 * Creates connection with the database.
@@ -37,7 +40,7 @@ public interface GraphDBConnector<V extends Vertex, E extends Edge> {
 	 * Gets name of the database.
 	 * @return database name.
 	 */
-	public String getDBName();
+	public String getDBPath();
 
 	/**
 	 * Executes a commit.

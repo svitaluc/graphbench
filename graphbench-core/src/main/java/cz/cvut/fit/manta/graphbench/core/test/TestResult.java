@@ -13,6 +13,13 @@ public class TestResult {
     /** amount of time the test was running for */
     private Long testTime;
 
+    /**
+     * Constructor of the {@link TestResult}.
+     *
+     * @param recordTimestamp Timestamp of the test record
+     * @param testName Name of the test
+     * @param testTime Time of the test run.
+     */
     public TestResult(Long recordTimestamp, String testName, Long testTime) {
         this.recordTimestamp = recordTimestamp;
         this.testName = testName;

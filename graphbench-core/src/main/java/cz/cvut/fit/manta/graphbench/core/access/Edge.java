@@ -5,7 +5,8 @@ import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 
 /**
  * Interface representing an edge of a graph.
- * @param <V> vertex type of the TinkerPop framework which is connected with the {@link Edge}
+ * @param <V> Vertex type of a concrete language used
+ * @param <I> Class type of the edge id
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */

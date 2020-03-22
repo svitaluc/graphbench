@@ -19,8 +19,11 @@ import java.util.Map;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public abstract class Configuration {
+    /** Representation of configuration properties. */
     private AbstractConfiguration config;
+    /** Handler of the configuration file. */
     private FileHandler fileHandler;
+    /** Logger. */
     private final static Logger LOG = Logger.getLogger(Configuration.class);
 
     /**
@@ -32,6 +35,11 @@ public abstract class Configuration {
         setFileHandler(config, configPath);
     }
 
+    /**
+     * Setter for a handler of the configuration file.
+     * @param configLoaded Already loaded configuration
+     * @param configPath Path to the configuration file
+     */
     protected void setFileHandler(AbstractConfiguration configLoaded, String configPath) {
         fileHandler = new FileHandler((FileBasedConfiguration)configLoaded);
         fileHandler.setFile(new File(configPath));

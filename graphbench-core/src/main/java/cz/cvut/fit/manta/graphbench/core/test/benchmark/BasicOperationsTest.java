@@ -24,6 +24,7 @@ import java.util.concurrent.Callable;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class BasicOperationsTest implements Test {
+    /** Logger. */
     private final static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Test.class);
 
     /** DatasetImpl containing information about all elements. */

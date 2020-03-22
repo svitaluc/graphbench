@@ -6,7 +6,8 @@ import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 
 /**
  * Interface representing any vertex, no matter from which version of the TinkerPop framework.
- * @param <V> vertex of the specific TinkerPop framework
+ * @param <V> Vertex of the specific language used
+ * @param <I> Class type of the vertex id
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */

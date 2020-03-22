@@ -14,7 +14,9 @@ import java.io.*;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class Launcher {
+    /** Logger. */
     private final static Logger LOG = Logger.getLogger(Launcher.class);
+    /** Configuration properties set in the config.properties file. */
     private final ConfigProperties CONFIG_PROPERTIES = ConfigProperties.getInstance();
 
     /**

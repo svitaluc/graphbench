@@ -37,30 +37,40 @@ import java.util.List;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
-
+    /** Flag holding information, whether the database is connected. */
     private boolean connected = false;
-    private String dbName = null;
+    /** Path to the database. */
+    private String dbPath = null;
+    /** Configuration of the Titan database. */
     private Configuration configuration = new BaseConfiguration();
+    /** Graph stored in the Titan database. */
     private TitanGraph internalGraph;
+    /** Logger. */
     private final static Logger LOG = Logger.getLogger(TitanDB.class);
-    private TitanProperties titanProperties;
+    /** Properties of the Titan, immutable. */
+    private final static TitanProperties TITAN_PROPERTIES = TitanProperties.getInstance();
+    /** Properties of the Cassandra backend storage. */
     private CassandraYaml cassandraProperties;
 
+    /**
+     * Constructor of the {@link TitanDB}.
+     */
     public TitanDB() {
-        titanProperties = TitanProperties.getInstance();
         cassandraProperties = CassandraYaml.getInstance(CassandraVersion.CASSANDRA_122);
     }
 
+    /**
+     * Sets the inner configuration with the properties set in the titan.properties file
+     * and important directory paths with the {@code dbPath} parameter.
+     *
+     * @param dbPath Directory in which supporting Titan data will be stored
+     */
     private void setConfiguration(String dbPath) {
-        Util.setConfiguration(configuration, titanProperties);
+        Util.setConfiguration(configuration, TITAN_PROPERTIES);
 
         configuration.setProperty(TitanProperty.STORAGE_DIRECTORY.getName(), dbPath);
-//        try {
-            String cassandraYamlUrl = "file:\\\\\\" + cassandraProperties.getAbsolutePropertiesPath();
-            configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlUrl);
-//        } catch (MalformedURLException e) {
-//            LOG.error("Cannot set cassandra config file!", e);
-//        }
+        String cassandraYamlUrl = "file:\\\\\\" + cassandraProperties.getAbsolutePropertiesPath();
+        configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_CONFIG_DIR.getName(), cassandraYamlUrl);
 
         String storageDir = Paths.get("src", "main", "resources", "storage").toFile().getAbsolutePath();
         configuration.setProperty(TitanProperty.STORAGE_CASSANDRA_STORAGEDIR.getName(), storageDir);
@@ -68,6 +78,9 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
         configuration.setProperty(TitanProperty.STORAGE_INDEX_SEARCH_DIRECTORY.getName(), dbPath + "/" + TitanProperty.INDEX_SEARCH_DIRECTORY_NAME);
     }
 
+    /**
+     * Sets schema of the Titan database.
+     */
     private void setSchema() {
         internalGraph.makeKey(NodeProperty.NODE_NAME.t())
                 .dataType(String.class)
@@ -92,7 +105,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
 
     @Override
     public GraphDBConfiguration getGraphDBConfiguration() {
-        return titanProperties;
+        return TITAN_PROPERTIES;
     }
 
     @Override
@@ -103,7 +116,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
         internalGraph = TitanFactory.open(configuration);
         setSchema();
 
-        dbName = dbPath;
+        this.dbPath = dbPath;
         connected = true;
     }
 
@@ -114,8 +127,8 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
     }
 
     @Override
-    public String getDBName() {
-        return dbName;
+    public String getDBPath() {
+        return dbPath;
     }
 
     @Override

@@ -5,7 +5,8 @@ import cz.cvut.fit.manta.graphbench.core.access.direction.DirectionTranslation;
 import org.apache.commons.lang.Validate;
 
 /**
- *
+ * Class providing translation from local {@link Direction} instances to the
+ * {@link com.tinkerpop.blueprints.Direction} instances and the other way round.
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */

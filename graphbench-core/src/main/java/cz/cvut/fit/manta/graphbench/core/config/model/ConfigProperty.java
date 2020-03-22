@@ -81,9 +81,16 @@ public enum ConfigProperty implements ConfigurationProperty {
       * see the README file. */
     TEST_TYPE("TEST_TYPE", String.class);
 
+    /** Property name. */
     private String property;
+    /** Class of the property. */
     private Class clazz;
 
+    /**
+     * Constructor of the {@link ConfigProperty}.
+     * @param property Property name
+     * @param clazz Class of the property
+     */
     ConfigProperty(String property, Class clazz) {
         this.property = property;
         this.clazz = clazz;
