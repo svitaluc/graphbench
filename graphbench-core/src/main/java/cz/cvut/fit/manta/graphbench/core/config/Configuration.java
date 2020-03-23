@@ -1,7 +1,5 @@
 package cz.cvut.fit.manta.graphbench.core.config;
 
-import cz.cvut.fit.manta.graphbench.core.db.product.GraphDBType;
-//import cz.cvut.fit.manta.graphbench.test.TestType;
 import org.apache.commons.configuration2.AbstractConfiguration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.io.FileHandler;
@@ -119,17 +117,6 @@ public abstract class Configuration {
     public Integer getIntegerProperty(ConfigurationProperty property) {
         propertyCheck(property, Integer.class.toString());
         return config.getInt(property.getName());
-    }
-
-    /**
-     * Gets a property of {@link GraphDBType} type.
-     * @param property property to be acquired
-     * @return value of the property
-     */
-    public GraphDBType getGraphDBTypeProperty(ConfigurationProperty property) {
-        propertyCheck(property, String.class.toString());
-        String graphOption = config.getString(property.getName());
-        return GraphDBType.getGraphDBType(graphOption);
     }
 
     /**

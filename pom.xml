@@ -10,6 +10,7 @@
     <modules>
         <module>graphbench-core</module>
         <module>graphbench-test</module>
+        <module>graphbench-db</module>
         <module>graphbench-titan</module>
         <module>graphbench-janusgraph</module>
         <module>graphbench-tinkerpop2</module>
@@ -24,6 +25,7 @@
     <properties>
         <graphbench.core.version>1.0-SNAPSHOT</graphbench.core.version>
         <graphbench.test.version>1.0-SNAPSHOT</graphbench.test.version>
+        <graphbench.db.version>1.0-SNAPSHOT</graphbench.db.version>
         <graphbench.janusgraph.version>1.0-SNAPSHOT</graphbench.janusgraph.version>
         <graphbench.tinkerpop2.version>1.0-SNAPSHOT</graphbench.tinkerpop2.version>
         <graphbench.tinkerpop3.version>1.0-SNAPSHOT</graphbench.tinkerpop3.version>
@@ -51,6 +53,11 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>graphbench-test</artifactId>
                 <version>${graphbench.test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-db</artifactId>
+                <version>${graphbench.db.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>

@@ -30,6 +30,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>graphbench-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphbench-db</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

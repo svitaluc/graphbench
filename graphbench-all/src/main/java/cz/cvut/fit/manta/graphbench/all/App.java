@@ -2,7 +2,6 @@ package cz.cvut.fit.manta.graphbench.all;
 
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.csv.CSVOutput;
-import cz.cvut.fit.manta.graphbench.core.db.product.GraphDBType;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
 import cz.cvut.fit.manta.graphbench.core.csv.CSVType;
 import cz.cvut.fit.manta.graphbench.core.csv.ProcessCSV;
@@ -11,6 +10,8 @@ import cz.cvut.fit.manta.graphbench.core.dataset.DatasetImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBCommonImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.test.Test;
+import cz.cvut.manta.graphbench.db.GraphDBFactory;
+import cz.cvut.manta.graphbench.db.GraphDBType;
 import org.apache.log4j.Logger;
 import cz.cvut.fit.manta.graphbench.test.TestFactory;
 
@@ -67,8 +68,6 @@ public class App {
 		try{
 			Dataset dataset = new DatasetImpl(CONFIG.getStringProperty(ConfigProperty.DATASET_DIR));
 
-//			TestTypeImpl
-//			Test test = TestFactory.createTest(CONFIG.getTestTypeProperty(ConfigProperty.TEST_TYPE), dataset);
 			Test test = TestFactory.createTest(CONFIG.getStringProperty(ConfigProperty.TEST_TYPE), dataset);
 
 			runBenchmarkTest(dataset, test, db);
@@ -113,7 +112,7 @@ public class App {
 			return;
 		}
 
-		GraphDBType databaseType = CONFIG.getGraphDBTypeProperty(ConfigProperty.DATABASE_TYPE);
+		GraphDBType databaseType = GraphDBType.getGraphDBType(CONFIG.getStringProperty(ConfigProperty.DATABASE_TYPE));
 		db = new GraphDBCommonImpl(GraphDBFactory.getGraphDB(databaseType));
 
 		db.connect(databasePath, null, null);

@@ -106,7 +106,9 @@ and run such setting at once without a need to call the jar file with a differen
 * `graphbench-titan` - contain implementation for the Titan, so far the version 0.4.4 (also the last version
 supporting Persistit storage backend).
 
-## Extensions - Add Your Test
+## Extensions
+
+### Add Your Test
 
 In order to add a new test, you need to proceed with the following steps 
 (all mentioned classes are part of the package cz.cvut.fit.manta.graphbench.test):
@@ -120,7 +122,18 @@ enter in the config.properties file in the property TEST_TYPE.
 
 The corresponding classes further contain javadoc and comments that should help you with the creation of a new test.
 
-After these steps, recompile the project and run it normally, as explained above.
+After these steps, recompile the project (or the necessary modules) and run it normally, as explained above.
+
+### Add Your Database
+
+In order to add a new database, you need to proceed with the following steps:
+
+* create a new module `graphbench-<name-of-your-database>` with a class representing your database, that
+implements the interface `cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector`.
+* add your database as another database type to `cz.cvut.manta.graphbench.db.GraphDBType`.
+* include your database in `cz.cvut.manta.graphbench.db.GraphDBFactory`.
+
+After these steps, recompile the project (or the necessary modules) and run it normally, as explained above.
 
 
 ## Acknowledgements

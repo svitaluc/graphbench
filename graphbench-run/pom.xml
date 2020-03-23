@@ -22,6 +22,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>graphbench-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphbench-db</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
