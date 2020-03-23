@@ -1,4 +1,6 @@
-package cz.cvut.fit.manta.graphbench.core.test;
+package cz.cvut.fit.manta.graphbench.test;
+
+import cz.cvut.fit.manta.graphbench.test.benchmark.BasicOperationsTest;
 
 /**
  * Enumeration of all possible tests.
@@ -6,7 +8,7 @@ package cz.cvut.fit.manta.graphbench.core.test;
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
 public enum TestType {
-    /** The {@link cz.cvut.fit.manta.graphbench.core.test.benchmark.BasicOperationsTest} test. */
+    /** The {@link BasicOperationsTest} test. */
     BASIC_OPERATIONS("BASIC_OPERATIONS");
 
     /** Name of the test that must eventually match with the property

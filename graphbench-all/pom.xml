@@ -26,6 +26,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>graphbench-titan</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphbench-test</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

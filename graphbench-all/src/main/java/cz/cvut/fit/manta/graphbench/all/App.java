@@ -10,9 +10,9 @@ import cz.cvut.fit.manta.graphbench.core.dataset.Dataset;
 import cz.cvut.fit.manta.graphbench.core.dataset.DatasetImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBCommonImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
-import org.apache.log4j.Logger;
 import cz.cvut.fit.manta.graphbench.core.test.Test;
-import cz.cvut.fit.manta.graphbench.core.test.TestFactory;
+import org.apache.log4j.Logger;
+import cz.cvut.fit.manta.graphbench.test.TestFactory;
 
 import java.io.IOException;
 
@@ -66,7 +66,10 @@ public class App {
 	private void startBody() {
 		try{
 			Dataset dataset = new DatasetImpl(CONFIG.getStringProperty(ConfigProperty.DATASET_DIR));
-			Test test = TestFactory.createTest(CONFIG.getTestTypeProperty(ConfigProperty.TEST_TYPE), dataset);
+
+//			TestTypeImpl
+//			Test test = TestFactory.createTest(CONFIG.getTestTypeProperty(ConfigProperty.TEST_TYPE), dataset);
+			Test test = TestFactory.createTest(CONFIG.getStringProperty(ConfigProperty.TEST_TYPE), dataset);
 
 			runBenchmarkTest(dataset, test, db);
 

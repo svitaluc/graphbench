@@ -1,4 +1,4 @@
-package cz.cvut.fit.manta.graphbench.core.test.benchmark;
+package cz.cvut.fit.manta.graphbench.test.benchmark;
 
 import cz.cvut.fit.manta.graphbench.core.access.Edge;
 import cz.cvut.fit.manta.graphbench.core.access.Vertex;

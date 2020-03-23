@@ -109,9 +109,9 @@ supporting Persistit storage backend).
 ## Extensions - Add Your Test
 
 In order to add a new test, you need to proceed with the following steps 
-(all mentioned classes are part of the package cz.cvut.fit.manta.graphbench.core.test):
+(all mentioned classes are part of the package cz.cvut.fit.manta.graphbench.test):
 
-* specific implementations of tests are placed in the package cz.cvut.fit.manta.graphbench.core.test.benchmark. 
+* specific implementations of tests are placed in the package cz.cvut.fit.manta.graphbench.test.benchmark. 
 Therefore, your new test class should be part of the benchmark package as well.
 * the new test class must implement the ITest interface.
 * the TestType enumeration must be extended with your new test. The given name will have to match the name you 

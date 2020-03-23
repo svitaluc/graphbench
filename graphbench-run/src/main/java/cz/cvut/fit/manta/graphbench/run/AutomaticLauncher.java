@@ -19,7 +19,7 @@ public class AutomaticLauncher {
      */
     public static void main(String[] args) {
         // ! Fill in the dataset directory !
-        String datasetDir = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-1k-e-1k";
+        String datasetDir = "";
 
         Launcher launcher = new Launcher();
 
