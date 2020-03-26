@@ -34,19 +34,19 @@ public enum TitanProperty implements ConfigurationProperty {
     STORAGE_CASSANDRA_STORAGEDIR("storage.cassandra.storagedir", String.class);
 
     /** Name of the directory in which data about the index search is stored. */
-    public static final String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
+    public final static String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
 
     /** Property name. */
     private String property;
     /** Class of the property. */
-    private Class clazz;
+    private Class<?> clazz;
 
     /**
      * Constructor of the {@link TitanProperty}.
      * @param property Name of the property
      * @param clazz Class of the property
      */
-    TitanProperty(String property, Class clazz) {
+    TitanProperty(String property, Class<?> clazz) {
         this.property = property;
         this.clazz = clazz;
     }
@@ -57,7 +57,7 @@ public enum TitanProperty implements ConfigurationProperty {
     }
 
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 }

@@ -14,14 +14,14 @@ public enum TitanPomProperty implements ConfigurationProperty {
     /** Property name. */
     private String property;
     /** Class of the property. */
-    private Class clazz;
+    private Class<?> clazz;
 
     /**
      * Constructor of the {@link TitanPomProperty}.
      * @param property Name of the property
      * @param clazz CLass of the property
      */
-    TitanPomProperty(String property, Class clazz) {
+    TitanPomProperty(String property, Class<?> clazz) {
         this.property = property;
         this.clazz = clazz;
     }
@@ -32,7 +32,7 @@ public enum TitanPomProperty implements ConfigurationProperty {
     }
 
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 }

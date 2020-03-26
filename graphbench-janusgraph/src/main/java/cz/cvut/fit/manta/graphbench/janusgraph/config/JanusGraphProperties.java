@@ -29,7 +29,7 @@ public class JanusGraphProperties extends Configuration implements GraphDBConfig
     /** Relative path to the file containing pom properties of the graphbench-janusgraph module. */
     private final static String POM_PROPERTIES_PATH = "pom-properties" + File.separator + "janusgraph-pom.properties";
     /** Logger. */
-    private static final Logger LOG = Logger.getLogger(JanusGraphProperties.class);
+    private final static Logger LOG = Logger.getLogger(JanusGraphProperties.class);
 
     /**
      * Constructor of the {@link JanusGraphProperties}

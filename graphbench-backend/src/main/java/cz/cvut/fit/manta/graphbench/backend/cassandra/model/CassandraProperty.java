@@ -32,23 +32,23 @@ public enum CassandraProperty implements ConfigurationProperty {
     DATA_FILE_DIRECTORIES("data_file_directories", String.class);
 
     /** Name of the directory where the Cassandra data will be stored. */
-    public static final String DATA_DIRECTORY_NAME = "data";
+    public final static String DATA_DIRECTORY_NAME = "data";
     /** Name of the directory where the Cassandra commit logs will be stored. */
-    public static final String COMMITLOG_DIRECTORY_NAME = "commitlog";
+    public final static String COMMITLOG_DIRECTORY_NAME = "commitlog";
     /** Name of the directory where the Cassandra saved caches will be stored. */
-    public static final String SAVED_CACHES_DIRECTORY_NAME = "saved_caches";
+    public final static String SAVED_CACHES_DIRECTORY_NAME = "saved_caches";
 
     /** Name of the property. */
     private String property;
     /** Class of the property. */
-    private Class clazz;
+    private Class<?> clazz;
 
     /**
      * Constructor of the {@link CassandraProperty}.
      * @param property Name of the property
      * @param clazz Class of the property
      */
-    CassandraProperty(String property, Class clazz) {
+    CassandraProperty(String property, Class<?> clazz) {
         this.property = property;
         this.clazz = clazz;
     }
@@ -59,7 +59,7 @@ public enum CassandraProperty implements ConfigurationProperty {
     }
 
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 }

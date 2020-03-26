@@ -84,14 +84,14 @@ public enum ConfigProperty implements ConfigurationProperty {
     /** Property name. */
     private String property;
     /** Class of the property. */
-    private Class clazz;
+    private Class<?> clazz;
 
     /**
      * Constructor of the {@link ConfigProperty}.
      * @param property Property name
      * @param clazz Class of the property
      */
-    ConfigProperty(String property, Class clazz) {
+    ConfigProperty(String property, Class<?> clazz) {
         this.property = property;
         this.clazz = clazz;
     }
@@ -102,7 +102,7 @@ public enum ConfigProperty implements ConfigurationProperty {
     }
 
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 }

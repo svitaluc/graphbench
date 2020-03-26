@@ -46,19 +46,19 @@ public enum JanusGraphProperty implements ConfigurationProperty {
     INDEX_SEARCH_BACKEND("index.search.backend", String.class);
 
     /** Name of the directory in which data about the index search is stored. */
-    public static final String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
+    public final static String INDEX_SEARCH_DIRECTORY_NAME = "searchindex";
 
     /** Property name. */
     private String property;
     /** Class of the property. */
-    private Class clazz;
+    private Class<?> clazz;
 
     /**
      * Constructor of the {@link JanusGraphProperty}.
      * @param property Name of the property
      * @param clazz Class of the property
      */
-    JanusGraphProperty(String property, Class clazz) {
+    JanusGraphProperty(String property, Class<?> clazz) {
         this.property = property;
         this.clazz = clazz;
     }
@@ -69,7 +69,7 @@ public enum JanusGraphProperty implements ConfigurationProperty {
     }
 
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 }

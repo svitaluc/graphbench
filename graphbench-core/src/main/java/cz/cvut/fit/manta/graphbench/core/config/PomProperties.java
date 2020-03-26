@@ -17,7 +17,7 @@ import java.io.File;
 public class PomProperties extends Configuration {
 
     /** Logger. */
-    private static final Logger LOG = Logger.getLogger(PomProperties.class);
+    private final static Logger LOG = Logger.getLogger(PomProperties.class);
 
     /**
      * Constructor of the {@link PomProperties}.

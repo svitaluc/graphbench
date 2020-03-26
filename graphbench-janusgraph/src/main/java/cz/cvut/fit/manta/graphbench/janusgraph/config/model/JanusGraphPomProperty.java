@@ -14,14 +14,14 @@ public enum JanusGraphPomProperty implements ConfigurationProperty {
     /** Property name. */
     private String property;
     /** Class of the property. */
-    private Class clazz;
+    private Class<?> clazz;
 
     /**
      * Constructor of the {@link JanusGraphPomProperty}.
      * @param property Name of the property
      * @param clazz CLass of the property
      */
-    JanusGraphPomProperty(String property, Class clazz) {
+    JanusGraphPomProperty(String property, Class<?> clazz) {
         this.property = property;
         this.clazz = clazz;
     }
@@ -32,7 +32,7 @@ public enum JanusGraphPomProperty implements ConfigurationProperty {
     }
 
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 }

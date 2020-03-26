@@ -14,5 +14,5 @@ public interface ConfigurationProperty {
     /**
      * @return Class type of the property value.
      */
-    Class getClazz();
+    Class<?> getClazz();
 }

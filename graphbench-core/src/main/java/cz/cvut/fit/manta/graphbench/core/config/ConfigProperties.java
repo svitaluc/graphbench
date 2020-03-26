@@ -17,7 +17,7 @@ import java.io.File;
  */
 public class ConfigProperties extends Configuration {
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(ConfigProperties.class);
+    private final static Logger LOG = Logger.getLogger(ConfigProperties.class);
     /** Instance of configuration properties. */
     private static ConfigProperties instance;
     /** Relative path of the configuration properties. */
