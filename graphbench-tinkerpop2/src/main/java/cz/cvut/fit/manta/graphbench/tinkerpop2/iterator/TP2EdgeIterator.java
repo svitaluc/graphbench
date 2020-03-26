@@ -20,6 +20,6 @@ public class TP2EdgeIterator extends EdgeIterator<TP2Edge, com.tinkerpop.bluepri
 
     @Override
     public TP2Edge next() {
-        return new TP2Edge(iterator.next());
+        return new TP2Edge(getIterator().next());
     }
 }

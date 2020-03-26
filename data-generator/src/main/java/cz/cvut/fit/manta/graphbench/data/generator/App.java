@@ -6,9 +6,11 @@ import java.io.IOException;
 
 /**
  * Main class for running data generation. Three attributes must be set
- *  <li> OUTPUT_PATH - directory in which the generated data will be stored </li>
- *  <li> VERTICES_AMOUNT - number of vertices to be generated </li>
- *  <li> EDGES_AMOUNT - number of edges to be generated </li>
+ *  <ul>
+ *      <li> OUTPUT_PATH - directory in which the generated data will be stored </li>
+ *      <li> VERTICES_AMOUNT - number of vertices to be generated </li>
+ *      <li> EDGES_AMOUNT - number of edges to be generated </li>
+ *  </ul>
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */

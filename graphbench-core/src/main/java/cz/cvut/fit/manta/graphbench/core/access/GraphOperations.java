@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class GraphOperations<V extends Vertex<?,?>> {
 
     /** Database representation. */
-    protected GraphDBConnector<?,?> db;
+    private GraphDBConnector<?,?> db;
 
     /**
      * Constructor for the {@link GraphOperations}.

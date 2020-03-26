@@ -22,6 +22,6 @@ public class TP3VertexIterator extends VertexIterator<TP3Vertex, org.apache.tink
 
     @Override
     public TP3Vertex next() {
-        return new TP3Vertex(iterator.next());
+        return new TP3Vertex(getIterator().next());
     }
 }

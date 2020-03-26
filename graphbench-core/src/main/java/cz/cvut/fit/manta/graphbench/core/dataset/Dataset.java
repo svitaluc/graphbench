@@ -12,9 +12,14 @@ import java.util.Collection;
  */
 public interface Dataset {
 
-    /** Get directory path of the dataset. */
+    /**
+     * @return Directory path of the dataset
+     */
     String getDatasetDir();
 
-    /** Get collection of all vertex ids in the dataset. */
-    Collection<String> getVerticesIds(Translator trans, Integer seed);
+    /**
+     * @param trans Translator of dataset and database element ids.
+     * @return Collection of all vertex ids in the dataset.
+     */
+    Collection<String> getVerticesIds(Translator trans);
 }

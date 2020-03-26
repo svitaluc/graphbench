@@ -2,10 +2,8 @@ package cz.cvut.fit.manta.graphbench.core.dataset;
 
 import cz.cvut.fit.manta.graphbench.core.db.Translator;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Basic implementation of the {@link Dataset} interface.
@@ -31,7 +29,7 @@ public class DatasetImpl implements Dataset {
     }
 
     @Override
-    public Collection<String> getVerticesIds(Translator trans, Integer seed) {
+    public Collection<String> getVerticesIds(Translator trans) {
         return Collections.unmodifiableCollection(trans.getAllNodeIds());
     }
 }

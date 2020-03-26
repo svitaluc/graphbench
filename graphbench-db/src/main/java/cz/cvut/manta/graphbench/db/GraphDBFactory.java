@@ -1,7 +1,5 @@
 package cz.cvut.manta.graphbench.db;
 
-import cz.cvut.fit.manta.graphbench.core.access.Edge;
-import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.janusgraph.JanusGraphDB;
 import cz.cvut.fit.manta.graphbench.titan.TitanDB;

@@ -63,11 +63,13 @@ public class Util {
             MavenXpp3Reader reader = new MavenXpp3Reader();
             Model model;
             try {
-                if ((new File("pom.xml")).exists())
+                if ((new File("pom.xml")).exists()) {
                     model = reader.read(new FileReader("pom.xml"));
-                else
+                }
+                else {
                     model = reader.read(new InputStreamReader(Util.class.getResourceAsStream(
-                             "/META-INF/maven/cz.cvut.fit.manta/graphbench-all/pom.xml")));
+                            "/META-INF/maven/cz.cvut.fit.manta/graphbench-all/pom.xml")));
+                }
                 version = model.getVersion();
             } catch (IOException | XmlPullParserException e) {
                 logger.error("Couldn't read the project version from a pom file.", e);

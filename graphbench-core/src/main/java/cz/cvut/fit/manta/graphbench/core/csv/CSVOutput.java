@@ -29,7 +29,7 @@ public class CSVOutput {
     /** Logger. **/
     private final static Logger LOGGER = Logger.getLogger(CSVOutput.class);
     /** Properties of the main configuration file. **/
-    private final ConfigProperties CONFIG = ConfigProperties.getInstance();
+    private final ConfigProperties config = ConfigProperties.getInstance();
 
     /**
      * Constructor for {@link CSVOutput}.
@@ -72,7 +72,7 @@ public class CSVOutput {
         }
 
         line.add(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        line.add(CONFIG.getStringProperty(ConfigProperty.DATABASE_TYPE));
+        line.add(config.getStringProperty(ConfigProperty.DATABASE_TYPE));
         line.add(conf.getDatabaseVersion());
 
         line.add(conf.getIndexBackend());
@@ -85,7 +85,7 @@ public class CSVOutput {
             line.add(dataset.getDatasetDir());
         }
 
-        line.add(CONFIG.getStringProperty(ConfigProperty.TEST_TYPE));
+        line.add(config.getStringProperty(ConfigProperty.TEST_TYPE));
         line.add(testName);
         line.add(Long.toString(time));
 

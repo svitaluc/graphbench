@@ -48,7 +48,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	/** Properties of the Cassandra backend storage. */
 	private CassandraYaml cassandraProperties;
 	/** Properties of the JanusGraph, immutable. */
-	private final static JanusGraphProperties JANUSGRAPH_PROPERTIES = JanusGraphProperties.getInstance();
+	private final static JanusGraphProperties janusGraphProperties = JanusGraphProperties.getInstance();
 	/** Logger. */
 	private final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
 
@@ -82,7 +82,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	 * @param dbPath Directory in which supporting JanusGraph data will be stored
 	 */
 	private void setConfiguration(String dbPath) {
-		Util.setConfiguration(configuration, JANUSGRAPH_PROPERTIES);
+		Util.setConfiguration(configuration, janusGraphProperties);
 
 		String cassandraYamlPath = cassandraProperties.getAbsolutePropertiesPath();
 		configuration.setProperty(JanusGraphProperty.STORAGE_CONF_FILE.getName(), "file:\\\\\\" + cassandraYamlPath);
@@ -119,7 +119,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 
 	@Override
 	public GraphDBConfiguration getGraphDBConfiguration() {
-		return JANUSGRAPH_PROPERTIES;
+		return janusGraphProperties;
 	}
 
 	@Override
@@ -224,16 +224,16 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	public void addVertex(String[] parts, Translator trans) {
 		TP3Vertex node = new TP3Vertex(addEmptyVertex().getVertex());
 
-		trans.putTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
+		trans.putTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
 
-		node.property(NodeProperty.NODE_NAME.t(), parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
-		node.property(NodeProperty.NODE_TYPE.t(), CONFIG.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
+		node.property(NodeProperty.NODE_NAME.t(), parts[config.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
+		node.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
 
 		//Parent edge
-		if (parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
-			String parentString = trans.getNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+		if (parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
+			String parentString = trans.getNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
-			TP3Vertex parentNode = (TP3Vertex) trans.getTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+			TP3Vertex parentNode = (TP3Vertex) trans.getTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 			if (parentNode == null || parentNode.isVertexNull()) {
 				parentNode = getVertex(parentString);
 			}
@@ -243,7 +243,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 			} else {
 				LOG.warn(MessageFormat.format(
 						"Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-						parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
+						parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
 			}
 		}
 	}

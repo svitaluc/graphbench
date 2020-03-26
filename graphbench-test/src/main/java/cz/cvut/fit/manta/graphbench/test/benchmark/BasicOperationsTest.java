@@ -17,9 +17,11 @@ import java.util.concurrent.Callable;
 
 /**
  * Test for basic operations. It contains testing of
- *  <li> get all vertices </li>
- *  <li> get all vertices with their edges </li>
- *  <li> get all vertices with their neighbors </li>
+ *  <ul>
+ *    <li> get all vertices </li>
+ *    <li> get all vertices with their edges </li>
+ *    <li> get all vertices with their neighbors </li>
+ *  </ul>
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
@@ -50,29 +52,29 @@ public class BasicOperationsTest implements Test {
     public void test(ProcessCSV csv, GraphDBConnector<?,?> db) {
         results = new ArrayList<>();
         results.add(new TestResult(System.currentTimeMillis(), "import", csv.getImportTime()));
-        final Translator TRANSLATOR = csv.getTranslator();
+        final Translator translator = csv.getTranslator();
 
         // GET VERTICES TEST
         runSubTest("getVertices", "vertices",
-                () -> getVertices(TRANSLATOR, db));
+                () -> getVertices(translator, db));
 
         // GET VERTICES WITH EDGES TEST
         runSubTest("getVerticesWithEdges", "vertices with some edges",
-                () -> getVerticesWithEdges(TRANSLATOR, db));
+                () -> getVerticesWithEdges(translator, db));
 
         // GET VERTICES WITH NEIGHBORS TEST
         runSubTest("getVerticesWithNeighbors", "vertices with some neighbors",
-                () -> getVerticesWithNeighbors(TRANSLATOR, db, 789123));
+                () -> getVerticesWithNeighbors(translator, db));
 
         //-------------------------------------------------
 
         // GET VERTICES WITH EDGES TEST
         runSubTest("getVerticesWithEdges", "vertices with some edges",
-                () -> getVerticesWithEdges(TRANSLATOR, db));
+                () -> getVerticesWithEdges(translator, db));
 
         // GET VERTICES WITH NEIGHBORS TEST
         runSubTest("getVerticesWithNeighbors", "vertices with some neighbors",
-                () -> getVerticesWithNeighbors(TRANSLATOR, db, 789123));
+                () -> getVerticesWithNeighbors(translator, db));
     }
 
     /**
@@ -129,7 +131,7 @@ public class BasicOperationsTest implements Test {
      * @return {@link Set} of vertices
      */
     private Set<Vertex<?,?>> getVertices(Translator translator, GraphDBConnector<?,?> db) {
-        Collection<String> idSet = dataset.getVerticesIds(translator, 123456);
+        Collection<String> idSet = dataset.getVerticesIds(translator);
         LOGGER.info("idSet size: " + idSet.size());
         Set<Vertex<?,?>> result = new HashSet<>();
 
@@ -148,7 +150,7 @@ public class BasicOperationsTest implements Test {
      * @return {@link Map} containing vertex as a key and a {@link Set} of its edges as its value
      */
     private Map<Vertex<?,?>, Set<Edge<?,?>>> getVerticesWithEdges(Translator translator, GraphDBConnector<?,?> db) {
-        Collection<String> idSet = dataset.getVerticesIds(translator, 456789);
+        Collection<String> idSet = dataset.getVerticesIds(translator);
         Map<Vertex<?,?>, Set<Edge<?,?>>> result = new HashMap<>();
 
         List<String> idList = new ArrayList<>(idSet);
@@ -179,8 +181,8 @@ public class BasicOperationsTest implements Test {
      * @param db Connector to a graph database
      * @return {@link Map} containing vertex as a key and a {@link Set} of its neighbors (vertices) as its value
      */
-    private Map<Vertex<?,?>, Set<Vertex<?,?>>> getVerticesWithNeighbors(Translator translator, GraphDBConnector<?,?> db, Integer seed) {
-        Collection<String> idSet = dataset.getVerticesIds(translator, seed);
+    private Map<Vertex<?,?>, Set<Vertex<?,?>>> getVerticesWithNeighbors(Translator translator, GraphDBConnector<?,?> db) {
+        Collection<String> idSet = dataset.getVerticesIds(translator);
         Map<Vertex<?,?>, Set<Vertex<?,?>>> result = new HashMap<>();
         List<String> idList = new ArrayList<>(idSet);
 

@@ -12,7 +12,7 @@ public enum GraphDBType {
     TITAN("TITAN");
 
     /** Name of the graph database that should correspond with a value in the config file. */
-    String name;
+    private String name;
 
     /**
      * Constructor of the {@link GraphDBType}.

@@ -26,7 +26,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
     /** Traversal source of the TinkerPop 3 framework. */
     private GraphTraversalSource traversal;
     /** Configuration of the config.properties. */
-    private final Configuration CONFIG = ConfigProperties.getInstance();
+    private final Configuration config = ConfigProperties.getInstance();
     /** Utility for translation of local and TinkerPop 2 direction. */
     private TP3Direction tp3Direction = new TP3Direction();
 
@@ -43,7 +43,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
     public List<TP3Vertex> getChildren(TP3Vertex node) {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
-        Iterator<Vertex> children = traversal.V(node.getId()).in(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+        Iterator<Vertex> children = traversal.V(node.getId()).in(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         while (children.hasNext()) {
             Vertex v = children.next();
             childList.add(new TP3Vertex(v));
@@ -60,8 +60,8 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
         List<TP3Vertex> childList = new ArrayList<>();
         long startTime = System.nanoTime();
         Iterator<Vertex> children = traversal.V(node.getId())
-                .inE(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
-                .has(CONFIG.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
+                .inE(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
                 .outV();
 
         long endTime = System.nanoTime();
@@ -79,7 +79,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
     @Override
     public TP3Vertex getParent(TP3Vertex node) {
         long startTime = System.nanoTime();
-        Iterator<Vertex> parentIt = traversal.V(node.getId()).out(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+        Iterator<Vertex> parentIt = traversal.V(node.getId()).out(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
 
         Vertex parent = parentIt.next();
 

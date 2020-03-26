@@ -14,6 +14,10 @@ import java.util.Iterator;
  */
 public abstract class VertexIterator<V extends Vertex<?,?>, I> extends ElementIterator<V, I> {
 
+    /**
+     * Constructor of the {@link VertexIterator}.
+     * @param iterator Iterator of an inner vertex representation.
+     */
     public VertexIterator(Iterator<I> iterator) {
         super(iterator);
     }

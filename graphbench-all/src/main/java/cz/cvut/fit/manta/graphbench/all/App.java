@@ -31,7 +31,7 @@ public class App {
 	/** Logger. */
 	private final static Logger LOG = Logger.getLogger(App.class);
 	/** User configuration set in the config.properties file. */
-	private final ConfigProperties CONFIG = ConfigProperties.getInstance();
+	private final ConfigProperties config = ConfigProperties.getInstance();
 	/** Database connector. */
 	private GraphDBConnector<Vertex<?,?>, Edge<?,?>> db;
 
@@ -68,9 +68,9 @@ public class App {
 	 */
 	private void startBody() {
 		try{
-			Dataset dataset = new DatasetImpl(CONFIG.getStringProperty(ConfigProperty.DATASET_DIR));
+			Dataset dataset = new DatasetImpl(config.getStringProperty(ConfigProperty.DATASET_DIR));
 
-			Test test = TestFactory.createTest(CONFIG.getStringProperty(ConfigProperty.TEST_TYPE), dataset);
+			Test test = TestFactory.createTest(config.getStringProperty(ConfigProperty.TEST_TYPE), dataset);
 
 			runBenchmarkTest(dataset, test, db);
 
@@ -92,7 +92,7 @@ public class App {
 	 * @param test {@link Test} implementation providing results of its run.
 	 */
 	private void writeTestResults(Test test) {
-		CSVOutput csvOut = new CSVOutput(CONFIG.getStringProperty(ConfigProperty.CSV_OUTPUT_DIRECTORY));
+		CSVOutput csvOut = new CSVOutput(config.getStringProperty(ConfigProperty.CSV_OUTPUT_DIRECTORY));
 		try {
 			csvOut.writeTestToCSV(test, db.getGraphDBConfiguration());
 		}
@@ -112,14 +112,14 @@ public class App {
 	private void connectDB() {
 		String databasePath;
 		try {
-			databasePath = CONFIG.getPathProperty(ConfigProperty.DATABASE_DIR);
+			databasePath = config.getPathProperty(ConfigProperty.DATABASE_DIR);
 		} catch (IOException e) {
-			LOG.error("Database directory " + CONFIG.getStringProperty(ConfigProperty.DATABASE_DIR)
+			LOG.error("Database directory " + config.getStringProperty(ConfigProperty.DATABASE_DIR)
 					+ "can't be converted to absolute path", e);
 			return;
 		}
 
-		GraphDBType databaseType = GraphDBType.getGraphDBType(CONFIG.getStringProperty(ConfigProperty.DATABASE_TYPE));
+		GraphDBType databaseType = GraphDBType.getGraphDBType(config.getStringProperty(ConfigProperty.DATABASE_TYPE));
 		db = new GraphDBCommonImpl((GraphDBConnector<Vertex<?,?>, Edge<?,?>>)GraphDBFactory.getGraphDB(databaseType));
 
 		db.connect(databasePath, null, null);
@@ -132,9 +132,9 @@ public class App {
 	private void connectDB(GraphDBConnector<Vertex<?,?>, Edge<?,?>> connector) {
 		String databasePath;
 		try {
-			databasePath = CONFIG.getPathProperty(ConfigProperty.DATABASE_DIR);
+			databasePath = config.getPathProperty(ConfigProperty.DATABASE_DIR);
 		} catch (IOException e) {
-			LOG.error("Database directory " + CONFIG.getStringProperty(ConfigProperty.DATABASE_DIR)
+			LOG.error("Database directory " + config.getStringProperty(ConfigProperty.DATABASE_DIR)
 					+ "can't be converted to absolute path", e);
 			return;
 		}

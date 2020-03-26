@@ -20,6 +20,6 @@ public class TP2VertexIterator extends VertexIterator<TP2Vertex, com.tinkerpop.b
 
     @Override
     public TP2Vertex next() {
-        return new TP2Vertex(iterator.next());
+        return new TP2Vertex(getIterator().next());
     }
 }

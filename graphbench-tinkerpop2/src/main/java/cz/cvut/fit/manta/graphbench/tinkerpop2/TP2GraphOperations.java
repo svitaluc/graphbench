@@ -24,7 +24,7 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     /** Utility for translation of local and TinkerPop 2 direction. */
     private TP2Direction tp2Direction = new TP2Direction();
     /** Configuration of the config.properties. */
-    private final Configuration CONFIG = ConfigProperties.getInstance();
+    private final Configuration config = ConfigProperties.getInstance();
 
     /**
      * Constructor of the {@link TP2GraphOperations}.
@@ -39,7 +39,7 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     public List<TP2Vertex> getChildren(TP2Vertex node) {
         List<TP2Vertex> childList = new ArrayList<>();
         Iterable<Vertex> children = node.getVertex().query()
-                .labels(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .labels(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .direction(com.tinkerpop.blueprints.Direction.IN).vertices();
         for(Vertex v: children) {
             childList.add(new TP2Vertex(v));
@@ -51,8 +51,8 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     public List<TP2Vertex> getChildrenByName(TP2Vertex node, String name) {
         List<TP2Vertex> childList = new ArrayList<>();
         Iterable<Vertex> children = node.getVertex().query()
-                .has(CONFIG.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
-                .labels(CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
+                .has(config.getStringProperty(ConfigProperty.EDGE_CHILD_NAME), name)
+                .labels(config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL))
                 .direction(com.tinkerpop.blueprints.Direction.IN)
                 .vertices();
 
@@ -65,7 +65,7 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     @Override
     public TP2Vertex getParent(TP2Vertex node) {
         Iterable<Vertex> parentIt = node.getVertex()
-                .getVertices(com.tinkerpop.blueprints.Direction.OUT, CONFIG.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
+                .getVertices(com.tinkerpop.blueprints.Direction.OUT, config.getStringProperty(ConfigProperty.EDGE_PARENT_LABEL));
         Vertex parent = parentIt.iterator().next();
 
         if (parentIt.iterator().hasNext()) {

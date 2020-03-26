@@ -48,7 +48,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
     /** Logger. */
     private final static Logger LOG = Logger.getLogger(TitanDB.class);
     /** Properties of the Titan, immutable. */
-    private final static TitanProperties TITAN_PROPERTIES = TitanProperties.getInstance();
+    private final static TitanProperties titanProperties = TitanProperties.getInstance();
     /** Properties of the Cassandra backend storage. */
     private CassandraYaml cassandraProperties;
 
@@ -66,7 +66,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
      * @param dbPath Directory in which supporting Titan data will be stored
      */
     private void setConfiguration(String dbPath) {
-        Util.setConfiguration(configuration, TITAN_PROPERTIES);
+        Util.setConfiguration(configuration, titanProperties);
 
         configuration.setProperty(TitanProperty.STORAGE_DIRECTORY.getName(), dbPath);
         String cassandraYamlUrl = "file:\\\\\\" + cassandraProperties.getAbsolutePropertiesPath();
@@ -105,7 +105,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
 
     @Override
     public GraphDBConfiguration getGraphDBConfiguration() {
-        return TITAN_PROPERTIES;
+        return titanProperties;
     }
 
     @Override
@@ -213,17 +213,17 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
     public void addVertex(String[] parts, Translator trans) {
         TP2Vertex node = new TP2Vertex(addEmptyVertex().getVertex());
 
-        trans.putTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
+        trans.putTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_ID)], node);
 
-        node.property(NodeProperty.NODE_NAME.t(), parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
-        node.property(NodeProperty.NODE_TYPE.t(), CONFIG.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
+        node.property(NodeProperty.NODE_NAME.t(), parts[config.getIntegerProperty(ConfigProperty.NODE_I_NAME)]);
+        node.property(NodeProperty.NODE_TYPE.t(), config.getStringProperty(ConfigProperty.VERTEX_NODE_TYPE));
 
 
         //Parent edge
-        if (parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
-            String parentString = trans.getNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+        if (parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)].length() > 0) {
+            String parentString = trans.getNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
 
-            TP2Vertex parentNode = (TP2Vertex) trans.getTempNode(parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
+            TP2Vertex parentNode = (TP2Vertex) trans.getTempNode(parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)]);
             if (parentNode == null || parentNode.isVertexNull()) {
                 try {
                     parentNode = getVertex(parentString);
@@ -238,7 +238,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
             } else {
                 LOG.warn(MessageFormat.format(
                         "Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
-                        parts[CONFIG.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
+                        parts[config.getIntegerProperty(ConfigProperty.NODE_I_PARENT)], node.getId().toString()));
             }
         }
     }

@@ -17,7 +17,7 @@ import java.util.List;
 public interface GraphDBConnector<V extends Vertex<?,?>, E extends Edge<?,?>> {
 
 	/** Instance for reading properties from a config file. */
-	public final ConfigProperties CONFIG = ConfigProperties.getInstance();
+	public final ConfigProperties config = ConfigProperties.getInstance();
 
 	/**
 	 * @return Configuration of the given graph database.

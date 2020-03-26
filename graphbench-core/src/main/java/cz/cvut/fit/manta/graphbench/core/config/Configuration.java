@@ -26,7 +26,8 @@ public abstract class Configuration {
 
     /**
      * Sets configuration variable.
-     * @param config configuration from a file
+     * @param config Configuration from a file
+     * @param configPath Path of the configuration file
      */
     public void setConfig(AbstractConfiguration config, String configPath) {
         this.config = config;
@@ -38,7 +39,7 @@ public abstract class Configuration {
      * @param configLoaded Already loaded configuration
      * @param configPath Path to the configuration file
      */
-    protected void setFileHandler(AbstractConfiguration configLoaded, String configPath) {
+    private void setFileHandler(AbstractConfiguration configLoaded, String configPath) {
         fileHandler = new FileHandler((FileBasedConfiguration)configLoaded);
         fileHandler.setFile(new File(configPath));
     }
@@ -92,7 +93,8 @@ public abstract class Configuration {
      * is stated in the config file.
      * @param property property to be read
      * @return String representing absolute path to a file/directory in the property
-     */
+     * @throws IOException If the given path does not exist
+    */
     public String getPathProperty(ConfigurationProperty property) throws IOException {
         String originalPath = getStringProperty(property);
         File tmp = new File(originalPath);

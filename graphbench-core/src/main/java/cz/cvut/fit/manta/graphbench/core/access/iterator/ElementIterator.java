@@ -12,12 +12,14 @@ import java.util.Iterator;
  */
 public abstract class ElementIterator<E, I> {
     /** Iterator of an inner element - element of a concrete language in a given graph database. */
-    protected Iterator<I> iterator;
+    private final Iterator<I> iterator;
 
     /**
      * Constructor of the {@link ElementIterator}.
      */
-    public ElementIterator(){}
+    public ElementIterator(){
+        iterator = null;
+    }
 
     /**
      * Constructor of the {@link ElementIterator}.
@@ -40,5 +42,12 @@ public abstract class ElementIterator<E, I> {
      */
     public boolean hasNext() {
         return iterator.hasNext();
+    }
+
+    /**
+     * @return Iterator of an inner element - element of a concrete language in a given graph database.
+     */
+    protected Iterator<I> getIterator() {
+        return iterator;
     }
 }
