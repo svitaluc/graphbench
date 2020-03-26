@@ -5,6 +5,7 @@ import cz.cvut.fit.manta.graphbench.all.App;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import org.apache.log4j.Logger;
 
 /**
  * Class for creating processes with their output provided in a standard output.
@@ -13,7 +14,9 @@ import java.io.InputStreamReader;
  */
 final class Processes {
     /** New line of a given system. */
-    private static final String NEWLINE = System.getProperty("line.separator");
+    private final static String NEWLINE = System.getProperty("line.separator");
+    /** Logger */
+    private final static Logger LOGGER = Logger.getLogger(Processes.class);
 
     /**
      * Creates and runs a process defined with the {@code command} parameter. It provides its output in a standard
@@ -34,9 +37,7 @@ final class Processes {
                 String line = in.readLine();
                 if (line == null || line.contains(App.BENCHMARK_FINISHED))
                     break;
-                /* This is a valid usage of System.out.println as we just move the original output to the local one
-                /* (we don't want to log the original output, but have it as an output in console) */
-                System.out.println(line);
+                LOGGER.info(line);
                 result.append(line).append(NEWLINE);
             }
         }

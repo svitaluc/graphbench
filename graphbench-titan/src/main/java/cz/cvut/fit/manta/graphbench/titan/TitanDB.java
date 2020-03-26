@@ -193,7 +193,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
         Iterable<Result<Vertex>> it = searchVertexWithIndexQuery(name);
         List<TP2Vertex> result = new ArrayList<>();
 
-        System.out.println("Get vertex by name:");
+        LOG.debug("Get vertex by name:");
         for (Result<Vertex> v : it) {
             result.add(new TP2Vertex(v.getElement()));
         }
