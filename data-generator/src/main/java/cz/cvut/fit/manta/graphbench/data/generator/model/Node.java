@@ -7,7 +7,7 @@ package cz.cvut.fit.manta.graphbench.data.generator.model;
  */
 public class Node extends Element {
     /** Name of the resulting file containing node data. */
-    public static final String FILE_NAME = "node.csv";
+    public final static String FILE_NAME = "node.csv";
 
     /** Id of a parent node. */
     private Long parent;

@@ -27,7 +27,7 @@ public class CSVOutput {
      * a new file with a following postfix is created. **/
     private final static int SIZE_LIMIT = 1000000;
     /** Logger. **/
-    private static final Logger LOGGER = Logger.getLogger(CSVOutput.class);
+    private final static Logger LOGGER = Logger.getLogger(CSVOutput.class);
     /** Properties of the main configuration file. **/
     private final ConfigProperties CONFIG = ConfigProperties.getInstance();
 

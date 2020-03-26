@@ -24,7 +24,7 @@ public class CassandraYaml extends Configuration {
     /** Relative path to the cassandra properties file. */
     private static String propertiesPath;
     /** Logger. */
-    private static final Logger LOG = Logger.getLogger(CassandraYaml.class);
+    private final static Logger LOG = Logger.getLogger(CassandraYaml.class);
 
     /**
      * Constructor of the {@link CassandraYaml}. It's private as the class

@@ -22,7 +22,7 @@ public class App {
     private final static Long EDGES_AMOUNT = 112L;
 
     /** Logger. */
-    private static final Logger LOGGER = Logger.getLogger(App.class);
+    private final static Logger LOGGER = Logger.getLogger(App.class);
 
     /**
      * The main method to be run to generate the data.

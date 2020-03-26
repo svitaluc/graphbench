@@ -19,7 +19,7 @@ import java.util.concurrent.*;
  */
 public class DataGenerator {
     /** Logger. */
-    private static final Logger LOGGER = Logger.getLogger(DataGenerator.class);
+    private final static Logger LOGGER = Logger.getLogger(DataGenerator.class);
     /** After how many generated items the progress is logged. */
     private final int LOG_EACH = 1000;
     /** Path of a directory into which the data will be generated. */

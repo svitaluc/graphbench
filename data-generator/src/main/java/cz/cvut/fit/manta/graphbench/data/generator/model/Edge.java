@@ -7,7 +7,7 @@ package cz.cvut.fit.manta.graphbench.data.generator.model;
  */
 public class Edge extends Element {
     /** Name of the resulting file containing edge data. */
-    public static final String FILE_NAME = "edge.csv";
+    public final static String FILE_NAME = "edge.csv";
 
     /** Start node of the edge. */
     private Long startNode;

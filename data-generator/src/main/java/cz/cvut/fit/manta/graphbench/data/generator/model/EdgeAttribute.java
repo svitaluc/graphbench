@@ -7,7 +7,7 @@ package cz.cvut.fit.manta.graphbench.data.generator.model;
  */
 public class EdgeAttribute extends Element {
     /** Name of the resulting file containing edge-attribute data. */
-    public static final String FILE_NAME = "edge_attribute.csv";
+    public final static String FILE_NAME = "edge_attribute.csv";
 
     /** Name of the edge attribute (in some databases called a label or a tag). */
     public static String ATTRIBUTE_NAME = "edge_attribute";
