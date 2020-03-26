@@ -1,5 +1,7 @@
 package cz.cvut.fit.manta.graphbench.all;
 
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.csv.CSVOutput;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
@@ -31,7 +33,7 @@ public class App {
 	/** User configuration set in the config.properties file. */
 	private final ConfigProperties CONFIG = ConfigProperties.getInstance();
 	/** Database connector. */
-	private GraphDBConnector db;
+	private GraphDBConnector<Vertex<?,?>, Edge<?,?>> db;
 
 	/**
 	 * The main method run when the jar filed is executed.
@@ -56,7 +58,7 @@ public class App {
 	 * Start method that can be called with a custom {@link GraphDBConnector} implementation.
 	 * @param graphDB an implementation of the {@link GraphDBConnector} interface.
 	 */
-	public void start(GraphDBConnector graphDB) {
+	public void start(GraphDBConnector<Vertex<?,?>, Edge<?,?>> graphDB) {
 		connectDB(graphDB);
 		startBody();
 	}
@@ -102,6 +104,11 @@ public class App {
 	/**
 	 * Connects a database set in the config file.
 	 */
+	@SuppressWarnings("unchecked") /* The cast in the db initialization via GraphDBConnector
+		/* is necessary because the GraphDBFactory needs to return GraphDBConnector<?,?>. That's
+		/* because of the implementation of the specific database connectors
+		/* that implement GraphDBConnector<specific-vertex, specific-edge> and the compiler does not look further that
+		/* e.g. the specific-vertex actually implements Vertex<..., ...>. */
 	private void connectDB() {
 		String databasePath;
 		try {
@@ -113,7 +120,7 @@ public class App {
 		}
 
 		GraphDBType databaseType = GraphDBType.getGraphDBType(CONFIG.getStringProperty(ConfigProperty.DATABASE_TYPE));
-		db = new GraphDBCommonImpl(GraphDBFactory.getGraphDB(databaseType));
+		db = new GraphDBCommonImpl((GraphDBConnector<Vertex<?,?>, Edge<?,?>>)GraphDBFactory.getGraphDB(databaseType));
 
 		db.connect(databasePath, null, null);
 	}
@@ -122,7 +129,7 @@ public class App {
 	 * Connects a database set by the connector parameter.
 	 * @param connector a custom database connector
 	 */
-	private void connectDB(GraphDBConnector connector) {
+	private void connectDB(GraphDBConnector<Vertex<?,?>, Edge<?,?>> connector) {
 		String databasePath;
 		try {
 			databasePath = CONFIG.getPathProperty(ConfigProperty.DATABASE_DIR);
@@ -154,7 +161,7 @@ public class App {
 	 * @param test particular test
 	 * @param db database connector
 	 */
-	private void runBenchmarkTest(Dataset dataset, Test test, GraphDBConnector db) {
+	private void runBenchmarkTest(Dataset dataset, Test test, GraphDBConnector<Vertex<?,?>, Edge<?,?>> db) {
 
 		if (ConfigProperties.getInstance().getBooleanProperty(ConfigProperty.WITH_IMPORT)) {
 			ProcessCSV csv = loadCSV(dataset.getDatasetDir(), db);
@@ -173,9 +180,9 @@ public class App {
 	 * Loads all the data into the database.
 	 * @param csvDir directory of the csv files
 	 * @param db database connector
-	 * @return
+	 * @return Csv processor
 	 */
-	private static ProcessCSV loadCSV(String csvDir, GraphDBConnector db) {
+	private static ProcessCSV loadCSV(String csvDir, GraphDBConnector<Vertex<?,?>, Edge<?,?>> db) {
 		ProcessCSV csv = new ProcessCSV(db);
 		csv.addSuperRoot();
 

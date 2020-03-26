@@ -34,16 +34,4 @@ public class DatasetImpl implements Dataset {
     public Collection<String> getVerticesIds(Translator trans, Integer seed) {
         return Collections.unmodifiableCollection(trans.getAllNodeIds());
     }
-
-    /**
-     * Creates a sorted list out of a collection of comparable objects, in ascending order.
-     * @param c collection of comparable objects
-     * @param <T> comparable type
-     * @return sorted list of provided objects, in ascending order
-     */
-    private <T extends Comparable<? super T>> List<T> createSortedList(Collection<T> c) {
-        List<T> list = new ArrayList<>(c);
-        Collections.sort(list);
-        return list;
-    }
 }

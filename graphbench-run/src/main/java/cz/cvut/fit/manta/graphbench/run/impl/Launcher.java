@@ -34,7 +34,7 @@ public class Launcher {
 
         for (int i = 0; i < repetitions; i++) {
             try {
-                String output = Processes.run("java", "-jar", "-Xmx4g", jarPath);
+                Processes.run("java", "-jar", "-Xmx4g", jarPath);
                 LOG.info("Process " + i + " finished.");
             } catch (IOException e) {
                 LOG.error("Cannot run the jar file at " + jarPath, e);

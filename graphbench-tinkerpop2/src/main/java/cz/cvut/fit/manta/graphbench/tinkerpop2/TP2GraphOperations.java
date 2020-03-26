@@ -30,7 +30,8 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
      * Constructor of the {@link TP2GraphOperations}.
      * @param db Connector to a graph database.
      */
-    public TP2GraphOperations(GraphDBConnector db) {
+    public TP2GraphOperations(GraphDBConnector<cz.cvut.fit.manta.graphbench.core.access.Vertex<?, ?>,
+            cz.cvut.fit.manta.graphbench.core.access.Edge<?, ?>> db) {
         super(db);
     }
 

@@ -29,7 +29,7 @@ public class ProcessCSV {
     /** Translator from vertex id defined by the loaded data to db's internal vertex id. **/
     private Translator translator = new Translator();
     /** Database representation. **/
-    private GraphDBConnector db;
+    private GraphDBConnector<Vertex<?, ?>, Edge<?, ?>> db;
     /** Properties of the main configuration file. **/
     private final Configuration CONFIG = ConfigProperties.getInstance();
     /** How long the process of loading the csv file took. **/
@@ -57,7 +57,7 @@ public class ProcessCSV {
      * Constructor of the {@link ProcessCSV}.
      * @param database Underlying database representation
      */
-    public ProcessCSV(GraphDBConnector database) {
+    public ProcessCSV(GraphDBConnector<Vertex<?, ?>, Edge<?, ?>> database) {
         db = database;
     }
 
@@ -82,7 +82,7 @@ public class ProcessCSV {
      * @param id Id of a vertex
      * @return {@link Vertex} representation of the vertex with the provided {@code id}
      */
-    public Vertex getNode(String id) {
+    public Vertex<?,?> getNode(String id) {
         return db.getVertex(translator.getNode(id));
     }
 
@@ -90,7 +90,7 @@ public class ProcessCSV {
      * Creates a vertex that becomes a super root.
      */
     public void addSuperRoot() {
-       Vertex sr = db.addEmptyVertex();
+       Vertex<?,?> sr = db.addEmptyVertex();
         
        sr.property(NodeProperty.NODE_NAME.t(), CONFIG.getStringProperty(ConfigProperty.SUPER_ROOT_NAME));
        sr.property(NodeProperty.NODE_TYPE.t(), CONFIG.getStringProperty(ConfigProperty.SUPER_ROOT_TYPE));
@@ -151,14 +151,14 @@ public class ProcessCSV {
      * @param row {@link String} array containing various information including id of the vertex to acquire
      * @return Vertex of an id stored in a {@code row} on a position {@code vertexPosition}
      */
-    private Vertex getVertex(Integer vertexPosition, String[] row) {
-        Vertex node = null;
+    private Vertex<?,?> getVertex(Integer vertexPosition, String[] row) {
+        Vertex<?,?> node = null;
         if (vertexPosition < row.length && row[vertexPosition].length() > 0) {
             // tries to find a record about the vertex in a translator
             String nodeID = translator.getNode(row[vertexPosition]);
             if (nodeID != null) {
                 // tries to get the vertex via translator
-                node = (Vertex) translator.getTempNode(row[vertexPosition]);
+                node = (Vertex<?,?>) translator.getTempNode(row[vertexPosition]);
                 if (node == null) {
                     // tries to get the vertex directly from a database
                     node = db.getVertex(nodeID);
@@ -184,8 +184,8 @@ public class ProcessCSV {
                 Integer edgeStartPosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_START);
                 Integer edgeEndPosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_END);
 
-                Vertex startNode = getVertex(edgeStartPosition, parts);
-                Vertex endNode = getVertex(edgeEndPosition, parts);
+                Vertex<?, ?> startNode = getVertex(edgeStartPosition, parts);
+                Vertex<?, ?> endNode = getVertex(edgeEndPosition, parts);
 
                 String type;
                 Integer edgeTypePosition = CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_END);
@@ -202,7 +202,7 @@ public class ProcessCSV {
                             parts[edgeStartPosition], parts[edgeEndPosition]));
                 else {
                     //Zapsat hranu
-                    Edge edge;
+                    Edge<?,?> edge;
                     edge = db.addEdge(startNode, endNode, type);
                     translator.putTempEdge(parts[CONFIG.getIntegerProperty(ConfigProperty.EDGE_I_ID)], edge);
                 }
@@ -234,7 +234,7 @@ public class ProcessCSV {
 
                     if (edgeAttrID != null) {
 
-                        Edge edgeAttr = db.getEdge(edgeAttrID);
+                        Edge<?,?> edgeAttr = db.getEdge(edgeAttrID);
 
                         if (edgeAttr != null) {
                             db.setEdgeProperty(edgeAttr,

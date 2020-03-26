@@ -18,7 +18,7 @@ public interface Edge<V, I> extends Element<I> {
      * @param direction get the incoming vertex, outgoing vertex, or both vertices
      * @return an iterator with 1 or 2 vertices
      */
-    VertexIterator vertices(final Direction direction);
+    VertexIterator<?,?> vertices(final Direction direction);
 
     /**
      * Get the {@link Property} for the provided key. It calls the corresponding method of the specific

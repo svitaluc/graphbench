@@ -1,5 +1,7 @@
 package cz.cvut.manta.graphbench.db;
 
+import cz.cvut.fit.manta.graphbench.core.access.Edge;
+import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.janusgraph.JanusGraphDB;
 import cz.cvut.fit.manta.graphbench.titan.TitanDB;
@@ -15,7 +17,7 @@ public class GraphDBFactory {
      * @param type Type of a graph database
      * @return Graph database connector based on a provided graph database type.
      */
-    public static GraphDBConnector getGraphDB(GraphDBType type) {
+    public static GraphDBConnector<?,?> getGraphDB(GraphDBType type) {
         switch (type) {
             case JANUSGRAPH:
                 return new JanusGraphDB();

@@ -2,7 +2,6 @@ package cz.cvut.fit.manta.graphbench.tinkerpop2;
 
 import cz.cvut.fit.manta.graphbench.core.access.Edge;
 import cz.cvut.fit.manta.graphbench.core.access.Property;
-import cz.cvut.fit.manta.graphbench.core.access.Vertex;
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.direction.TP2Direction;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.iterator.TP2VertexIterator;

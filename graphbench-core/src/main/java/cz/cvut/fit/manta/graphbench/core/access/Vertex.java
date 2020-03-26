@@ -19,7 +19,7 @@ public interface Vertex<V, I> extends Element<I> {
      *                   If no labels are provided, then get all edges.
      * @return An iterator of vertices meeting the provided specification.
      */
-    VertexIterator vertices(final Direction direction, final String... edgeLabels);
+    VertexIterator<?,?> vertices(final Direction direction, final String... edgeLabels);
 
     /**
      * Gets an {@link EdgeIterator} of incident edges.
@@ -28,7 +28,7 @@ public interface Vertex<V, I> extends Element<I> {
      *                   then get all edges.
      * @return An iterator of edges meeting the provided specification.
      */
-    EdgeIterator edges(final Direction direction, final String... edgeLabels);
+    EdgeIterator<?,?> edges(final Direction direction, final String... edgeLabels);
 
     /**
      * Get the {@link Property} for the provided key. It calls the corresponding method of the specific

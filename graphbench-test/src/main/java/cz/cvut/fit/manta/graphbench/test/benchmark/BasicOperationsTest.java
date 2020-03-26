@@ -47,7 +47,7 @@ public class BasicOperationsTest implements Test {
     }
 
     @Override
-    public void test(ProcessCSV csv, final GraphDBConnector db) {
+    public void test(ProcessCSV csv, GraphDBConnector<?,?> db) {
         results = new ArrayList<>();
         results.add(new TestResult(System.currentTimeMillis(), "import", csv.getImportTime()));
         final Translator TRANSLATOR = csv.getTranslator();
@@ -81,7 +81,7 @@ public class BasicOperationsTest implements Test {
      * @param elementsFoundName Name of elements that are found with the test
      * @param subtest {@link Callable} of a test method to be run
      */
-    private void runSubTest(String testName, String elementsFoundName, Callable subtest) {
+    private void runSubTest(String testName, String elementsFoundName, Callable<Object> subtest) {
         LOGGER.info("BasicOperations: " + testName + ": The test begins.");
         long testStart = System.currentTimeMillis();
         Object result;
@@ -99,10 +99,10 @@ public class BasicOperationsTest implements Test {
 
         int elementsFound;
         if (result instanceof Map) {
-            elementsFound = ((Map) result).keySet().size();
+            elementsFound = ((Map<?,?>) result).keySet().size();
         } else {
             // result instanceof Set is always true
-            elementsFound = ((Set) result).size();
+            elementsFound = ((Set<?>) result).size();
         }
 
         LOGGER.info("BasicOperations: " + testName + ": Found " + elementsFound + " " + elementsFoundName + ".");
@@ -128,10 +128,10 @@ public class BasicOperationsTest implements Test {
      * @param db Connector to a graph database
      * @return {@link Set} of vertices
      */
-    private Set<Vertex> getVertices(Translator translator, GraphDBConnector db) {
+    private Set<Vertex<?,?>> getVertices(Translator translator, GraphDBConnector<?,?> db) {
         Collection<String> idSet = dataset.getVerticesIds(translator, 123456);
         LOGGER.info("idSet size: " + idSet.size());
-        Set<Vertex> result = new HashSet<>();
+        Set<Vertex<?,?>> result = new HashSet<>();
 
         idSet.forEach(id ->
             result.add(db.getVertex(translator.getNode(id)))
@@ -147,20 +147,20 @@ public class BasicOperationsTest implements Test {
      * @param db Connector to a graph database
      * @return {@link Map} containing vertex as a key and a {@link Set} of its edges as its value
      */
-    private Map<Vertex, Set<Edge>> getVerticesWithEdges(Translator translator, GraphDBConnector db) {
+    private Map<Vertex<?,?>, Set<Edge<?,?>>> getVerticesWithEdges(Translator translator, GraphDBConnector<?,?> db) {
         Collection<String> idSet = dataset.getVerticesIds(translator, 456789);
-        Map<Vertex, Set<Edge>> result = new HashMap<>();
+        Map<Vertex<?,?>, Set<Edge<?,?>>> result = new HashMap<>();
 
         List<String> idList = new ArrayList<>(idSet);
 
         int c = 0;
         for(int i = 0; i < idSet.size(); i++) {
-            Vertex vertex = db.getVertex(translator.getNode(idList.get(i)));
-            EdgeIterator edgeIterator = vertex.edges(Direction.BOTH);
-            Set<Edge> edgeSet = new HashSet<>();
+            Vertex<?,?> vertex = db.getVertex(translator.getNode(idList.get(i)));
+            EdgeIterator<?,?> edgeIterator = vertex.edges(Direction.BOTH);
+            Set<Edge<?,?>> edgeSet = new HashSet<>();
             if (edgeIterator != null) {
                 while (edgeIterator.hasNext()) {
-                    edgeSet.add((Edge) edgeIterator.next());
+                    edgeSet.add(edgeIterator.next());
                 }
             } else {
                 c++;
@@ -179,19 +179,19 @@ public class BasicOperationsTest implements Test {
      * @param db Connector to a graph database
      * @return {@link Map} containing vertex as a key and a {@link Set} of its neighbors (vertices) as its value
      */
-    private Map<Vertex, Set<Vertex>> getVerticesWithNeighbors(Translator translator, GraphDBConnector db, Integer seed) {
+    private Map<Vertex<?,?>, Set<Vertex<?,?>>> getVerticesWithNeighbors(Translator translator, GraphDBConnector<?,?> db, Integer seed) {
         Collection<String> idSet = dataset.getVerticesIds(translator, seed);
-        Map<Vertex, Set<Vertex>> result = new HashMap<>();
+        Map<Vertex<?,?>, Set<Vertex<?,?>>> result = new HashMap<>();
         List<String> idList = new ArrayList<>(idSet);
 
         int c = 0;
         for (int i = 0; i < idSet.size(); i++) {
-            Vertex vertex = db.getVertex(translator.getNode(idList.get(i)));
-            VertexIterator vertexIterator = vertex.vertices(Direction.BOTH);
-            Set<Vertex> vertexSet = new HashSet<>();
+            Vertex<?,?> vertex = db.getVertex(translator.getNode(idList.get(i)));
+            VertexIterator<?,?> vertexIterator = vertex.vertices(Direction.BOTH);
+            Set<Vertex<?,?>> vertexSet = new HashSet<>();
             if (vertexIterator != null) {
                 while (vertexIterator.hasNext()) {
-                    vertexSet.add((Vertex) vertexIterator.next());
+                    vertexSet.add(vertexIterator.next());
                 }
             } else {
                 c++;

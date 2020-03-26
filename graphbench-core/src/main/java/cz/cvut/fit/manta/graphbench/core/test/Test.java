@@ -8,17 +8,16 @@ import java.util.List;
 
 /**
  * Interface for individual tests.
- * @param <C> Connector of a graph database
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public interface Test<C extends GraphDBConnector> {
+public interface Test {
     /**
      * Runs the test method.
      * @param csv Processor of a csv file
      * @param db Connector of a graph database
      */
-    void test(ProcessCSV csv, C db);
+    void test(ProcessCSV csv, GraphDBConnector<?,?> db);
 
     /**
      * @return Gets results of the test. It's a list of individual {@link TestResult}s.

@@ -36,7 +36,7 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
      */
     public TP3GraphOperations(GraphDBConnector<TP3Vertex, TP3Edge> db) {
         super(db);
-        traversal = db.getTraversal();
+        traversal = (GraphTraversalSource) db.getTraversal();
     }
 
     @Override

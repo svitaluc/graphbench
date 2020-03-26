@@ -12,7 +12,7 @@ import java.util.Iterator;
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public abstract class VertexIterator<V extends Vertex, I> extends ElementIterator<V, I> {
+public abstract class VertexIterator<V extends Vertex<?,?>, I> extends ElementIterator<V, I> {
 
     public VertexIterator(Iterator<I> iterator) {
         super(iterator);

@@ -19,11 +19,11 @@ public class AutomaticLauncher {
      */
     public static void main(String[] args) {
         // ! Fill in the dataset directory !
-        String datasetDir = "";
+        String datasetDir = "C:\\Users\\lsvitakova\\tmp\\data-generator\\v-1k-e-1k";
 
         Launcher launcher = new Launcher();
 
-        launcher.runSetting(1, datasetDir, GraphDBType.TITAN);
+        launcher.runSetting(1, datasetDir, GraphDBType.JANUSGRAPH);
 //        launcher.runSetting(3, datasetDir, GraphDBType.TITAN);
     }
 }

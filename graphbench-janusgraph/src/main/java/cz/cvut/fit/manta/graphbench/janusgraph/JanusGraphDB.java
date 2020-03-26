@@ -47,7 +47,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	private JanusGraph internalGraph;
 	/** Properties of the Cassandra backend storage. */
 	private CassandraYaml cassandraProperties;
-	/** Properties of the JansuGraph, immutable. */
+	/** Properties of the JanusGraph, immutable. */
 	private final static JanusGraphProperties JANUSGRAPH_PROPERTIES = JanusGraphProperties.getInstance();
 	/** Logger. */
 	private final static Logger LOG = Logger.getLogger(JanusGraphDB.class);
@@ -65,9 +65,14 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	 * @param dbPath Directory path where to store Cassandra data
 	 */
 	private void setCassandraPaths(String dbPath) {
-		cassandraProperties.setProperty(CassandraProperty.COMMITLOG_DIRECTORY, dbPath + File.separator + CassandraProperty.COMMITLOG_DIRECTORY_NAME);
-		cassandraProperties.setProperty(CassandraProperty.SAVED_CACHES_DIRECTORY, dbPath + File.separator + CassandraProperty.SAVED_CACHES_DIRECTORY_NAME);
-		cassandraProperties.setProperty(CassandraProperty.DATA_FILE_DIRECTORIES, dbPath + File.separator + CassandraProperty.DATA_DIRECTORY_NAME);
+		cassandraProperties.setProperty(CassandraProperty.COMMITLOG_DIRECTORY,
+				dbPath + File.separator + CassandraProperty.COMMITLOG_DIRECTORY_NAME);
+
+		cassandraProperties.setProperty(CassandraProperty.SAVED_CACHES_DIRECTORY,
+				dbPath + File.separator + CassandraProperty.SAVED_CACHES_DIRECTORY_NAME);
+
+		cassandraProperties.setProperty(CassandraProperty.DATA_FILE_DIRECTORIES,
+				dbPath + File.separator + CassandraProperty.DATA_DIRECTORY_NAME);
 	}
 
 	/**
@@ -95,7 +100,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	private void setSchema() {
 		JanusGraphManagement mgmt = internalGraph.openManagement();
 
-		VertexLabel lbl = mgmt.makeVertexLabel("lbl").make();
+		mgmt.makeVertexLabel("lbl").make();
 		mgmt.makePropertyKey(NodeProperty.NODE_TYPE.t()).dataType(String.class).make();
 
 		//create properties
@@ -103,7 +108,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 
 		mgmt.makePropertyKey(EdgeProperty.EDGE_ATTRIBUTE.t()).dataType(String.class).make();
 
-		EdgeLabel parLabel = mgmt.makeEdgeLabel(cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel.HAS_PARENT.t()).make();
+		mgmt.makeEdgeLabel(cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel.HAS_PARENT.t()).make();
 		mgmt.makeEdgeLabel(cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel.DIRECT.t()).make();
 		mgmt.makeEdgeLabel(cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel.FILTER.t()).make();
 
@@ -234,7 +239,7 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 			}
 
 			if (!parentNode.isVertexNull()) {
-				TP3Edge edge = addEdge(node, parentNode, cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel.HAS_PARENT.t());
+				addEdge(node, parentNode, cz.cvut.fit.manta.graphbench.core.db.structure.EdgeLabel.HAS_PARENT.t());
 			} else {
 				LOG.warn(MessageFormat.format(
 						"Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",
@@ -246,7 +251,8 @@ public class JanusGraphDB implements GraphDBConnector<TP3Vertex, TP3Edge> {
 	@Override
 	 public List<TP3Vertex> getVertexByName(String name) {
 	     long startTime = System.nanoTime();
-	     Iterable<Result<JanusGraphVertex>> it = internalGraph.indexQuery("nodeName", "lbl." + NodeProperty.NODE_NAME.t() + ":(/" + name + "/)").vertexStream().collect(Collectors.toList());;
+	     Iterable<Result<JanusGraphVertex>> it = internalGraph.indexQuery("nodeName",
+				 "lbl." + NodeProperty.NODE_NAME.t() + ":(/" + name + "/)").vertexStream().collect(Collectors.toList());
 
 	     List<TP3Vertex> result = new ArrayList<>();
 

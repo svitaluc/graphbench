@@ -12,16 +12,16 @@ import java.util.List;
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public abstract class GraphOperations<V extends Vertex> {
+public abstract class GraphOperations<V extends Vertex<?,?>> {
 
     /** Database representation. */
-    protected GraphDBConnector db;
+    protected GraphDBConnector<?,?> db;
 
     /**
      * Constructor for the {@link GraphOperations}.
      * @param db Database connector
      */
-    public GraphOperations(GraphDBConnector db) {
+    public GraphOperations(GraphDBConnector<?,?> db) {
         this.db = db;
     }
 

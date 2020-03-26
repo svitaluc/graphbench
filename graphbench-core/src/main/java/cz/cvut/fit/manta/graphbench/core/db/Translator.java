@@ -25,12 +25,12 @@ public class Translator {
 	private Map<String, String> nodeMap;
 	/** Map containing mappings from an element id defined in a dataset to an element representation in the code.
      * It's cleared after each commit. */
-    private Map<String, Element> tempNodeMap;
+    private Map<String, Element<?>> tempNodeMap;
     /** Map containing mappings from an edge id defined in dataset to an edge id in a db. */
     private Map<String, String> edgeMap;
     /** Map containing mappings from an edge id defined in a dataset to an edge representation in the code.
      * It's cleared after each commit. */
-    private Map<String, Edge> tempEdgeMap;
+    private Map<String, Edge<?,?>> tempEdgeMap;
 
     /** Id of a super root. */
     private String superRootId;
@@ -85,7 +85,7 @@ public class Translator {
      * @param idOrig Original id of an element in the dataset.
      * @param element {@link Element} representation of the element.
      */
-    public void putTempNode(String idOrig, Element element) {
+    public void putTempNode(String idOrig, Element<?> element) {
         tempNodeMap.put(idOrig, element);
         putNode(idOrig, element.getId().toString());
     }
@@ -94,7 +94,7 @@ public class Translator {
      * @param idOrig Original id of an element in the dataset.
      * @return {@link Element} representation of the element from the temporary map of id - element pairs.
      */
-    public Element getTempNode(String idOrig) {
+    public Element<?> getTempNode(String idOrig) {
         return tempNodeMap.get(idOrig);
     }
 
@@ -122,7 +122,7 @@ public class Translator {
      * @param idOrig Original id of the edge in the dataset
      * @param edge {@link Edge} representation of the edge.
      */
-    public void putTempEdge(String idOrig, Edge edge) {
+    public void putTempEdge(String idOrig, Edge<?,?> edge) {
         tempEdgeMap.put(idOrig, edge);
         putEdge(idOrig, edge.getId().toString());
     }
@@ -131,7 +131,7 @@ public class Translator {
      * @param idOrig Original id of the edge in the dataset
      * @return {@link Edge} representation of the edge from the temporary map of id - edge pairs.
      */
-    public Edge getTempEdge(String idOrig) {
+    public Edge<?,?> getTempEdge(String idOrig) {
         return tempEdgeMap.get(idOrig);
     }
 

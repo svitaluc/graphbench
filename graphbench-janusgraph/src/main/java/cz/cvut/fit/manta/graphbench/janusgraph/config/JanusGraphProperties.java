@@ -82,11 +82,4 @@ public class JanusGraphProperties extends Configuration implements GraphDBConfig
     public String getDatabaseVersion() {
         return pomProperties.getStringProperty(JanusGraphPomProperty.DATABASE_VERSION);
     }
-
-    /**
-     * @return True if the backend is embedded, false otherwise.
-     */
-    private boolean isBackendEmbedded() {
-        return getStringProperty(JanusGraphProperty.STORAGE_BACKEND).contains("embedded");
-    }
 }

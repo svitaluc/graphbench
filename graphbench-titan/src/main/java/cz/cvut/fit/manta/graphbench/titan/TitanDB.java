@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Connector for the Titan database (http://titan.thinkaurelius.com/).
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
@@ -205,7 +205,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
     }
 
     @Override
-    public <T> T getTraversal() {
+    public Object getTraversal() {
         throw new UnsupportedOperationException("Traversal of Titan DB is not available.");
     }
 
@@ -234,7 +234,7 @@ public class TitanDB implements GraphDBConnector<TP2Vertex, TP2Edge> {
             }
 
             if (!parentNode.isVertexNull()) {
-                TP2Edge edge = addEdge(node, parentNode, EdgeLabel.HAS_PARENT.t());
+                addEdge(node, parentNode, EdgeLabel.HAS_PARENT.t());
             } else {
                 LOG.warn(MessageFormat.format(
                         "Database didn't return a node to set a parent. Original node id: \"{0}\", new node id: \"{1}\"",

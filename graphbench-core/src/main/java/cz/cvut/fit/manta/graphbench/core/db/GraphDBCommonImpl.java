@@ -16,12 +16,12 @@ import java.util.List;
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
+public class GraphDBCommonImpl implements GraphDBConnector<Vertex<?,?>, Edge<?,?>> {
 
 	/** Flag whether the database is connected. */
 	private boolean connected = false;
 	/** Instance of a specific database connector. */
-	private GraphDBConnector<Vertex, Edge> iFace;
+	private GraphDBConnector<Vertex<?,?>, Edge<?,?>> iFace;
 	/** Logger. */
 	private final static Logger LOG = Logger.getLogger(GraphDBCommonImpl.class);
 
@@ -29,7 +29,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	 * Constructor of the {@link GraphDBCommonImpl}.
 	 * @param db Instance of a specific database connector.
 	 */
-	public GraphDBCommonImpl(GraphDBConnector<Vertex, Edge> db) {
+	public GraphDBCommonImpl(GraphDBConnector<Vertex<?,?>, Edge<?,?>> db) {
 		iFace = db;
 	}
 
@@ -107,7 +107,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-	public Vertex addEmptyVertex() {
+	public Vertex<?,?> addEmptyVertex() {
 		if (connected) {
 			return iFace.addEmptyVertex();
 		} else {
@@ -116,7 +116,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-	public Vertex getVertex(Object id) {
+	public Vertex<?,?> getVertex(Object id) {
 		if (connected) {
 			return iFace.getVertex(id);
 		} else {
@@ -125,7 +125,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-	public Edge addEdge(Vertex outVertex, Vertex inVertex, String label) {
+	public Edge<?,?> addEdge(Vertex<?,?> outVertex, Vertex<?,?> inVertex, String label) {
 		if (connected) {
 			return iFace.addEdge(outVertex, inVertex, label);
 		} else {
@@ -134,7 +134,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-	public Edge getEdge(Object id) {
+	public Edge<?,?> getEdge(Object id) {
 		if (connected) {
 			return iFace.getEdge(id);
 		} else {
@@ -143,7 +143,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-	public void setEdgeProperty(Edge edge, String name, Object value) {
+	public void setEdgeProperty(Edge<?,?> edge, String name, Object value) {
 		if (connected) {
 			iFace.setEdgeProperty(edge, name, value);
 		} else {
@@ -152,7 +152,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
     @Override
-    public <T> T getTraversal() {
+    public Object getTraversal() {
         if (connected) {
             return iFace.getTraversal();
         } else {
@@ -170,7 +170,7 @@ public class GraphDBCommonImpl implements GraphDBConnector<Vertex, Edge> {
 	}
 
 	@Override
-    public List<Vertex> getVertexByName(String name) {
+    public List<Vertex<?,?>> getVertexByName(String name) {
         if (connected) {
             return iFace.getVertexByName(name);
         } else {

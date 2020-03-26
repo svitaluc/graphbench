@@ -12,7 +12,7 @@ import java.util.Iterator;
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public abstract class EdgeIterator<E extends Edge, I> extends ElementIterator<E, I> {
+public abstract class EdgeIterator<E extends Edge<?,?>, I> extends ElementIterator<E, I> {
 
     /**
      * Consturctor of the {@link EdgeIterator}.

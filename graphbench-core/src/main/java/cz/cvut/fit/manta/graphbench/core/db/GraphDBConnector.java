@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Lucie Svitáková (svitaluc@fit.cvut.cz)
  */
-public interface GraphDBConnector<V extends Vertex, E extends Edge> {
+public interface GraphDBConnector<V extends Vertex<?,?>, E extends Edge<?,?>> {
 
 	/** Instance for reading properties from a config file. */
 	public final ConfigProperties CONFIG = ConfigProperties.getInstance();
@@ -120,7 +120,7 @@ public interface GraphDBConnector<V extends Vertex, E extends Edge> {
 	 * Gets a database traversal source.
 	 * @return database traversal
 	 */
-	public <T> T getTraversal();
+	public Object getTraversal();
 
 	/**
 	 * Adds a vertex in the database.

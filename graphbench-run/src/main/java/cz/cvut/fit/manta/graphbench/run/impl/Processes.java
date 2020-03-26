@@ -1,7 +1,6 @@
 package cz.cvut.fit.manta.graphbench.run.impl;
 
 import cz.cvut.fit.manta.graphbench.all.App;
-import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
