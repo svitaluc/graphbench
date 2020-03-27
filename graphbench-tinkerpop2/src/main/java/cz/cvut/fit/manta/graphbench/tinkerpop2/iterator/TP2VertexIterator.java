@@ -1,5 +1,6 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop2.iterator;
 
+import com.tinkerpop.blueprints.Vertex;
 import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.TP2Vertex;
 
@@ -19,7 +20,7 @@ public class TP2VertexIterator extends VertexIterator<TP2Vertex, com.tinkerpop.b
     }
 
     @Override
-    public TP2Vertex next() {
-        return new TP2Vertex(getIterator().next());
+    protected TP2Vertex convertElement(Vertex innerElement) {
+        return new TP2Vertex(innerElement);
     }
 }

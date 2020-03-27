@@ -22,7 +22,7 @@ public class TP3EdgeIterator extends EdgeIterator<TP3Edge, org.apache.tinkerpop.
     }
 
     @Override
-    public TP3Edge next() {
-        return new TP3Edge(getIterator().next());
+    protected TP3Edge convertElement(Edge innerElement) {
+        return new TP3Edge(innerElement);
     }
 }

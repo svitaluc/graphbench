@@ -2,6 +2,7 @@ package cz.cvut.fit.manta.graphbench.tinkerpop3.iterator;
 
 import cz.cvut.fit.manta.graphbench.core.access.iterator.VertexIterator;
 import cz.cvut.fit.manta.graphbench.tinkerpop3.TP3Vertex;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Iterator;
 
@@ -21,7 +22,7 @@ public class TP3VertexIterator extends VertexIterator<TP3Vertex, org.apache.tink
     }
 
     @Override
-    public TP3Vertex next() {
-        return new TP3Vertex(getIterator().next());
+    protected TP3Vertex convertElement(Vertex innerElement) {
+        return new TP3Vertex(innerElement);
     }
 }

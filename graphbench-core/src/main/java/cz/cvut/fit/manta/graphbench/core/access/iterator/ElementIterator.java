@@ -34,7 +34,16 @@ public abstract class ElementIterator<E, I> {
      * Finds and returns the next element of this iterator.
      * @return the next element
      */
-    public abstract E next();
+    public E next() {
+        return convertElement(iterator.next());
+    }
+
+    /**
+     * Converts the inner element {@code I} to the local element {@code E}.
+     * @param innerElement Inner element to be converted
+     * @return Local element type wrapping the inner element
+     */
+    protected abstract E convertElement(I innerElement);
 
     /**
      * Returns true if this iterator has another element in its input.
@@ -42,12 +51,5 @@ public abstract class ElementIterator<E, I> {
      */
     public boolean hasNext() {
         return iterator.hasNext();
-    }
-
-    /**
-     * @return Iterator of an inner element - element of a concrete language in a given graph database.
-     */
-    protected Iterator<I> getIterator() {
-        return iterator;
     }
 }

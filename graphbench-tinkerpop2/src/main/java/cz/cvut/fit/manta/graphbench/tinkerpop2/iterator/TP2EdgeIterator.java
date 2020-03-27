@@ -1,5 +1,6 @@
 package cz.cvut.fit.manta.graphbench.tinkerpop2.iterator;
 
+import com.tinkerpop.blueprints.Edge;
 import cz.cvut.fit.manta.graphbench.core.access.iterator.EdgeIterator;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.TP2Edge;
 
@@ -19,7 +20,7 @@ public class TP2EdgeIterator extends EdgeIterator<TP2Edge, com.tinkerpop.bluepri
     }
 
     @Override
-    public TP2Edge next() {
-        return new TP2Edge(getIterator().next());
+    protected TP2Edge convertElement(Edge innerElement) {
+        return new TP2Edge(innerElement);
     }
 }
