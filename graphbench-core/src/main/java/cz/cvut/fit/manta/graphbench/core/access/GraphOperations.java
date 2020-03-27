@@ -1,7 +1,6 @@
 package cz.cvut.fit.manta.graphbench.core.access;
 
 import cz.cvut.fit.manta.graphbench.core.access.direction.Direction;
-import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 
 import java.util.List;
 
@@ -14,15 +13,10 @@ import java.util.List;
  */
 public abstract class GraphOperations<V extends Vertex<?,?>> {
 
-    /** Database representation. */
-    private GraphDBConnector<?,?> db;
-
     /**
      * Constructor for the {@link GraphOperations}.
-     * @param db Database connector
      */
-    public GraphOperations(GraphDBConnector<?,?> db) {
-        this.db = db;
+    public GraphOperations() {
     }
 
     /**

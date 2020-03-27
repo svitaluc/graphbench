@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>graphbench-titan</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <titan.version>0.4.4</titan.version>

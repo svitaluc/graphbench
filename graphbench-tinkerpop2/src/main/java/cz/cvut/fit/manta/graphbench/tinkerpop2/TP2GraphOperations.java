@@ -5,7 +5,6 @@ import com.tinkerpop.blueprints.Vertex;
 import cz.cvut.fit.manta.graphbench.core.config.Configuration;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
-import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.tinkerpop2.direction.TP2Direction;
 import org.apache.log4j.Logger;
 import cz.cvut.fit.manta.graphbench.core.access.GraphOperations;
@@ -28,11 +27,8 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
 
     /**
      * Constructor of the {@link TP2GraphOperations}.
-     * @param db Connector to a graph database.
      */
-    public TP2GraphOperations(GraphDBConnector<cz.cvut.fit.manta.graphbench.core.access.Vertex<?, ?>,
-            cz.cvut.fit.manta.graphbench.core.access.Edge<?, ?>> db) {
-        super(db);
+    public TP2GraphOperations() {
     }
 
     @Override
