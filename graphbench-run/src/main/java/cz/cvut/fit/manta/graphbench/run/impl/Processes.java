@@ -35,8 +35,9 @@ final class Processes {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             while (true) {
                 String line = in.readLine();
-                if (line == null || line.contains(App.BENCHMARK_FINISHED))
+                if (line == null || line.contains(App.BENCHMARK_FINISHED)) {
                     break;
+                }
                 LOGGER.info(line);
                 result.append(line).append(NEWLINE);
             }
