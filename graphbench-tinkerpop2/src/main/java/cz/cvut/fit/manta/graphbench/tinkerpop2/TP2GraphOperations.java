@@ -25,12 +25,6 @@ public class TP2GraphOperations extends GraphOperations<TP2Vertex> {
     /** Configuration of the config.properties. */
     private final Configuration config = ConfigProperties.getInstance();
 
-    /**
-     * Constructor of the {@link TP2GraphOperations}.
-     */
-    public TP2GraphOperations() {
-    }
-
     @Override
     public List<TP2Vertex> getChildren(TP2Vertex node) {
         List<TP2Vertex> childList = new ArrayList<>();

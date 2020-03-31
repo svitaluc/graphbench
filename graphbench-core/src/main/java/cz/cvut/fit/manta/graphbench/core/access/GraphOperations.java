@@ -16,8 +16,8 @@ public abstract class GraphOperations<V extends Vertex<?,?>> {
     /**
      * Constructor for the {@link GraphOperations}.
      */
-    public GraphOperations() {
-    }
+//    public GraphOperations() {
+//    }
 
     /**
      * Returns a list of children of the provided vertex.

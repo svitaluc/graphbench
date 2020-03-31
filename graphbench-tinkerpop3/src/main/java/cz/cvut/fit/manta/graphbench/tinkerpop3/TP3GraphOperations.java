@@ -32,12 +32,6 @@ public class TP3GraphOperations extends GraphOperations<TP3Vertex> {
 
     /**
      * Constructor of the {@link TP3GraphOperations}.
-     */
-    public TP3GraphOperations() {
-    }
-
-    /**
-     * Constructor of the {@link TP3GraphOperations}.
      * @param db Connector to the graph database.
      */
     public TP3GraphOperations(GraphDBConnector<TP3Vertex, TP3Edge> db) {
