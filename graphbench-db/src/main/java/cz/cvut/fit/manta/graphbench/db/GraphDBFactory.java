@@ -1,4 +1,4 @@
-package cz.cvut.manta.graphbench.db;
+package cz.cvut.fit.manta.graphbench.db;
 
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.janusgraph.JanusGraphDB;

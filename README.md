@@ -66,8 +66,11 @@ So far, the data model expects three types of data stored in separate csv files,
 represents one record of the item (vertex/edge/edge attribute).
 * _vertex_ - each vertex record is expected to contain information about its 
 	* id
-	* parent id
-	* name.
+	* name
+	* parent id - originally, the model was taking advantage of vertex hierarchy and often acquiring
+	 information about parent vertex ids. Therefore, the `parent id` field is present for optimization reasons - having 
+	 it as a property does not require further search for an edge with a parent label and its opposite vertex 
+	 (which proved to be significantly slower, at least in Titan)
 Optionally a description can be included.
 * _edge_ - each edge record is expected to contain information about its
 	* id
@@ -130,8 +133,8 @@ In order to add a new database, you need to proceed with the following steps:
 
 * create a new module `graphbench-<name-of-your-database>` with a class representing your database, that
 implements the interface `cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector`.
-* add your database as another database type to `cz.cvut.manta.graphbench.db.GraphDBType`.
-* include your database in `cz.cvut.manta.graphbench.db.GraphDBFactory`.
+* add your database as another database type to `GraphDBType`.
+* include your database in `GraphDBFactory`.
 
 After these steps, recompile the project (or the necessary modules) and run it normally, as explained above.
 

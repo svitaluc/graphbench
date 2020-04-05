@@ -3,7 +3,7 @@ package cz.cvut.fit.manta.graphbench.run.impl;
 import cz.cvut.fit.manta.graphbench.core.config.ConfigProperties;
 import cz.cvut.fit.manta.graphbench.core.config.model.ConfigProperty;
 import cz.cvut.fit.manta.graphbench.core.util.Util;
-import cz.cvut.manta.graphbench.db.GraphDBType;
+import cz.cvut.fit.manta.graphbench.db.GraphDBType;
 import org.apache.log4j.Logger;
 
 import java.io.*;

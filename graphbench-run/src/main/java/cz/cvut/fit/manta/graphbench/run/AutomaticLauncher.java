@@ -1,7 +1,7 @@
 package cz.cvut.fit.manta.graphbench.run;
 
 import cz.cvut.fit.manta.graphbench.run.impl.Launcher;
-import cz.cvut.manta.graphbench.db.GraphDBType;
+import cz.cvut.fit.manta.graphbench.db.GraphDBType;
 
 /**
  * Class intended for automatic launch of the benchmark tests.

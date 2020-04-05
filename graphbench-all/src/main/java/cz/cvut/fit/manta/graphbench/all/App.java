@@ -12,8 +12,8 @@ import cz.cvut.fit.manta.graphbench.core.dataset.DatasetImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBCommonImpl;
 import cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector;
 import cz.cvut.fit.manta.graphbench.core.test.Test;
-import cz.cvut.manta.graphbench.db.GraphDBFactory;
-import cz.cvut.manta.graphbench.db.GraphDBType;
+import cz.cvut.fit.manta.graphbench.db.GraphDBFactory;
+import cz.cvut.fit.manta.graphbench.db.GraphDBType;
 import org.apache.log4j.Logger;
 import cz.cvut.fit.manta.graphbench.test.TestFactory;
 

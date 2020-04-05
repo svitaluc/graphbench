@@ -1,4 +1,4 @@
-package cz.cvut.manta.graphbench.db;
+package cz.cvut.fit.manta.graphbench.db;
 
 /**
  * Type of the graph database.
