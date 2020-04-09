@@ -14,7 +14,6 @@
 
     <properties>
         <janusgraph.version>0.3.2</janusgraph.version>
-        <!--        <janusgraph.version>0.4.0</janusgraph.version>-->
         <janusgraph.lucene.version>7.0.0</janusgraph.lucene.version>
     </properties>
 
