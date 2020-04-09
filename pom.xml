@@ -4,34 +4,45 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>eu.profinit.manta</groupId>
+    <groupId>cz.cvut.fit.manta</groupId>
     <artifactId>graphbench</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>graphbench-core</module>
+        <module>graphbench-test</module>
+        <module>graphbench-db</module>
         <module>graphbench-titan</module>
         <module>graphbench-janusgraph</module>
         <module>graphbench-tinkerpop2</module>
         <module>graphbench-tinkerpop3</module>
         <module>graphbench-all</module>
         <module>graphbench-run</module>
+        <module>graphbench-backend</module>
     </modules>
     <name>Parent POM</name>
     <packaging>pom</packaging>
 
     <properties>
         <graphbench.core.version>1.0-SNAPSHOT</graphbench.core.version>
+        <graphbench.test.version>1.0-SNAPSHOT</graphbench.test.version>
+        <graphbench.db.version>1.0-SNAPSHOT</graphbench.db.version>
         <graphbench.janusgraph.version>1.0-SNAPSHOT</graphbench.janusgraph.version>
         <graphbench.tinkerpop2.version>1.0-SNAPSHOT</graphbench.tinkerpop2.version>
         <graphbench.tinkerpop3.version>1.0-SNAPSHOT</graphbench.tinkerpop3.version>
         <graphbench.titan.version>1.0-SNAPSHOT</graphbench.titan.version>
         <graphbench.all.version>1.0-SNAPSHOT</graphbench.all.version>
+        <graphbench.backend.version>1.0-SNAPSHOT</graphbench.backend.version>
 
         <commons.lang3.version>3.9</commons.lang3.version>
         <log4j.version>1.2.17</log4j.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
+        <jackson.dataformat.properties.version>2.10.0</jackson.dataformat.properties.version>
         <jackson.dataformat.yaml.version>2.10.0</jackson.dataformat.yaml.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <commons-configuration.version>1.10</commons-configuration.version>
+
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
@@ -40,6 +51,16 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>graphbench-core</artifactId>
                 <version>${graphbench.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-test</artifactId>
+                <version>${graphbench.test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-db</artifactId>
+                <version>${graphbench.db.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -66,6 +87,11 @@
                 <artifactId>graphbench-all</artifactId>
                 <version>${graphbench.all.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>graphbench-backend</artifactId>
+                <version>${graphbench.backend.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>log4j</groupId>
@@ -89,6 +115,11 @@
                 <version>${jackson.dataformat.yaml.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-properties</artifactId>
+                <version>${jackson.dataformat.properties.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.databind.version}</version>
@@ -97,6 +128,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -116,6 +152,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <show>public</show>
+                    <docfilessubdirs>true</docfilessubdirs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
