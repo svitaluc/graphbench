@@ -3,6 +3,7 @@ package cz.cvut.fit.manta.graphbench.core.config;
 import org.apache.commons.configuration2.AbstractConfiguration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.io.FileHandler;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -91,12 +92,19 @@ public abstract class Configuration {
     /**
      * Loads path property from the config file. It always returns absolute path, although a relative path
      * is stated in the config file.
+     * Note, that an {@link IllegalArgumentException} is thrown when the property is empty, because
+     * although the property can be set relative, the returned path is absolute. So, the empty property would
+     * cause an unexpected result.
      * @param property property to be read
      * @return String representing absolute path to a file/directory in the property
      * @throws IOException If the given path does not exist
     */
     public String getPathProperty(ConfigurationProperty property) throws IOException {
         String originalPath = getStringProperty(property);
+        if (StringUtils.isEmpty(originalPath)) {
+            throw new IllegalArgumentException("The path property " + property.getName() + "is not set! " +
+                    "Set this property in the config.properties file.");
+        }
         File tmp = new File(originalPath);
         return tmp.getCanonicalPath();
     }
