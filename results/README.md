@@ -143,5 +143,5 @@ investigated/created idea.
 
 Meanwhile, we also try other graph databases (although the JanusGraph seemed like 
 the most promising one as it’s a direct successor of Titan). To follow the progress 
-in our research in this area, see the  
+in our research in this area, see the
 [Confluence page 'R&D of Graph Databases'](https://mantatools.atlassian.net/wiki/spaces/MT/pages/908918940/R+D+of+Graph+Databases).
