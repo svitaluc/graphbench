@@ -40,7 +40,7 @@ can be found in the attached file above.
 
 ![import](./images/import.png)
 ![import-100-1000](./images/import-100-1000.png)
-<img src="images/import-100-1000.png" alt="import-100-1000" width="400" height="200"/>
+<img src="images/import-100-1000.png" alt="import-100-1000" width="600"/>
 
 The import times of JanusGraph (with embedded Cassandra, that is, the fastest possible
 connection with Cassandra which is possible) are unacceptable. We followed
