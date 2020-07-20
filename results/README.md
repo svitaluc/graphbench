@@ -39,7 +39,6 @@ smaller graphs for which the results are not visible in the first chart. The det
 can be found in the attached file above.
 
 ![import](./images/import.png)
-![import-100-1000](./images/import-100-1000.png)
 <img src="images/import-100-1000.png" alt="import-100-1000" width="600"/>
 
 The import times of JanusGraph (with embedded Cassandra, that is, the fastest possible
@@ -59,7 +58,7 @@ to import charts, the getVertices charts contain the number of vertices on the
 x-axis and time in milliseconds on the y-axis.
 
 ![getVertices](./images/getVertices.png)
-![getVertices-100-1000](./images/getVertices-100-1000.png)
+<img src="./images/getVertices-100-1000.png" alt="getVertices-100-1000" width="600"/>
 
 The times for retrieval of all vertices, one by one,  in JanusGraph is very 
 similar to the ones in Titan. The main reason for that is the index backend, 
@@ -75,13 +74,13 @@ However, some severe performance flaws were registered by the community when
 comparing it with the Titan as well.
 
 ![getVerticesWithEdges](./images/getVerticesWithEdges.png)
-![getVerticesWithEdges-100-1000](./images/getVerticesWithEdges-100-1000.png)
+<img src="./images/getVerticesWithEdges-100-1000.png" alt="getVerticesWithEdges-100-1000" width="600"/>
 
 The JanusGraph is significantly slower than the Titan. Values of by what number 
 of times the Titan was faster than the JanusGraph (y-axis) based on the number 
 of vertices (x-axis) is displayed in the following chart.
 
-![getVerticesWithEdges-faster](./images/getVerticesWithEdges-faster.png)
+<img src="./images/getVerticesWithEdges-faster.png" alt="getVerticesWithEdges-faster" width="600"/>
 
 It’s worth mentioning that in both cases the same indices were created. There 
 have been some changes in internal data storing between Titan, 0.4.4 and JanusGraph, 
@@ -98,7 +97,7 @@ Therefore, the results of the deviating first runs were omitted from the average
 and the behavior was inspected separately.
 
 ![getVerticesWithNeighbors](./images/getVerticesWithNeighbors.png)
-![getVerticesWithNeighbors-100-1000](./images/getVerticesWithNeighbors-100-1000.png)
+<img src="./images/getVerticesWithNeighbors-100-1000.png" alt="getVerticesWithNeighbors-100-1000" width="600"/>
 
 As would be expected, the results are similar to those found in the 
 *getVerticesWithEdges* test.
@@ -118,7 +117,7 @@ JanusGraph seems to have this cache behavior only with small graphs as seen in t
 following chart depicting the 1st and the 2nd run of the *getVertexWithEdges* test 
 (x-axis with the number of graph vertices, y-axis with the time in milliseconds).
 
-![unwantedCache-jg-100-150](./images/unwantedCache-jg-100-150.png)
+<img src="./images/unwantedCache-jg-100-150.png" alt="unwantedCache-jg-100-150" width="600"/>
 
 With the small graph, the difference between the 1st and the 2nd run is about 73%. 
 However, with the growing graph, the difference gets smaller and it’s diminished 
