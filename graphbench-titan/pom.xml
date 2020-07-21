@@ -15,7 +15,7 @@
         <titan.version>0.4.4</titan.version>
         <titan.persistit.version>3.3.0</titan.persistit.version>
         <titan.cassandra.version>1.2.2</titan.cassandra.version>
-        <titan.lucene.version>4.4.0</titan.lucene.version>
+        <titan.lucene.version>8.6.0</titan.lucene.version>
     </properties>
 
     <dependencies>
