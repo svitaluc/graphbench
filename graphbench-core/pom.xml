@@ -14,7 +14,7 @@
 
     <properties>
         <commons-configuration2.version>2.5</commons-configuration2.version>
-        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-beanutils-core.version>1.8.0</commons-beanutils-core.version>
         <commons.io.version>2.4</commons.io.version>
         <opencsv.version>2.3</opencsv.version>
