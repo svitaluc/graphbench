@@ -18,7 +18,7 @@
         <commons-beanutils-core.version>1.8.0</commons-beanutils-core.version>
         <commons.io.version>2.4</commons.io.version>
         <opencsv.version>2.3</opencsv.version>
-        <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
+        <hibernate-validator.version>5.3.5.Final</hibernate-validator.version>
         <maven-model.version>3.6.3</maven-model.version>
     </properties>
 
