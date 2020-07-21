@@ -127,6 +127,8 @@ Titan, on the other hand, keeps the difference over 80% up to the size of a
 10,000-vertex graph. After that, it still keeps that behavior, but with a lower 
 difference under 35%.
 
+<img src="./images/unwantedCache-titan-100-30000.png" alt="unwantedCache-titan-100-30000" width="600"/>
+
 To sum it up, the JanusGraph behavior in these matters is not that different from 
 the Titan one.  With medium and large graphs it behaves as expected. Therefore, it 
 seems, that the cache that cannot be influenced is larger in the Titan than in the 
