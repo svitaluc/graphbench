@@ -15,9 +15,7 @@ The measurements were run on
 
 All the results are averaged from at least five individual runs.
 
-So far, the _Titan + Persistit_ with _JanusGraph + Cassandra_ were benchmarked and the results can
-be found in the file 
-[results.xlsx](./results.xlsx).
+The results can be found in the file [results.xlsx](./results.xlsx).
 
 It contains all the numbers and charts for the basic operations of
 * **import** - import a graph of a given number of vertices and edges
@@ -30,9 +28,6 @@ It contains all the numbers and charts for the basic operations of
 
 ### Import
 
-The performance of an import operation is crucial for us. Therefore, when switching to another
-graph database we would like to achieve the same or even better import times, for sure not falling
-below our current import time. Unfortunately, that’s not the case of the JanusGraph. 
 The chart below shows the import time in milliseconds (y-axis) based on the number of nodes in
 the graph (x-axis). The second chart represents a detail of the first chart with a focus on
 smaller graphs for which the results are not visible in the first chart. The detailed numbers
@@ -50,10 +45,7 @@ tuning guides (both JanusGraph and Cassandra related).
 ### Get Vertices
 
 The test gets each vertex of the graph individually while the cache is off 
-(for further information on cache follow the #Off-Cache). Currently, in Manta we 
-build the algorithms in our application layer and the communication with the database 
-rather focuses on individual retrievals of vertices than complex algorithms on the 
-graph layer. Therefore, this test was included to see basic retrieval times. Similarly 
+(for further information on cache follow the [Off-Cache section](#off-cache)). Similarly 
 to import charts, the getVertices charts contain the number of vertices on the 
 x-axis and time in milliseconds on the y-axis.
 
@@ -66,12 +58,10 @@ Lucene in both cases.
 
 ### Get Vertices with Edges
 
-The operation of getting vertices with all their edges belongs to the Manta basic 
-set of operations that is used while communicating with the graph database. The 
-JanusGraph data model is just the same as the data model of Titan, which suggests 
+The JanusGraph data model is just the same as the data model of Titan, which suggests 
 that retrieval of vertices with their edges should be similar in both the cases. 
-However, some severe performance flaws were registered by the community when 
-comparing it with the Titan as well.
+However, some severe performance flaws are present when 
+comparing it with the Titan.
 
 ![getVerticesWithEdges](./images/getVerticesWithEdges.png)
 <img src="./images/getVerticesWithEdges-100-1000.png" alt="getVerticesWithEdges-100-1000" width="600"/>
@@ -88,11 +78,10 @@ have been some changes in internal data storing between Titan, 0.4.4 and JanusGr
 
 ### Get Vertices with Neighbors
 
-Similarly to the previous test, the operation of getting vertices with all their 
-neighbors belongs to the Manta basic set of operations that is used while 
-communicating with the graph database. First, an unexpected behavior was spotted, 
-which is further described in the #Off-Cache - the first run of the 
-*getVerticesWithEdges* was significantly slower than *getVerticesWithNeighbors*. 
+First, an unexpected behavior was spotted, 
+which is further described in the [Off-Cache section](#off-cache) - the first run of the 
+*getVerticesWithEdges* was significantly slower than any other run of 
+*getVerticesWithEdges*/*getVerticesWithNeighbors*. 
 Therefore, the results of the deviating first runs were omitted from the averages 
 and the behavior was inspected separately.
 
@@ -138,12 +127,4 @@ JanusGraph.
 
 So far we would not select the JanusGraph as a suitable candidate for our internal 
 graph database. The import times are significantly slower, as well as the time of 
-tests requiring retrieval of other elements. There is still a chance in trying other 
-approaches of JanusGraph tuning apart from the settings, such as a particular cache 
-implemented on our side (we heard it happened in IBM) or any other new 
-investigated/created idea.
-
-Meanwhile, we also try other graph databases (although the JanusGraph seemed like 
-the most promising one as it’s a direct successor of Titan). To follow the progress 
-in our research in this area, see the
-[Confluence page 'R&D of Graph Databases'](https://mantatools.atlassian.net/wiki/spaces/MT/pages/908918940/R+D+of+Graph+Databases).
+tests requiring retrieval of other elements.
