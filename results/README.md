@@ -36,8 +36,7 @@ can be found in the attached file above.
 ![import](./images/import.png)
 <img src="images/import-100-1000.png" alt="import-100-1000" width="600"/>
 
-The import times of JanusGraph (with embedded Cassandra, that is, the fastest possible
-connection with Cassandra which is possible) are unacceptable. We followed
+The import times of JanusGraph are unacceptable. We followed
 recommendations for bulk loading both from the
 [official sources](https://docs.janusgraph.org/advanced-topics/bulk-loading/) and various
 tuning guides (both JanusGraph and Cassandra related).
@@ -61,13 +60,13 @@ Lucene in both cases.
 The JanusGraph data model is just the same as the data model of Titan, which suggests 
 that retrieval of vertices with their edges should be similar in both the cases. 
 However, some severe performance flaws are present when 
-comparing it with the Titan.
+comparing it with Titan.
 
 ![getVerticesWithEdges](./images/getVerticesWithEdges.png)
 <img src="./images/getVerticesWithEdges-100-1000.png" alt="getVerticesWithEdges-100-1000" width="600"/>
 
-The JanusGraph is significantly slower than the Titan. Values of by what number 
-of times the Titan was faster than the JanusGraph (y-axis) based on the number 
+JanusGraph is significantly slower than Titan. Values of by what number 
+of times Titan was faster than JanusGraph (y-axis) based on the number 
 of vertices (x-axis) is displayed in the following chart.
 
 <img src="./images/getVerticesWithEdges-faster.png" alt="getVerticesWithEdges-faster" width="600"/>
@@ -93,7 +92,7 @@ As would be expected, the results are similar to those found in the
 
 ### Off-Cache
 
-Although both the Titan and the JanusGraph were set with disabled cache, the 
+Although both Titan and JanusGraph were set with disabled cache, the 
 first run of a test requiring a search of additional features (*getVertexWithEdges*, 
 *getVertexWithNeighbors*) runs significantly slower than the following tests, 
 including the first test repeated. This behavior could be explained as an initial 
@@ -120,11 +119,11 @@ difference under 35%.
 
 To sum it up, the JanusGraph behavior in these matters is not that different from 
 the Titan one.  With medium and large graphs it behaves as expected. Therefore, it 
-seems, that the cache that cannot be influenced is larger in the Titan than in the 
+seems, that the cache that cannot be influenced is larger in Titan than in 
 JanusGraph.
 
 ### Interim Conclusion
 
-So far we would not select the JanusGraph as a suitable candidate for our internal 
+So far we would not select JanusGraph as a suitable candidate for our internal 
 graph database. The import times are significantly slower, as well as the time of 
 tests requiring retrieval of other elements.
