@@ -7,6 +7,8 @@ writing one test and a specification of which database(s) to use.
 
 The current project is a work in progress, and any suggestions are welcomed.
 
+Part of this project is `graphbench-simple` which is used for simplified test and described below.
+
 ## Usage
 
 You can either run the jar file directly or use an Automatic Launcher. In both cases, the configuration
@@ -138,6 +140,22 @@ implements the interface `cz.cvut.fit.manta.graphbench.core.db.GraphDBConnector`
 
 After these steps, recompile the project (or the necessary modules) and run it normally, as explained above.
 
+## GraphBench Simple
+Siplifiest tests contains two classes: GraphImporter and GraphQuery. 
+
+Importer implementations are for ArangoDb, Dgraph, JanusGraph, Memgraph, Neo4j, OrientDb, TigerGraph, Titan.
+
+Query implementations are for Memgraph, Neo4j, OrientDb, TigerGraph.
+
+To use it you need:
+
+1) (If not embedded) Install chosen database you want to use.
+2) Use CSV generator (here in project: `csv-generator` - needs groovy) to generate names.csv and friends.csv files.
+3) Change directory into `graphbench-simple`.
+4) (Optional) Adjust connection strings if they are not default. 
+5) Compile and run by `mvn clean compile exec:java@<test_type> -D<database_profile>`.  
+    * Where `test_type` could be one of: import, query
+    * Where `database_profile` could be one of: arangodb, dgraph, janus, memgraph, neo4j, orientdb, tigergraph, titan
 
 ## Acknowledgements
 

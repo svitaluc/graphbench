@@ -1,0 +1,26 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="cz.cvut.fit.manta.graphbench" level="DEBUG"/>
+
+    <logger name="io.grpc" level="INFO"/>
+    <logger name="io.netty" level="INFO"/>
+    <logger name="org.reflections" level="INFO"/>
+
+    <logger name="com.arangodb" level="INFO"/>
+    <logger name="com.datastax" level="INFO"/>
+    <logger name="org.janusgraph" level="INFO"/>
+    <logger name="org.neo4j" level="INFO"/>
+    <logger name="com.thinkaurelius" level="INFO"/>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
